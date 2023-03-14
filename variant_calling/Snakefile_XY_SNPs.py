@@ -40,7 +40,7 @@ nonPAR = config["CHM13_nonPAR"]
 
 rule all:
 	input:
-########################Stage 1: Map reads and QC for all Y+ samples and
+########################Stage 1: Map reads and QC for all Y+ samples
 #minimap2_map_reads rule
 		expand("temp/Y/{Y}.bam", Y=Y_samples),
 #index_stat rules

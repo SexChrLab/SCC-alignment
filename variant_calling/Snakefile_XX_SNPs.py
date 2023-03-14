@@ -39,23 +39,35 @@ nonPAR = config["CHM13_nonPAR"]
 
 rule all:
 	input:
+########################Stage 1: Map reads and QC for all Y- samples
 #minimap2_map_reads rule
 		expand("temp/X/{X}.bam", X=X_samples),
 #index_stat rules
 		expand("mapped/X/{X}.bai", X=X_samples),
 		expand("stats/X/{X}.bam.stats", X=X_samples),
+
+########################Stage 2: Call haplotypes for all genomic regions (ploidy-aware)
+#HaplotypeCaller
 #gatk_gvcfs rule
 		expand("haplotyped_vcfs/X/{X}.{chr_n}.g.vcf.gz", X=X_samples, chr_n=diploid),
+
+########################Stage 3: Merge gVCFs for all genomic regions
+#CombineGVCFs
 #gatk_combinegvcfs_auto rule
 		expand("haplotyped_vcfs/X/{chr_n}.gatk.combined.gvcf.vcf.gz", chr_n=diploid),
+
+########################Stage 4: Compute joint genotypes across all samples (ploidy-aware)
+#GenotypeGVCFs
 #gatk_genotypegvcfs rule
 		expand("genotyped_vcfs/X/{chr_n}.gatk.genotyped.raw.vcf.gz", chr_n=diploid),
+
+########################Stage 6: Downstream analysis-aware VCF filtering
 #hard_filter rule
-		expand("genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz", chr_n=diploid),
+#		expand("genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz", chr_n=diploid),
 #subset_individuals_hard_filter_diploid rule
-		expand("genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz.tbi", sample=X_samples, chr_n=diploid),
+#		expand("genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz.tbi", sample=X_samples, chr_n=diploid),
 #gatk_selectheterozygous_diploid rule
-		expand("diploid_vcfs/X/{chr_n}.gatk.called.hard.filter.het.{sample}.vcf.gz", sample=X_samples, chr_n=diploid),
+#		expand("diploid_vcfs/X/{chr_n}.gatk.called.hard.filter.het.{sample}.vcf.gz", sample=X_samples, chr_n=diploid),
 
 # ------------------
 # Read mapping rules
@@ -170,46 +182,46 @@ rule gatk_genotypegvcf_diploid:
 ## Hard Filter on diploid_chromosomes
 ## ------------------------
 
-rule hard_filter_diploid:
-	input:
-		"genotyped_vcfs/X/{chr_n}.gatk.genotyped.raw.vcf.gz",
-	output:
-		vcf = "genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz",
-		idx = "genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz.tbi",
-	params:
-		X_genome = X_genome,
-	shell:
-		"""
-		gatk SelectVariants -R {params.X_genome} -V {input} -O {output} \
-		#--select-type-to-include SNP --restrict-alleles-to BIALLELIC -select 
-		"AN >= 4 && MQ > 10.0 && QD > 7.0 && DP >= 10.0 && DP <= 1000.0"
-		touch -c {output.idx};
-		"""
-
-rule subset_individuals_hard_filter_diploid:
-	input:
-		"genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz",
-	output:
-		vcf = "genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz",
-		index = "genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz.tbi",
-	params:
-		sample = lambda wildcards: config[wildcards.sample]["SM"],
-	shell:
-		"""
-		bcftools view -Oz -s {params.sample} {input} > {output.vcf};
-		tabix -p vcf {output.vcf};
-		"""
-
-#After subsetting for each individual. In some individuals, the genotypes could be homozygous for the reference. This next rule is to remove these sites.
-
-rule gatk_selectheterozygous_diploid:
-	input:
-		"genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz", 
-	output:
-		"diploid_vcfs/X/{chr_n}.gatk.called.hard.filter.het.{sample}.vcf.gz",
-	params:
-		X_genome = X_genome,
-	shell:
-		"""
-		gatk SelectVariants -R {params.X_genome} -V {input} -O {output} -select "AC == 1";
-		"""
+#rule hard_filter_diploid:
+#	input:
+#		"genotyped_vcfs/X/{chr_n}.gatk.genotyped.raw.vcf.gz",
+#	output:
+#		vcf = "genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz",
+#		idx = "genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz.tbi",
+#	params:
+#		X_genome = X_genome,
+#	shell:
+#		"""
+#		gatk SelectVariants -R {params.X_genome} -V {input} -O {output} \
+#		#--select-type-to-include SNP --restrict-alleles-to BIALLELIC -select 
+#		"AN >= 4 && MQ > 10.0 && QD > 7.0 && DP >= 10.0 && DP <= 1000.0"
+#		touch -c {output.idx};
+#		"""
+#
+#rule subset_individuals_hard_filter_diploid:
+#	input:
+#		"genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz",
+#	output:
+#		vcf = "genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz",
+#		index = "genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz.tbi",
+#	params:
+#		sample = lambda wildcards: config[wildcards.sample]["SM"],
+#	shell:
+#		"""
+#		bcftools view -Oz -s {params.sample} {input} > {output.vcf};
+#		tabix -p vcf {output.vcf};
+#		"""
+#
+##After subsetting for each individual. In some individuals, the genotypes could be homozygous for the reference. This next rule is to remove these sites.
+#
+#rule gatk_selectheterozygous_diploid:
+#	input:
+#		"genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz", 
+#	output:
+#		"diploid_vcfs/X/{chr_n}.gatk.called.hard.filter.het.{sample}.vcf.gz",
+#	params:
+#		X_genome = X_genome,
+#	shell:
+#		"""
+#		gatk SelectVariants -R {params.X_genome} -V {input} -O {output} -select "AC == 1";
+#		"""
