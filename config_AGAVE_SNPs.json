@@ -1,0 +1,96 @@
+{
+	"COMMENT_FASTQ_DIRECTORIES": "Directory containing FASTQ files.",
+	"reads": "/scratch/bpinto2/human/SCC_snakemake/reads",
+	
+	"COMMENT_VCF_DIRECTORIES": "Directories containing called read vcf file(s).",
+	"haplotyped_samples": "/scratch/bpinto2/human/SCC_snakemake/haplotyped_vcfs/",
+	"genotyped_samples":  "/scratch/bpinto2/human/SCC_snakemake/genotyped_vcfs/",
+	
+	"COMMENT_CLEANED_REFERENCE_GENOME": "Reference genome files.",
+	"genome_XX": "/scratch/bpinto2/human/SCC_snakemake/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YHardMasked_ChrNamesAdded.fasta",
+	"genome_XY": "/scratch/bpinto2/human/SCC_snakemake/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YPARsMasked_ChrNamesAdded.fasta",
+
+	"chrX": ["chrX"],
+	"chrY": ["chrY"],
+	"directory": ["X", "Y"],
+	"autosomes": ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22"],
+	"XX_diploid": ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX"],
+	"XY_diploid": ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "PAR1", "PAR2"],
+	"XY_haploid": ["chrX_nonPAR", "chrY"],
+	"all_chromosomes": ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY"],
+	"all_regions": ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX_PAR1", "chrX_PAR2", "chrX_nonPAR", "chrY"],
+
+	"COMMENT_REFERENCE_COORDINATES": "Reference genome feature coordinates.",
+	"GRCh38_PAR1": ["chrX:10001-2781479"],
+	"GRCh38_PAR2": ["chrX:155701383-156030895"],
+	"GRCh38_nonPAR": ["chrX:2781480-155701382"],
+	"CHM13_PAR1": ["chrX:1-2394410"],
+	"CHM13_PAR2": ["chrX:153925834-154259566"],
+	"CHM13_nonPAR": ["chrX:2394411-153925833"],
+
+	"COMMENT_SAMPLE_INFO_MAIN": "All samples to be analyzed as listed in their fastq prefixes.",
+	"samples_ALL": [
+		"HG002",
+		"HG004",
+		"NA06984",
+		"NA06985"
+	],
+
+	"X_samples": [
+		"HG004",
+		"NA06985"
+	],
+
+		"HG004": {
+		"ID": "HG004",
+		"LB": "HG004",
+		"PL": "Illumina",
+		"PU": "HG004",
+		"individual": "HG004",
+		"tissue": "NA",
+		"SM": "HG004",
+		"fq1": "HG004_R1.fastq.gz",
+		"fq2": "HG004_R2.fastq.gz"
+	},
+
+	"NA06985": {
+		"ID": "NA06985",
+		"LB": "NA06985",
+		"PL": "Illumina",
+		"PU": "NA06985",
+		"individual": "NA06985",
+		"tissue": "NA",
+		"SM": "NA06985",
+		"fq1": "NA06985_R1.fastq.gz",
+		"fq2": "NA06985_R2.fastq.gz"
+	},
+
+	"Y_samples": [
+		"HG002",
+		"NA06984"
+	],
+
+	"HG002": {
+		"ID": "HG002",
+		"LB": "HG002",
+		"PL": "Illumina",
+		"PU": "HG002",
+		"individual": "HG002",
+		"tissue": "NA",
+		"SM": "HG002",
+		"fq1": "HG002_R1.fastq.gz",
+		"fq2": "HG002_R2.fastq.gz"
+	},
+
+	"NA06984": {
+		"ID": "NA06984",
+		"LB": "NA06984",
+		"PL": "Illumina",
+		"PU": "NA06984",
+		"individual": "NA06984",
+		"tissue": "NA",
+		"SM": "NA06984",
+		"fq1": "NA06984_R1.fastq.gz",
+		"fq2": "NA06984_R2.fastq.gz"
+	}
+}
