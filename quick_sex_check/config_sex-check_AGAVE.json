@@ -1,0 +1,13 @@
+{
+	"COMMENT_RESULTS_DIRECTORY": "Directories containing indexcov results.",
+	"indexcov_dir": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/sex_check/indexcov",
+
+	"COMMENT_REFERENCE GENOME_INFO": "Directories containing reference genome file(s).",
+	"genome": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/sex_check/reference/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YPARsMasked_ChrNamesAdded.fasta",
+
+	"COMMENT_SAMPLE_INFO_CONTROL": "All control (known) samples to be analyzed.",
+	"samples_CONTROL": ["NA06984_NEAT_0.01x", "NA06985_NEAT_0.01x"],
+
+	"COMMENT_SAMPLE_INFO_ALL": "All samples to be analyzed (including controls).",
+	"samples_ALL": ["NA06984_NEAT_0.01x", "NA06985_NEAT_0.01x"]
+}
