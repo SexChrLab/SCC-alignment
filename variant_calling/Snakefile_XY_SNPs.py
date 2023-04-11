@@ -9,7 +9,7 @@ import os
 #X == no chrY present
 #Y == chrY present
 
-configfile: "config_SNPs.json"
+configfile: "config_AGAVE_SNPs.json"
 
 #sample sets
 X_samples = config["X_samples"]
@@ -52,26 +52,26 @@ rule all:
 #gatk_gvcfs_auto rule
 		expand("haplotyped_vcfs/Y/{Y}.{chr}.g.vcf.gz", Y=Y_samples, chr=auto),
 #gatk_gvcfs_PAR1 rule
-		expand("haplotyped_vcfs/Y/chrX/{Y}.chrX_PAR1.g.vcf.gz", Y=Y_samples),
+		expand("haplotyped_vcfs/Y/sex/{Y}.chrX_PAR1.g.vcf.gz", Y=Y_samples),
 #gatk_gvcfs_PAR2 rule
-		expand("haplotyped_vcfs/Y/chrX/{Y}.chrX_PAR2.g.vcf.gz", Y=Y_samples),
+		expand("haplotyped_vcfs/Y/sex/{Y}.chrX_PAR2.g.vcf.gz", Y=Y_samples),
 #gatk_gvcfs_chrX rule
-		expand("haplotyped_vcfs/Y/chrX/{Y}.chrX_nonPAR.g.vcf.gz", Y=Y_samples),
+		expand("haplotyped_vcfs/Y/sex/{Y}.chrX_nonPAR.g.vcf.gz", Y=Y_samples),
 #gatk_gvcfs_chrY rule
-		expand("haplotyped_vcfs/Y/chrY_nonPAR/{Y}.chrY_nonPAR.g.vcf.gz", Y=Y_samples),
+		expand("haplotyped_vcfs/Y/sex/{Y}.chrY_nonPAR.g.vcf.gz", Y=Y_samples),
 
 ########################Stage 3: Merge gVCFs for all genomic regions
 #CombineGVCFs
 #gatk_combinegvcfs_auto rule
-		expand("haplotyped_vcfs/Y/merged/{chr}.gatk.combined.gvcf.vcf.gz", chr=auto),
+		expand("haplotyped_vcfs/Y/{chr}.gatk.combined.gvcf.vcf.gz", chr=auto),
 #gatk_combinegvcfs_PAR1
-		expand("haplotyped_vcfs/Y/merged/chrX_PAR1.gatk.combined.gvcf.vcf.gz"),
+		expand("haplotyped_vcfs/Y/chrX_PAR1.gatk.combined.gvcf.vcf.gz"),
 #gatk_combinegvcfs_PAR2
-		expand("haplotyped_vcfs/Y/merged/chrX_PAR2.gatk.combined.gvcf.vcf.gz"),
+		expand("haplotyped_vcfs/Y/chrX_PAR2.gatk.combined.gvcf.vcf.gz"),
 #gatk_combinegvcfs_chrX
-		expand("haplotyped_vcfs/Y/merged/chrX_nonPAR.gatk.combined.gvcf.vcf.gz"),
+		expand("haplotyped_vcfs/Y/chrX_nonPAR.gatk.combined.gvcf.vcf.gz"),
 #gatk_combinegvcfs_chrY
-		expand("haplotyped_vcfs/Y/merged/chrY_nonPAR.gatk.combined.gvcf.vcf.gz"),
+		expand("haplotyped_vcfs/Y/chrY_nonPAR.gatk.combined.gvcf.vcf.gz"),
 
 ########################Stage 4: Compute joint genotypes across all samples (ploidy-aware)
 #GenotypeGVCFs
@@ -176,7 +176,7 @@ rule gatk_gvcfs_diploid_PAR1:
 		bam = "mapped/Y/{Y}.bam",
 		bai = "mapped/Y/{Y}.bai",
 	output:
-		"haplotyped_vcfs/Y/chrX/{Y}.chrX_PAR1.g.vcf.gz",
+		"haplotyped_vcfs/Y/sex/{Y}.chrX_PAR1.g.vcf.gz",
 	params:
 		Y_genome = Y_genome,
 		ploidy = 2,
@@ -193,7 +193,7 @@ rule gatk_gvcfs_diploid_PAR2:
 		bam = "mapped/Y/{Y}.bam",
 		bai = "mapped/Y/{Y}.bai",
 	output:
-		"haplotyped_vcfs/Y/chrX/{Y}.chrX_PAR2.g.vcf.gz",
+		"haplotyped_vcfs/Y/sex/{Y}.chrX_PAR2.g.vcf.gz",
 	params:
 		Y_genome = Y_genome,
 		ploidy = 2,
@@ -210,7 +210,7 @@ rule gatk_gvcfs_haploid_chrX:
 		bam = "mapped/Y/{Y}.bam",
 		bai = "mapped/Y/{Y}.bai",
 	output:
-		"haplotyped_vcfs/Y/chrX/{Y}.chrX_nonPAR.g.vcf.gz",
+		"haplotyped_vcfs/Y/sex/{Y}.chrX_nonPAR.g.vcf.gz",
 	params:
 		Y_genome = Y_genome,
 		ploidy = 1,
@@ -227,7 +227,7 @@ rule gatk_gvcfs_haploid_chrY:
 		bam = "mapped/Y/{Y}.bam",
 		bai = "mapped/Y/{Y}.bai",
 	output:
-		"haplotyped_vcfs/Y/chrY_nonPAR/{Y}.chrY_nonPAR.g.vcf.gz",
+		"haplotyped_vcfs/Y/sex/{Y}.chrY_nonPAR.g.vcf.gz",
 	params:
 		Y_genome = Y_genome,
 		ploidy = 1,
@@ -247,7 +247,7 @@ rule gatk_combinegvcfs_auto:
 	input:
 		expand("haplotyped_vcfs/Y/{Y}.{chr}.g.vcf.gz", Y=Y_samples, chr=auto),
 	output:
-		"haplotyped_vcfs/Y/merged/{chr}.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/{chr}.gatk.combined.gvcf.vcf.gz",
 	params:
 		Y_genome = Y_genome,
 		chr = "{chr}",
@@ -265,63 +265,83 @@ rule gatk_combinegvcfs_auto:
 
 rule gatk_combinegvcfs_PAR1:
 	input:
-		expand("haplotyped_vcfs/Y/chrX/{Y}.chrX_PAR1.g.vcf.gz", Y=Y_samples),
+		expand("haplotyped_vcfs/Y/sex/{Y}.chrX_PAR1.g.vcf.gz", Y=Y_samples),
 	output:
-		"haplotyped_vcfs/Y/merged/chrX_PAR1.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/chrX_PAR1.gatk.combined.gvcf.vcf.gz",
 	params:
 		Y_genome = Y_genome,
 		PAR1 = PAR1,
 	threads:
 		1
-	shell:
+	run:
+		variant_files = []
+		for i in input:
+			variant_files.append("--variant " + i)
+		variant_files = " ".join(variant_files)
+		shell(
 			"""
-			gatk --java-options "-Xmx4g" CombineGVCFs -R {params.Y_genome} -V {input} -O {output}
-			"""
+			gatk --java-options "-Xmx4g" CombineGVCFs -R {params.Y_genome} {variant_files} -O {output}
+			""")
 
 rule gatk_combinegvcfs_PAR2:
 	input:
-		expand("haplotyped_vcfs/Y/chrX/{Y}.chrX_PAR2.g.vcf.gz", Y=Y_samples),
+		expand("haplotyped_vcfs/Y/sex/{Y}.chrX_PAR2.g.vcf.gz", Y=Y_samples),
 	output:
-		"haplotyped_vcfs/Y/merged/chrX_PAR2.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/chrX_PAR2.gatk.combined.gvcf.vcf.gz",
 	params:
 		Y_genome = Y_genome,
 		PAR2 = PAR2,
 	threads:
 		1
-	shell:
+	run:
+		variant_files = []
+		for i in input:
+			variant_files.append("--variant " + i)
+		variant_files = " ".join(variant_files)
+		shell(
 			"""
-			gatk --java-options "-Xmx4g" CombineGVCFs -R {params.Y_genome} -V {input} -O {output}
-			"""
+			gatk --java-options "-Xmx4g" CombineGVCFs -R {params.Y_genome} {variant_files} -O {output}
+			""")
 
 rule gatk_combinegvcfs_chrX:
 	input:
-		expand("haplotyped_vcfs/Y/chrX/{Y}.chrX_nonPAR.g.vcf.gz", Y=Y_samples),
+		expand("haplotyped_vcfs/Y/sex/{Y}.chrX_nonPAR.g.vcf.gz", Y=Y_samples),
 	output:
-		"haplotyped_vcfs/Y/merged/chrX_nonPAR.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/chrX_nonPAR.gatk.combined.gvcf.vcf.gz",
 	params:
 		Y_genome = Y_genome,
 		nonPAR = nonPAR,
 	threads:
 		1
-	shell:
+	run:
+		variant_files = []
+		for i in input:
+			variant_files.append("--variant " + i)
+		variant_files = " ".join(variant_files)
+		shell(
 			"""
-			gatk --java-options "-Xmx4g" CombineGVCFs -R {params.Y_genome} -V {input} -O {output}
-			"""
+			gatk --java-options "-Xmx4g" CombineGVCFs -R {params.Y_genome} {variant_files} -O {output}
+			""")
 
 rule gatk_combinegvcfs_chrY:
 	input:
-		expand("haplotyped_vcfs/Y/chrY_nonPAR/{Y}.chrY_nonPAR.g.vcf.gz", Y=Y_samples),
+		expand("haplotyped_vcfs/Y/sex/{Y}.chrY_nonPAR.g.vcf.gz", Y=Y_samples),
 	output:
-		"haplotyped_vcfs/Y/merged/chrY_nonPAR.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/chrY_nonPAR.gatk.combined.gvcf.vcf.gz",
 	params:
 		Y_genome = Y_genome,
 		chrY = "chrY",
 	threads:
 		1
-	shell:
+	run:
+		variant_files = []
+		for i in input:
+				variant_files.append("--variant " + i)
+		variant_files = " ".join(variant_files)
+		shell(
 			"""
-			gatk --java-options "-Xmx4g" CombineGVCFs -R {params.Y_genome} -V {input} -O {output}
-			"""
+			gatk --java-options "-Xmx4g" CombineGVCFs -R {params.Y_genome} {variant_files} -O {output}
+			""")
 
 ## ---------------------------------------
 ## Call genotypes autosomes
@@ -329,7 +349,7 @@ rule gatk_combinegvcfs_chrY:
 
 rule gatk_genotypegvcf_auto:
 	input:
-		"haplotyped_vcfs/Y/merged/{chr_n}.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/{chr_n}.gatk.combined.gvcf.vcf.gz",
 	output:
 		"genotyped_vcfs/Y/{chr_n}.gatk.genotyped.raw.vcf.gz",
 	params:
@@ -349,7 +369,7 @@ rule gatk_genotypegvcf_auto:
 ##gatk_genotype_PAR1 rule
 rule gatk_genotypegvcf_PAR1:
 	input:
-		"haplotyped_vcfs/Y/merged/chrX_PAR1.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/chrX_PAR1.gatk.combined.gvcf.vcf.gz",
 	output:
 		temp("genotyped_vcfs/Y/chrX_PAR1.gatk.genotyped.raw.vcf.gz"),
 	params:
@@ -366,7 +386,7 @@ rule gatk_genotypegvcf_PAR1:
 ##gatk_genotype_PAR2 rule
 rule gatk_genotypegvcf_PAR2:
 	input:
-		"haplotyped_vcfs/Y/merged/chrX_PAR2.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/chrX_PAR2.gatk.combined.gvcf.vcf.gz",
 	output:
 		temp("genotyped_vcfs/Y/chrX_PAR2.gatk.genotyped.raw.vcf.gz"),
 	params:
@@ -383,7 +403,7 @@ rule gatk_genotypegvcf_PAR2:
 ##gatk_genotype_X rule
 rule gatk_genotypegvcf_XnonPAR:
 	input:
-		"haplotyped_vcfs/Y/merged/chrX_nonPAR.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/chrX_nonPAR.gatk.combined.gvcf.vcf.gz",
 	output:
 		temp("genotyped_vcfs/Y/chrX_nonPAR.gatk.genotyped.raw.vcf.gz"),
 	params:
@@ -400,7 +420,7 @@ rule gatk_genotypegvcf_XnonPAR:
 #gatk_genotype_Y rule
 rule gatk_genotypegvcf_YnonPAR:
 	input:
-		"haplotyped_vcfs/Y/merged/chrY_nonPAR.gatk.combined.gvcf.vcf.gz",
+		"haplotyped_vcfs/Y/chrY_nonPAR.gatk.combined.gvcf.vcf.gz",
 	output:
 		"genotyped_vcfs/Y/chrY.gatk.genotyped.raw.vcf.gz",
 	params:
@@ -427,10 +447,10 @@ rule gatk_genotypegvcf_mergeX:
 	shell:
 		"""
 		picard MergeVcfs \
-          I={input.PAR1_vcf} \
-          I={input.nonPAR_vcf} \
-		  I={input.PAR2_vcf} \
-          O={output}
+		I={input.PAR1_vcf} \
+		I={input.nonPAR_vcf} \
+		I={input.PAR2_vcf} \
+		O={output}
 		"""
 
 ## ------------------------
