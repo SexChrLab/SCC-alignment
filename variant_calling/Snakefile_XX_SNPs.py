@@ -9,7 +9,7 @@ import os
 #X == no chrY present
 #Y == chrY present
 
-configfile: "config_SNPs.json"
+configfile: "config_AGAVE_SNPs.json"
 
 #sample sets
 X_samples = config["X_samples"]
@@ -22,20 +22,27 @@ all_chromosomes = config["all_chromosomes"]
 diploid = config["XX_diploid"]
 autosomes = config["autosomes"]
 
+#Filtering options
+AN = config["diploid_AN"],
+MQ = config["diploid_MQ"],
+QD = config["diploid_QD"],
+DP1 = config["diploid_DP1"],
+DP2 = config["diploid_DP2"],
+
 #Reference genome choices, only ONE may be used at a time
 #GRCh38 reference genome (uncomment below if using)
-#X_genome = config["GRCh38_X"]
-#Y_genome = config["GRCh38_Y"]
-#PAR1 = config["GRCh38_PAR1"]
-#PAR2 = config["GRCh38_PAR2"]
-#nonPAR = config["GRCh38_nonPAR"]
+X_genome = config["GRCh38_X"]
+Y_genome = config["GRCh38_Y"]
+PAR1 = config["GRCh38_PAR1"]
+PAR2 = config["GRCh38_PAR2"]
+nonPAR = config["GRCh38_nonPAR"]
 
 #CHM13_T2T reference (comment out below if NOT using)
-X_genome = config["CHM13_X"]
-Y_genome = config["CHM13_Y"]
-PAR1 = config["CHM13_PAR1"]
-PAR2 = config["CHM13_PAR2"]
-nonPAR = config["CHM13_nonPAR"]
+#X_genome = config["CHM13_X"]
+#Y_genome = config["CHM13_Y"]
+#PAR1 = config["CHM13_PAR1"]
+#PAR2 = config["CHM13_PAR2"]
+#nonPAR = config["CHM13_nonPAR"]
 
 rule all:
 	input:
@@ -63,7 +70,7 @@ rule all:
 
 ########################Stage 6: Downstream analysis-aware VCF filtering
 #hard_filter rule
-#		expand("genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz", chr_n=diploid),
+		expand("genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz", chr_n=diploid),
 #subset_individuals_hard_filter_diploid rule
 #		expand("genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz.tbi", sample=X_samples, chr_n=diploid),
 #gatk_selectheterozygous_diploid rule
@@ -77,7 +84,7 @@ rule minimap2_mapping_X:
 		fq1 = "reads/{X}_R1.fastq.gz", 
 		fq2 = "reads/{X}_R2.fastq.gz", 
 	output:
-		temp("temp/X/{X}.bam"),
+		"temp/X/{X}.bam",
 	params:
 		threads = 4,
 		X_genome = X_genome,
@@ -182,22 +189,25 @@ rule gatk_genotypegvcf_diploid:
 ## Hard Filter on diploid_chromosomes
 ## ------------------------
 
-#rule hard_filter_diploid:
-#	input:
-#		"genotyped_vcfs/X/{chr_n}.gatk.genotyped.raw.vcf.gz",
-#	output:
-#		vcf = "genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz",
-#		idx = "genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz.tbi",
-#	params:
-#		X_genome = X_genome,
-#	shell:
-#		"""
-#		gatk SelectVariants -R {params.X_genome} -V {input} -O {output} \
-#		#--select-type-to-include SNP --restrict-alleles-to BIALLELIC -select 
-#		"AN >= 4 && MQ > 10.0 && QD > 7.0 && DP >= 10.0 && DP <= 1000.0"
-#		touch -c {output.idx};
-#		"""
-#
+rule hard_filter_diploid:
+	input:
+		"genotyped_vcfs/X/{chr_n}.gatk.genotyped.raw.vcf.gz",
+	output:
+		vcf = "genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz",
+		idx = "genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz.tbi",
+	params:
+		X_genome = X_genome,
+		AN = AN,
+		MQ = MQ,
+		QD = QD,
+		DP1 = DP1,
+		DP2 = DP2,
+	shell:
+		"""
+		gatk SelectVariants -R {params.X_genome} -V {input} -O {output.vcf} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select "AN >= {params.AN} && MQ > {params.MQ} && QD > {params.QD} && DP >= {params.DP1} && DP <= {params.DP2}"
+		touch -c {output.idx};
+		"""
+
 #rule subset_individuals_hard_filter_diploid:
 #	input:
 #		"genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz",
