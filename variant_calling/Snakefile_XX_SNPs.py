@@ -1,9 +1,8 @@
 import os
 
-#mamba create -n sex_check snakemake seqtk minimap2 samtools samblaster goleft pigz gatk4=4.2.6.1-0 picard=2.27.0-0
-#mamba env create --name sex_check -f sex_check.yml
-#mamba activate w
-#snakemake --use-conda --cores 4 -s Snakefile_SNPs.py -np
+#mamba env create --name sex_check -f SCCalign_v3.yml
+#mamba activate SCCalign_v3
+#snakemake --use-conda --cores 1 -s Snakefile_SNPs.py -np
 
 #shorthand:
 #X == no chrY present
@@ -23,9 +22,9 @@ diploid = config["XX_diploid"]
 autosomes = config["autosomes"]
 
 #Filtering options
-AN = config["diploid_AN"],
-MQ = config["diploid_MQ"],
-QD = config["diploid_QD"],
+AN =  config["diploid_AN"],
+MQ =  config["diploid_MQ"],
+QD =  config["diploid_QD"],
 DP1 = config["diploid_DP1"],
 DP2 = config["diploid_DP2"],
 
@@ -197,9 +196,9 @@ rule hard_filter_diploid:
 		idx = "genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz.tbi",
 	params:
 		X_genome = X_genome,
-		AN = AN,
-		MQ = MQ,
-		QD = QD,
+		AN =  AN,
+		MQ =  MQ,
+		QD =  QD,
 		DP1 = DP1,
 		DP2 = DP2,
 	shell:
@@ -207,31 +206,3 @@ rule hard_filter_diploid:
 		gatk SelectVariants -R {params.X_genome} -V {input} -O {output.vcf} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select "AN >= {params.AN} && MQ > {params.MQ} && QD > {params.QD} && DP >= {params.DP1} && DP <= {params.DP2}"
 		touch -c {output.idx};
 		"""
-
-#rule subset_individuals_hard_filter_diploid:
-#	input:
-#		"genotyped_vcfs/X/{chr_n}.gatk.filtered.vcf.gz",
-#	output:
-#		vcf = "genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz",
-#		index = "genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz.tbi",
-#	params:
-#		sample = lambda wildcards: config[wildcards.sample]["SM"],
-#	shell:
-#		"""
-#		bcftools view -Oz -s {params.sample} {input} > {output.vcf};
-#		tabix -p vcf {output.vcf};
-#		"""
-#
-##After subsetting for each individual. In some individuals, the genotypes could be homozygous for the reference. This next rule is to remove these sites.
-#
-#rule gatk_selectheterozygous_diploid:
-#	input:
-#		"genotyped_vcfs/X/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz", 
-#	output:
-#		"diploid_vcfs/X/{chr_n}.gatk.called.hard.filter.het.{sample}.vcf.gz",
-#	params:
-#		X_genome = X_genome,
-#	shell:
-#		"""
-#		gatk SelectVariants -R {params.X_genome} -V {input} -O {output} -select "AC == 1";
-#		"""

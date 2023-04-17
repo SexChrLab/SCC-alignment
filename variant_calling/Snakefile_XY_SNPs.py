@@ -1,9 +1,8 @@
 import os
 
-#mamba create -n sex_check snakemake seqtk minimap2 samtools samblaster goleft pigz gatk4=4.2.6.1-0 picard=2.27.0-0
-#mamba env create --name sex_check -f sex_check.yml
-#mamba activate w
-#snakemake --use-conda --cores 4 -s Snakefile_SNPs.py -np
+#mamba env create --name sex_check -f SCCalign_v3.yml
+#mamba activate SCCalign_v3
+#snakemake --use-conda --cores 1 -s Snakefile_SNPs.py -np
 
 #shorthand:
 #X == no chrY present
