@@ -23,6 +23,20 @@ diploid = config["XX_diploid"]
 auto = config["autosomes"]
 all_regions = config["all_regions"]
 
+#Diploid filtering options
+dip_AN =  config["diploid_AN"],
+dip_MQ =  config["diploid_MQ"],
+dip_QD =  config["diploid_QD"],
+dip_DP1 = config["diploid_DP1"],
+dip_DP2 = config["diploid_DP2"],
+
+#Haploid filtering options
+hap_AN =  config["haploid_AN"],
+hap_MQ =  config["haploid_MQ"],
+hap_QD =  config["haploid_QD"],
+hap_DP1 = config["haploid_DP1"],
+hap_DP2 = config["haploid_DP2"],
+
 #Reference genome choices, only ONE may be used at a time
 #GRCh38 reference genome (uncomment below if using)
 #X_genome = config["GRCh38_X"]
@@ -93,7 +107,16 @@ rule all:
 
 ########################Stage 6: Downstream analysis-aware VCF filtering
 #hard_filter_auto rule
-#		expand("genotyped_vcfs/{chr_n}.gatk.filtered.vcf.gz", chr_n=diploid),
+		expand("genotyped_vcfs/Y/{chr_n}.gatk.filtered.vcf.gz", chr_n=auto),
+#hard_filter_PAR1 rule
+		"genotyped_vcfs/Y/chrX_PAR1.gatk.filtered.vcf.gz",
+#hard_filter_PAR2 rule
+		"genotyped_vcfs/Y/chrX_PAR2.gatk.filtered.vcf.gz",
+#hard_filter_X rule
+		"genotyped_vcfs/Y/chrX_nonPAR.gatk.filtered.vcf.gz",
+#hard_filter_Y rule
+		"genotyped_vcfs/Y/chrY.gatk.filtered.vcf.gz",
+
 #subset_individuals_hard_filter_diploid rule
 #		expand("genotyped_vcfs/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz.tbi", sample=Y_samples, chr_n=diploid),
 #gatk_selectheterozygous_diploid rule
@@ -434,8 +457,12 @@ rule gatk_genotypegvcf_YnonPAR:
 		gatk --java-options "-Xmx4g" GenotypeGVCFs -R {params.Y_genome} -L {params.chrY} -ploidy {params.ploidy} -V {input} -O {output}
 		"""
 
+## ------------------------
+## Merge chrX sections (RAW)
+## ------------------------
+
 #gatk_genotype_merge_X rule
-rule gatk_genotypegvcf_mergeX:
+rule gatk_genotypeVCF_mergeX:
 	input:
 		PAR1_vcf = "genotyped_vcfs/Y/chrX_PAR1.gatk.genotyped.raw.vcf.gz",
 		nonPAR_vcf = "genotyped_vcfs/Y/chrX_nonPAR.gatk.genotyped.raw.vcf.gz",
@@ -454,199 +481,139 @@ rule gatk_genotypegvcf_mergeX:
 		"""
 
 ## ------------------------
-## Hard Filter on diploid_chromosomes
+## Hard Filter on autosomes
 ## ------------------------
 
-#rule hard_filter_diploid:
-#	input:
-#		"genotyped_vcfs/{chr_n}.gatk.genotyped.raw.vcf.gz",
-#	output:
-#		vcf = "genotyped_vcfs/{chr_n}.gatk.filtered.vcf.gz",
-#		idx = "genotyped_vcfs/{chr_n}.gatk.filtered.vcf.gz.tbi",
-#	params:
-#		Y_genome = Y_genome,
-#	shell:
-#		"""
-#		gatk SelectVariants -R {params.Y_genome} -V {input} -O {output} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select "AN >= 4 && MQ > 40.0 && QD > 7.0 && DP >= 10.0 && DP <= 1000.0";
-#		touch -c {output.idx};
-#		"""
-#
-#rule subset_individuals_hard_filter_diploid:
-#	input:
-#		"genotyped_vcfs/{chr_n}.gatk.filtered.vcf.gz",
-#	output:
-#		vcf = "genotyped_vcfs/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz",
-#		index = "genotyped_vcfs/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz.tbi",
-#	params:
-#		sample = lambda wildcards: config[wildcards.sample]["SM"],
-#	shell:
-#		"""
-#		bcftools view -Oz -s {params.sample} {input} > {output.vcf};
-#		tabix -p vcf {output.vcf};
-#		"""
-#
-##After subsetting for each individual. In some individuals, the genotypes could be homozygous for the reference. This next rule is to remove these sites.
-#
-#rule gatk_selectheterozygous_diploid:
-#	input:
-#		"genotyped_vcfs/{chr_n}.gatk.called.hard.filter.{sample}.vcf.gz", 
-#	output:
-#		"diploid_vcfs/{chr_n}.gatk.called.hard.filter.het.{sample}.vcf.gz",
-#	params:
-#		Y_genome = Y_genome,
-#	shell:
-#		"""
-#		gatk SelectVariants -R {params.Y_genome} -V {input} -O {output} -select "AC == 1";
-#		"""
+rule hard_filter_autosomes:
+	input:
+		"genotyped_vcfs/Y/{chr_n}.gatk.genotyped.raw.vcf.gz",
+	output:
+		vcf = "genotyped_vcfs/Y/{chr_n}.gatk.filtered.vcf.gz",
+		idx = "genotyped_vcfs/Y/{chr_n}.gatk.filtered.vcf.gz.tbi",
+	params:
+		Y_genome = Y_genome,
+		AN =  dip_AN,
+		MQ =  dip_MQ,
+		QD =  dip_QD,
+		DP1 = dip_DP1,
+		DP2 = dip_DP2,
+	shell:
+		"""
+		gatk SelectVariants -R {params.Y_genome} -V {input} -O {output.vcf} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select "AN >= {params.AN} && MQ > {params.MQ} && QD > {params.QD} && DP >= {params.DP1} && DP <= {params.DP2}"
+		touch -c {output.idx};
+		"""
 
+## ------------------------
+## Hard Filter on chrX_PAR1
+## ------------------------
 
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#import os
-#
-#configfile: "config_SNPs.json"
-#
-#XY_samples = config["XY_samples"]
-#genome = config["genome_XY"]
-#all_chromosomes = config["all_chromosomes"]
-#samples_ALL = config["samples_ALL"]
-##autosomes = config["autosomes"]
-#
-#rule all:
-#	input:
-##minimap2_map_reads rule
-#		expand("temp/{sample}.bam", sample=samples_ALL),
-##index_stat rules
-#		expand("mapped_reads/{sample}.bam", sample=XY_samples),
-#		expand("mapped_reads/{sample}.bai", sample=XY_samples),
-#		expand("mapped_reads/{sample}.bam.stats", sample=XY_samples),
-##gatk_gvcfs rule
-#		expand("haplotyped_vcfs/{sample}.{chr_n}.g.vcf.gz", sample=XY_samples, chr_n=all_chromosomes),
-#
-## ------------------
-## Read mapping rules
-## ------------------
-#rule minimap2_map_reads:
-#	input:
-#		fq1 = "reads/{sample}_R1.fastq.gz", 
-#		fq2 = "reads/{sample}_R2.fastq.gz", 
-#	output:
-#		bam = "temp/{sample}.bam",
-#	params:
-#		threads = 4,
-#		genome = genome,
-#	shell:
-#		"""
-#		minimap2 -ax sr {params.genome} {input.fq1} {input.fq2} -t {params.threads} | samblaster | samtools fixmate -@ {params.threads} - - | samtools sort -@ {params.threads} -O bam - -o {output.bam} 2>/dev/null 
-#		"""
-#
-#rule index_group_reads:
-#	input:
-#		"temp/{sample}.bam",
-#	output:
-#		bam = "mapped_reads/{sample}.bam",
-#		bai = "mapped_reads/{sample}.bai",
-#	params:
-#		threads = 2,
-#		id = lambda wildcards: config[wildcards.sample]["ID"],
-#		sm = lambda wildcards: config[wildcards.sample]["SM"],
-#		lb = lambda wildcards: config[wildcards.sample]["LB"],
-#		pu = lambda wildcards: config[wildcards.sample]["PU"],
-#		pl = lambda wildcards: config[wildcards.sample]["PL"],
-#	shell:
-#		"""
-#		picard AddOrReplaceReadGroups -I {input} -O {output.bam} -SORT_ORDER coordinate -RGID {params.id} -RGLB {params.lb} -RGPL {params.pl} -RGPU {params.pu} -RGSM {params.sm} -CREATE_INDEX True
-#		"""
-#
-#rule stats_dna:
-#	input:
-#		"mapped_reads/{sample}.bam",
-#	output:
-#		"mapped_reads/{sample}.bam.stats",
-#	shell:
-#		"""
-#		samtools stats {input} | grep '^SN' | cut -f 2- > {output};
-#		"""
-#
-## -----------------
-## Call variants dna
-## -----------------
-#
-#rule gatk_gvcfs:
-#	input:
-#		bam = "mapped_reads/{sample}.bam",
-#		bai = "mapped_reads/{sample}.bam.bai",
-#	output:
-#		"haplotyped_vcfs/{sample}.{chr_n}.g.vcf.gz",
-#	params:
-#		chr_n = config["all_chromosomes"],
-#		genome = genome,
-#	threads:
-#		4
-#	shell:
-#		"""
-#		gatk HaplotypeCaller -R {params.genome} -I {input.bam} --intervals {params.chr_n} --emit-ref-confidence GVCF -O {output};
-#		"""
-#
-#
-#
-#rule gatk_gvcf_chrX_PARs:
-#	input:
-#		bam = "mapped_reads/{sample}.bam",
-#		bai = "mapped_reads/{sample}.bam.bai",
-#	output:
-#		"called_reads/{sample}.chrX.g.vcf.gz",
-#	params:
-#		chrX = config["chrX"],
-#		genome = genome,
-#	threads:
-#		4
-#	shell:
-#		"""
-#		gatk HaplotypeCaller -R {params.genome} -I {input.bam} -L {params.X_chrom} --emit-ref-confidence GVCF -O {output};
-#		"""
-#
-#rule gatk_gvcf_chrX_nonPAR:
-#	input:
-#		bam = "mapped_reads/{sample}.bam",
-#		bai = "mapped_reads/{sample}.bam.bai",
-#	output:
-#		"called_reads/{sample}.chrX_nonPAR.g.vcf.gz",
-#	params:
-#		chrX = config["chrX"],
-#		genome = genome,
-#	threads:
-#		4
-#	shell:
-#		"""
-#		gatk HaplotypeCaller -R {params.genome} -I {input.bam} -L {params.X_chrom} --emit-ref-confidence GVCF -O {output};
-#		"""
-#
-#rule gatk_gvcf_chrY:
-#	input:
-#		bam = "mapped_reads/{sample}.bam",
-#		bai = "mapped_reads/{sample}.bam.bai",
-#	output:
-#		"called_reads/{sample}.chrX.g.vcf.gz",
-#	params:
-#		chrY = config["chrY"],
-#		genome = genome,
-#	threads:
-#		4
-#	shell:
-#		"""
-#		gatk HaplotypeCaller -R {params.genome} -I {input.bam} -L {params.chrY} --emit-ref-confidence GVCF -O {output};
-#		"""
-#
-#
-#
-#--sample-ploidy 1
-#
-#
+rule hard_filter_PAR1:
+	input:
+		"genotyped_vcfs/Y/chrX_PAR1.gatk.genotyped.raw.vcf.gz",
+	output:
+		vcf = "genotyped_vcfs/Y/chrX_PAR1.gatk.filtered.vcf.gz",
+		idx = "genotyped_vcfs/Y/chrX_PAR1.gatk.filtered.vcf.gz.tbi",
+	params:
+		Y_genome = Y_genome,
+		AN =  dip_AN,
+		MQ =  dip_MQ,
+		QD =  dip_QD,
+		DP1 = dip_DP1,
+		DP2 = dip_DP2,
+	shell:
+		"""
+		gatk SelectVariants -R {params.Y_genome} -V {input} -O {output.vcf} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select "AN >= {params.AN} && MQ > {params.MQ} && QD > {params.QD} && DP >= {params.DP1} && DP <= {params.DP2}"
+		touch -c {output.idx};
+		"""
+
+## ------------------------
+## Hard Filter on chrX_PAR2
+## ------------------------
+
+rule hard_filter_PAR2:
+	input:
+		"genotyped_vcfs/Y/chrX_PAR2.gatk.genotyped.raw.vcf.gz",
+	output:
+		vcf = "genotyped_vcfs/Y/chrX_PAR2.gatk.filtered.vcf.gz",
+		idx = "genotyped_vcfs/Y/chrX_PAR2.gatk.filtered.vcf.gz.tbi",
+	params:
+		Y_genome = Y_genome,
+		AN =  dip_AN,
+		MQ =  dip_MQ,
+		QD =  dip_QD,
+		DP1 = dip_DP1,
+		DP2 = dip_DP2,
+	shell:
+		"""
+		gatk SelectVariants -R {params.Y_genome} -V {input} -O {output.vcf} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select "AN >= {params.AN} && MQ > {params.MQ} && QD > {params.QD} && DP >= {params.DP1} && DP <= {params.DP2}"
+		touch -c {output.idx};
+		"""
+
+## ------------------------
+## Hard Filter on chrX_nonPAR
+## ------------------------
+
+rule hard_filter_chrX_nonPAR:
+	input:
+		"genotyped_vcfs/Y/chrX_nonPAR.gatk.genotyped.raw.vcf.gz",
+	output:
+		vcf = "genotyped_vcfs/Y/chrX_nonPAR.gatk.filtered.vcf.gz",
+		idx = "genotyped_vcfs/Y/chrX_nonPAR.gatk.filtered.vcf.gz.tbi",
+	params:
+		Y_genome = Y_genome,
+		AN =  hap_AN,
+		MQ =  hap_MQ,
+		QD =  hap_QD,
+		DP1 = hap_DP1,
+		DP2 = hap_DP2,
+	shell:
+		"""
+		gatk SelectVariants -R {params.Y_genome} -V {input} -O {output.vcf} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select "AN >= {params.AN} && MQ > {params.MQ} && QD > {params.QD} && DP >= {params.DP1} && DP <= {params.DP2}"
+		touch -c {output.idx};
+		"""
+
+## ------------------------
+## Hard Filter on chrY
+## ------------------------
+
+rule hard_filter_chrY_nonPAR:
+	input:
+		"genotyped_vcfs/Y/chrY.gatk.genotyped.raw.vcf.gz",
+	output:
+		vcf = "genotyped_vcfs/Y/chrY.gatk.filtered.vcf.gz",
+		idx = "genotyped_vcfs/Y/chrY.gatk.filtered.vcf.gz.tbi",
+	params:
+		Y_genome = Y_genome,
+		AN =  hap_AN,
+		MQ =  hap_MQ,
+		QD =  hap_QD,
+		DP1 = hap_DP1,
+		DP2 = hap_DP2,
+	shell:
+		"""
+		gatk SelectVariants -R {params.Y_genome} -V {input} -O {output.vcf} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select "AN >= {params.AN} && MQ > {params.MQ} && QD > {params.QD} && DP >= {params.DP1} && DP <= {params.DP2}"
+		touch -c {output.idx};
+		"""
+
+## ------------------------
+## Merge chrX sections (FILTERED)
+## ------------------------
+
+#gatk_genotype_merge_X rule
+rule gatk_filteredVCF_mergeX:
+	input:
+		PAR1_vcf = "genotyped_vcfs/Y/chrX_PAR1.gatk.filtered.vcf.gz",
+		nonPAR_vcf = "genotyped_vcfs/Y/chrX_nonPAR.gatk.filtered.vcf.gz",
+		PAR2_vcf = "genotyped_vcfs/Y/chrX_PAR2.gatk.filtered.vcf.gz",
+	output:
+		"genotyped_vcfs/Y/chrX.gatk.filtered.vcf.gz",
+	threads:
+		2
+	shell:
+		"""
+		picard MergeVcfs \
+		I={input.PAR1_vcf} \
+		I={input.nonPAR_vcf} \
+		I={input.PAR2_vcf} \
+		O={output}
+		"""
