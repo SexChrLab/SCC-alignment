@@ -2,6 +2,19 @@
 
 These Snakemake workflows are for sex chromosome complement informed gene quantification for short read, paired end RNA sequencing data.  For each sample, the sex is used to determine which sex chromosome complement version of the reference genome is used for alignment/pseudoalignment.  For females (XX, no Y chromosome),  we use the reference genome with chromosome Y hard masked.  For males (XY, with a Y chromosome), we use the reference genome with the pseudoautosomal regions (PARs) hard masked on chromosome Y.  There are separate Snakemake pipelines for doing a alignment (hisat2) with gene quantification (featureCounts) or doing pseudoalignment and quantification (salmon) which is much faster.  A JSON file is used to hold all the file information; a script that can be used to generate the sample specific information is provided.  
 
+# Steps to running these workflows
+
+Set up: 
+1) Install conda (or use Docker)
+2) Set up conda environment with provided environment yaml (conda env create -f SCCalign_v3.yml)
+
+Analyze:
+1) Generate configuration JSON used to specify the location of files and sex chromosome complement reference genomes
+2) Decide what method you would like to use to quantify gene expression
+a) full alignment with gene counts (reads mapping to each genes coordinates as a measure of expression) [long run time]
+b) pseudoalignment and quantification with sex chromosome complement reference transcriptome [short run time]
+3) Use Snakemake in conda environment SCCalign_v3 to run the provided Snakemake workflow for your desired method
+
 # Generating a configuration JSON
 
 The Python script generate_json_config_addreadgroups.py can be used to generate the sample information elements of a configuration JSON (see example RNAseq_samples.json).  To use this script, open it in an editor and change the variables under the comment "Specifying inputs:".  The all_sample_ids variable should be set to a comma separated file that contains the sample id, forward read fastq file, and reverse read fastq file (example provided in samples.csv).  If the files are in subfolders, include that in the path to the file.  The out_config_json variable should be set to the desired name of the output JSON to be generated.  The input_directory should be set to the directory containing the read sequence files (fastq/fastq.gz).  Thus, later in the workflow, the full path to the sequence files will be input_directory+path_to_read_file.  Once these variables have been set, run the python script and check the output.  You should see a list of all the samples IDs in an entry called "ALL_samples" and then each sample will have a entry that contains the path information for the sequence files, ID, and read groups.  Once that all looks good, you will need to add the paths to the reference genomes.  A template for doing this is given in additional_info_config.json.  These entries can be copied and editted according to where you are running the scripts.  
