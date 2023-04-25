@@ -36,6 +36,19 @@ rule all:
         expand("feature_counts_rna_hisat/{sample_name}_HISAT_geneCounts_XY.txt", sample_name = config["Y_samples"]),
         expand("feature_counts_rna_hisat/{sample_name}_HISAT_geneCounts_XX.txt", sample_name = config["X_samples"])
 
+rule link_fastqs:
+    input:
+        original_R1 = lambda wildcards: config[wildcards.sample_name]["fq_path"] + config[wildcards.sample_name]["fq_1"],
+        original_R2 = lambda wildcards: config[wildcards.sample_name]["fq_path"] + config[wildcards.sample_name]["fq_2"]
+    output:
+        R1_out = "fastq_files_rna/{sample_name}_R1.fastq.gz",
+        R2_out = "fastq_files_rna/{sample_name}_R2.fastq.gz"
+    shell:
+        """
+        ln -s {input.original_R1} {output.R1_out};
+        ln -s {input.original_R2} {output.R2_out}
+        """
+
 rule HISAT_paired_males:
     input:
         FASTQ1 = "fastq_files_rna/{sample_name}_R1.fastq.gz",

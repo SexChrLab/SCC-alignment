@@ -1,0 +1,23 @@
+{
+    "Comment_Transcriptome_Index": "The following section specified the location of the index file for Salmon",
+    "HG38_Transcriptome_Index_HISAT_Path_female": "/data/CEM/shared/public_data/references/GENCODE/GRCh38.p12.genome.XXonly/GRCh38.p12.genome.XXonly",
+    "HG38_Transcriptome_Index_HISAT_Path_male": "/data/CEM/shared/public_data/references/GENCODE/GRCh38.p12.genome.XY/GRCh38.p12.genome.XY",
+    "HG38_Transcriptome_Index_SALMON_Path_female": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/RNA/references/gencode.v29.transcripts_Ymasked_XX.salmon_index/",
+    "HG38_Transcriptome_Index_SALMON_Path_male": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/RNA/references/gencode.v29.transcripts_YPARs_masked_XY.salmon_index/",
+
+    "CHM13_Transcriptome_Index_HISAT_Path_female": "/data/CEM/shared/public_data/references/T2T_CHM13_v2/T2T_CHM13_v2_SCC/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YHardMasked_ChrNamesAdded_hisat",
+    "CHM13_Transcriptome_Index_HISAT_Path_male": "/data/CEM/shared/public_data/references/T2T_CHM13_v2/T2T_CHM13_v2_SCC/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YPARsMasked_ChrNamesAdded_hisat",
+    "CHM13_Transcriptome_Index_SALMON_Path_female": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/RNA/references/GCF_009914755.1_T2T-CHM13v2.0_rna.YHardMasked.uniq.salmon_index/",
+    "CHM13_Transcriptome_Index_SALMON_Path_male": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/RNA/references/GCF_009914755.1_T2T-CHM13v2.0_rna.YPARsMasked.uniq.salmon_index/",
+
+    "Comment_Annotation": "The following section is the specified location for the gene annotation files",
+    "HG38_annotation_path": " /data/CEM/shared/public_data/references/GENCODE/gencode.v29.annotation.gtf",
+    "CHM13_annotation_path": "/data/CEM/shared/public_data/references/T2T_CHM13_v2/CHM13.v2.0.gff3",
+
+    "Comment_Sample_Info": "Fill these list by copying and pasting the sample names that are male (with a Y chromosome) or female (without a Y chromosome) from ALL_samples from the results of the sex check or reported sex",
+    "X_samples": [
+    ],
+    "Y_samples": [
+    ],
+    "Comment_Sample_Entries": "Plus all the sample entries with their file info and read group info (can be generated with generate_json_config_addreadgroups.py)"
+}
