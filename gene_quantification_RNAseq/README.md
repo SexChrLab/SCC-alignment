@@ -21,7 +21,7 @@ The Python script generate_json_config_addreadgroups.py can be used to generate 
 
 # Alignment and gene quantification
 
-The Snakemake workflow rnaseq_data_processing_hisat2.snakefile does an alignment to sex chromsoome complement refernece genome using hisat2 and quantifies gene expression using the genome annotation using featureCounts.  Interrim alignment files are marked as temporary and will be deleted when the step that needs them is completed, such as SAM files that are converted to BAM files, so as not to fill up hard drive space where possible.  If you would like to keep these for some reason, remove the temp() around the output files in the rules.  The rules for running featureCounts are set up to output results quantifying gene expression on the exon regions and output with both the gene IDs and the transcript IDs.
+The Snakemake workflow rnaseq_data_processing_hisat2.snakefile does an alignment to sex chromsoome complement refernece genome using hisat2 and quantifies gene expression using the genome annotation using featureCounts.  Interrim files produced during alignment and file processing are marked as temporary and will be deleted when the step that needs them is completed so as not to fill up hard drive space unnecessarily.  The rules for running featureCounts are set up to output results quantifying gene expression on the exon regions and output with both the gene IDs and the transcript IDs.
 
 # Pseudoalignment and transcript quantification
 
