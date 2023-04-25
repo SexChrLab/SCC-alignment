@@ -10,19 +10,19 @@ input_directory = '/data/CEM/wilsonlab/downloaded_data/GIAB/IlluminaRNAseq/'
 
 data = {}
 
-data['ALL_samples'] = []
+data['all_rna_samples'] = []
 dna_samples_fastq_path = defaultdict(list)
 
 with open(all_sample_ids, 'r') as f:
     for line in f:
         items = line.rstrip('\n').split(',')
-        data['ALL_samples'].append(items[0])
+        data['all_rna_samples'].append(items[0])
         dna_samples_fastq_path[items[0]].append(items[1])
         dna_samples_fastq_path[items[0]].append(items[2])
         R1_file = items[1]
         R1_filesplit = R1_file.split("_")
 
-for sample in data['ALL_samples']:
+for sample in data['all_rna_samples']:
     read_group_info = {}
     fq_path = input_directory
     fq_1 = dna_samples_fastq_path[sample][0]
