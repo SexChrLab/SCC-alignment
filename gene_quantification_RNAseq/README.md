@@ -6,7 +6,7 @@ These Snakemake workflows are for sex chromosome complement informed gene quanti
 
 Set up: 
 1) Install conda (or use Docker)
-2) Set up conda environment with provided environment yaml (conda env create -f SCCalign_v3.yml)
+2) Set up conda environment with provided environment yaml (`conda env create -f SCCalign_v3.yml`)
 
 Analyze:
 1) Generate configuration JSON used to specify the location of files and sex chromosome complement reference genomes
