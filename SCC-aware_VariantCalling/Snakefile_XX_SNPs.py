@@ -9,7 +9,7 @@ import os
 #X == no chrY present
 #Y == chrY present
 
-configfile: "SCC_config.json"
+configfile: "SCC-analysis_config.json"
 
 #threads
 threads = config["threads"]
