@@ -1,1 +1,1 @@
-Start of a README for quick SCC analysis
+Start of a README for quick SCC check of samples
