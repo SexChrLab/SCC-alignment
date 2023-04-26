@@ -1,5 +1,4 @@
 # Overall Description
 
-Ths Snakemake workflow is for identiying the sex chromosome complement of a set of samples using whole-genome short-read sequencing data using comparative read depth. This information should be incorporated into the 
+Ths Snakemake workflow is for identiying the sex chromosome complement of a set of samples using whole-genome short-read sequencing data using comparative read depth. This information should be then be incorporated into the JSON config file (SCC-analysis_config.json) for use in SCC-aware variant calling.
 
-sex chromosome complement informed (SCC-aware) whole-genome short-read sequence alignment and variant calling. For each sample, the genotype, identified using SCC-check pipeline (or reported sex), is used to determine which sex chromosome complement version of the reference genome is used for alignment/pseudoalignment. For females (no Y chromosome), we use the reference genome with Y chromosome hard-masked. For males (samples with a Y chromosome), we use the reference genome with the pseudoautosomal regions (PARs) hard masked on chromosome Y. A JSON file is used to hold all the file information in the previous directory (same config for SCC-check).
