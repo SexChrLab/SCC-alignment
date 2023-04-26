@@ -5,22 +5,21 @@ import os
 #conda activate sex_check
 #snakemake --use-conda --cores 4 -s Snakefile_sex-check.py -np
 
-configfile: "SCC_config.json"
+configfile: "SCC-analysis_config.json"
 
 #threads
 threads = config["threads"]
 
 #setup
 samples = config["ALL_samples"]
-genome = config["genome"]
 indexcov_dir = config["indexcov_dir"]
 
 #Reference genome choices, only ONE may be used at a time
 #GRCh38 reference genome (uncomment below if using)
-#Y_genome = config["GRCh38_Y"]
+#genome = config["GRCh38_Y"]
 
 #CHM13_T2T reference (comment out below if NOT using)
-Y_genome = config["CHM13_Y"]
+genome = config["CHM13_Y"]
 
 rule all:
 	input:
