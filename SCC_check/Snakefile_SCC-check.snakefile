@@ -3,7 +3,7 @@ import os
 #mamba create -n sex_check snakemake seqtk minimap2 samtools goleft pigz
 #mamba env create --name sex_check -f sex_check.yml
 #conda activate sex_check
-#snakemake --use-conda --cores 4 -s Snakefile_sex-check.py -np
+#snakemake --use-conda --cores 4 -s Snakefile_SCC-check.snakefile -np
 
 configfile: "SCC-analysis_config.json"
 
