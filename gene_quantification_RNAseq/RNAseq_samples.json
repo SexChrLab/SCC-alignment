@@ -1,5 +1,5 @@
 {
-    "Comment_Transcriptome_Index": "The following section specified the location of the index file for Salmon",
+    "Comment_Transcriptome_Index": "The following section specified the location of the index files",
     "HG38_Transcriptome_Index_HISAT_Path_female": "/data/CEM/shared/public_data/references/GENCODE/GRCh38.p12.genome.XXonly/GRCh38.p12.genome.XXonly",
     "HG38_Transcriptome_Index_HISAT_Path_male": "/data/CEM/shared/public_data/references/GENCODE/GRCh38.p12.genome.XY/GRCh38.p12.genome.XY",
     "HG38_Transcriptome_Index_SALMON_Path_female": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/RNA/references/gencode.v29.transcripts_Ymasked_XX.salmon_index/",
