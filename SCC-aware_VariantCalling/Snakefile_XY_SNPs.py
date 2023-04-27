@@ -1,6 +1,6 @@
 import os
 
-#mamba env create --name sex_check -f SCCalign_v3.yml
+#mamba env create --name SCCalign_v3 -f SCCalign_v3.yml
 #mamba activate SCCalign_v3
 #snakemake --use-conda --cores 1 -s Snakefile_SNPs.py -np
 
