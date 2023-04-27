@@ -2,7 +2,7 @@ import os
 
 #mamba env create --name SCCalign_v3 -f SCCalign_v3.yml
 #mamba activate SCCalign_v3
-#snakemake --use-conda --cores 1 -s Snakefile_SNPs.py -np
+#snakemake --use-conda --cores 1 -s Snakefile_XY_SNPs.py -np
 
 #shorthand:
 #X == no chrY present
