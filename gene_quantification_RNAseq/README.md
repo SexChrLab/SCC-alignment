@@ -13,7 +13,7 @@ Analyze:
 2) Decide what method you would like to use to quantify gene expression
 a) full alignment with gene counts (reads mapping to each genes coordinates as a measure of expression) [long run time]
 b) pseudoalignment and quantification with sex chromosome complement reference transcriptome [short run time]
-3) Use Snakemake in conda environment `SCCalign_v3` to run the provided Snakemake workflow for your desired method (examples provided in `run_*.sh`)
+3) Use Snakemake in conda environment `SCCalign_v3` to run the provided Snakemake workflow for your desired method (examples provided in `run_*.sbatch`)
 
 # Generating a configuration JSON
 
