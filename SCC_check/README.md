@@ -12,9 +12,12 @@ It is important to know if a sample possesses a Y chromosome or not to understan
 
 # Citations 
 
-If you use this script in your work, please cite the relevant softwares that make it work.
+If you use this script in your work, please cite the relevant softwares that make it work:
 
 seqkit: https://github.com/lh3/seqtk
+
 Minimap2: Li, H. (2018). Minimap2: pairwise alignment for nucleotide sequences. Bioinformatics, 34(18), 3094–3100. https://doi.org/10.1093/bioinformatics/bty191
+
 SAMtools: Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., & Durbin, R. (2009). The Sequence Alignment/Map format and SAMtools. Bioinformatics, 25(16), 2078–2079. https://doi.org/10.1093/bioinformatics/btp352
+
 Indexcov: Pedersen, B. S., Collins, R. L., Talkowski, M. E., & Quinlan, A. R. (2017). Indexcov: fast coverage quality control for whole-genome sequencing. GigaScience, 6(11). https://doi.org/10.1093/gigascience/gix090
