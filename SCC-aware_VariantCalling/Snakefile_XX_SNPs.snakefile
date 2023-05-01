@@ -210,7 +210,7 @@ rule hard_filter_diploid:
 		DP2 = DP2,
 	shell:
 		"""
-		gatk SelectVariants -R {params.X_genome} -V {input} -O {output.vcf} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select AN >= {params.AN} && MQ > {params.MQ} && QD > {params.QD} && DP >= {params.DP1} && DP <= {params.DP2}"
+		gatk SelectVariants -R {params.X_genome} -V {input} -O {output.vcf} --select-type-to-include SNP --restrict-alleles-to BIALLELIC -select "AN >= {params.AN} && MQ > {params.MQ} && QD > {params.QD} && DP >= {params.DP1} && DP <= {params.DP2}"
 		touch -c {output.idx};
 		"""
 
