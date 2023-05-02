@@ -1,5 +1,3 @@
-Pipe hisat w/ samtools and skip picard
-
 # Overall Description
 
 These Snakemake workflows are for sex chromosome complement informed gene quantification for short read, paired end RNA sequencing data.  For each sample, the sex is used to determine which sex chromosome complement version of the reference genome is used for alignment/pseudoalignment.  For females (XX, no Y chromosome),  we use the reference genome with chromosome Y hard masked.  For males (XY, with a Y chromosome), we use the reference genome with the pseudoautosomal regions (PARs) hard masked on chromosome Y.  There are separate Snakemake pipelines for doing a alignment (hisat2) with gene quantification (featureCounts) or doing pseudoalignment and quantification (salmon) which is much faster.  A JSON file is used to hold all the file information; a script that can be used to generate the sample specific information is provided.  
