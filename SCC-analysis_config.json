@@ -46,7 +46,7 @@
 
 	"COMMENT_haploid_XY_FILTERING": "HAPLOID: GATK genotype filtering options (XY samples).",
 	"haploid_AN": "2.0",
-	"haploid_MQ": "5.0",
+	"haploid_MQ": "10.0",
 	"haploid_QD": "4.0",
 	"haploid_DP1": "5.0.0",
 	"haploid_DP2": "500.0",
