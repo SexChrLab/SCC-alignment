@@ -13,10 +13,10 @@
 	"genotyped_samples":  "/scratch/bpinto2/human/SCC_snakemake/genotyped_vcfs/",
 	
 	"COMMENT_CLEANED_REFERENCE_GENOME": "Reference genome files.",
-	"CHM13_X": "/scratch/bpinto2/human/SCC_snakemake/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YHardMasked_ChrNamesAdded.fasta",
-	"CHM13_Y": "/scratch/bpinto2/human/SCC_snakemake/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YPARsMasked_ChrNamesAdded.fasta",
-	"GRCh38_X": "/scratch/bpinto2/human/SCC_snakemake/GRCh38.p12.genome.XX.fasta",
-	"GRCh38_Y": "/scratch/bpinto2/human/SCC_snakemake/GRCh38.p12.genome.XY.fasta",
+	"CHM13_X": "/scratch/bpinto2/human/SCC_snakemake/references/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YHardMasked_ChrNamesAdded.fasta",
+	"CHM13_Y": "/scratch/bpinto2/human/SCC_snakemake/references/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YPARsMasked_ChrNamesAdded.fasta",
+	"GRCh38_X": "/scratch/bpinto2/human/SCC_snakemake/references/GRCh38.p12.genome.XX.fasta",
+	"GRCh38_Y": "/scratch/bpinto2/human/SCC_snakemake/references/GRCh38.p12.genome.XY.fasta",
 
 	"threads": "4",
 	"chrX": ["chrX"],
