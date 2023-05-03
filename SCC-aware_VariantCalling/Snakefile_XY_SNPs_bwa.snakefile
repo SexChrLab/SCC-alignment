@@ -149,23 +149,15 @@ rule bwa_mapping_Y:
 # ------------------
 # Add read groups to bam files
 # ------------------
-#rule index_readgroups_Y:
-#	input:
-#		"temp/Y/{Y}.bam",
-#	output:
-#		bam = "mapped/Y/{Y}.bam",
-#		bai = "mapped/Y/{Y}.bai",
-#	params:
-#		threads = threads,
-#		id = lambda wildcards: config[wildcards.Y]["ID"],
-#		sm = lambda wildcards: config[wildcards.Y]["SM"],
-#		lb = lambda wildcards: config[wildcards.Y]["LB"],
-#		pu = lambda wildcards: config[wildcards.Y]["PU"],
-#		pl = lambda wildcards: config[wildcards.Y]["PL"],
-#	shell:
-#		"""
-#		picard AddOrReplaceReadGroups -I {input} -O {output.bam} -SORT_ORDER coordinate -RGID {params.id} -RGLB {params.lb} -RGPL {params.pl} -RGPU {params.pu} -RGSM {params.sm} -CREATE_INDEX True
-#		"""
+rule index_Y:
+	input:
+		"mapped/Y/{Y}.bai",
+	output:
+		"mapped/Y/{Y}.bai",
+	shell:
+		"""
+		samtools index (input}
+		"""
 
 # ------------------
 # Calculate read mapping stats for QC
