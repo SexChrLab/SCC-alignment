@@ -1,22 +1,19 @@
 {
 	"COMMENT_RESULTS_DIRECTORY": "Directories containing indexcov results.",
-	"indexcov_dir": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/sex_check/indexcov",
-
-	"COMMENT_SAMPLE_INFO_CONTROL": "All control (known) samples to be analyzed.",
-	"samples_CONTROL": ["HG002", "HG004"],
+	"indexcov_dir": "~/indexcov",
 
 	"COMMENT_FASTQ_DIRECTORIES": "Directory containing FASTQ files.",
-	"reads": "/scratch/bpinto2/human/SCC_snakemake/reads",
+	"reads": "~/reads",
 	
 	"COMMENT_VCF_DIRECTORIES": "Directories containing called read vcf file(s).",
-	"haplotyped_samples": "/scratch/bpinto2/human/SCC_snakemake/haplotyped_vcfs/",
-	"genotyped_samples":  "/scratch/bpinto2/human/SCC_snakemake/genotyped_vcfs/",
+	"haplotyped_samples": "~/haplotyped_vcfs/",
+	"genotyped_samples":  "~/genotyped_vcfs/",
 	
 	"COMMENT_CLEANED_REFERENCE_GENOME": "Reference genome files.",
-	"CHM13_X": "/scratch/bpinto2/human/SCC_snakemake/references/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YHardMasked_ChrNamesAdded.fasta",
-	"CHM13_Y": "/scratch/bpinto2/human/SCC_snakemake/references/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YPARsMasked_ChrNamesAdded.fasta",
-	"GRCh38_X": "/scratch/bpinto2/human/SCC_snakemake/references/GRCh38.p12.genome.XX.fasta",
-	"GRCh38_Y": "/scratch/bpinto2/human/SCC_snakemake/references/GRCh38.p12.genome.XY.fasta",
+	"CHM13_X": "~/references/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YHardMasked_ChrNamesAdded.fasta",
+	"CHM13_Y": "~/references/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YPARsMasked_ChrNamesAdded.fasta",
+	"GRCh38_X": "~/references/GRCh38.p12.genome.XX.fasta",
+	"GRCh38_Y": "~/references/GRCh38.p12.genome.XY.fasta",
 
 	"threads": "4",
 	"chrX": ["chrX"],
@@ -50,6 +47,13 @@
 	"haploid_QD": "4.0",
 	"haploid_DP1": "5.0",
 	"haploid_DP2": "500.0",
+
+
+
+
+
+	"COMMENT_SAMPLE_INFO_CONTROL": "All control (known) samples to be analyzed.",
+	"samples_CONTROL": ["HG002", "HG004"],
 
 	"COMMENT_SAMPLE_INFO_MAIN": "All samples to be analyzed as listed in their fastq prefixes.",
 	"ALL_samples": [
