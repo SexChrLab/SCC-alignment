@@ -24,7 +24,9 @@ singularity pull
 Add your working directory path to the JSON file, e.g. using sed (note the use of "\\" prior to symbols is necessary for literal interpretation)
 
 ```
-sed -i 's/\~/\/scratch\/working_dir/g' SCC-analysis_config.json
+sed -i 's/\~/\/scratch\/working_dir/g' SCC-analysis_info.json
+python [updated] generate_json_config_addreadgroups.py 
+cat SCC-analysis_info.json SCC-analysis_samples.json > SCC-analysis_config.json
 ```
 
 To check that the config is formatted properly, we suggest using a JSON validator tool, such as https://jsonlint.com/ 
