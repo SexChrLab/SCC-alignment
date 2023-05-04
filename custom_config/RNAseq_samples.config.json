@@ -1,0 +1,49 @@
+{
+    "-----------------Comment_Transcriptome_Index-----------------": "This section specifies the location of the index files for gene quantification tools",
+    "HG38_Transcriptome_Index_HISAT_Path_female": "your/path/to/female/HG38/HISAT/index/",
+    "HG38_Transcriptome_Index_HISAT_Path_male": "your/path/to/male/HG38/HISAT/index/",
+    "HG38_Transcriptome_Index_SALMON_Path_female": "your/path/to/female/HG38/SALMON/index/",
+    "HG38_Transcriptome_Index_SALMON_Path_male": "your/path/to/male/HG38/SALMON/index/",
+    "CHM13_Transcriptome_Index_HISAT_Path_female": "your/path/to/female/CHM13/HISAT/index/",
+    "CHM13_Transcriptome_Index_HISAT_Path_male": "your/path/to/male/CHM13/HISAT/index/",
+    "CHM13_Transcriptome_Index_SALMON_Path_female": "your/path/to/female/CHM13/SALMON/index/",
+    "CHM13_Transcriptome_Index_SALMON_Path_male": "your/path/to/male/CHM13/SALMON/index/",
+    "-----------------Comment_Annotation-----------------": "This section specifies the location of the genome annotation file",
+    "HG38_annotation_path": "your/path/to/HG38/annotation/gtf/gff",
+    "CHM13_annotation_path": "your/path/to/CHM13/annotation/gtf/gff",
+    "-----------------Comment_HISAT_Parameters-----------------": "This section specifies parameters for HISAT analysis of your data",
+    "HISAT_strandedness": "F|R|RF|FR",
+    "-----------------Comment_SALMON_Parameters-----------------": "This section specifies parameters for SALMON analysis of your data",
+    "SALMON_libtype": "I|O|M|S|U|F|R",
+    "-----------------Comment_Sample_Info-----------------": "This section lists the samples that are to be analyzed",
+    "ALL_samples": [
+        "hg002_son",
+        "hg004_mom"
+    ],
+    "X_samples": [
+        "select samples with X chromosomes only from ALL_samples"
+    ],
+    "Y_samples": [
+        "select samples with Y chromosomes from ALL_samples"
+    ],
+    "hg002_son": {
+        "fq_path": "/data/CEM/wilsonlab/downloaded_data/GIAB/IlluminaRNAseq/",
+        "fq_1": "research_sequencing_fastq_rna_illumina_mrna_hg002_gm24385.mrna.R1.fastq.gz",
+        "fq_2": "research_sequencing_fastq_rna_illumina_mrna_hg002_gm24385.mrna.R2.fastq.gz",
+        "ID": "hg002_son",
+        "SM": "hg002_son",
+        "LB": "hg002_son",
+        "PU": "HMN2KDSX2.3",
+        "PL": "Illumina"
+    },
+    "hg004_mom": {
+        "fq_path": "/data/CEM/wilsonlab/downloaded_data/GIAB/IlluminaRNAseq/",
+        "fq_1": "research_sequencing_fastq_rna_illumina_mrna_hg004_gm26077.mrna.R1.fastq.gz",
+        "fq_2": "research_sequencing_fastq_rna_illumina_mrna_hg004_gm26077.mrna.R2.fastq.gz",
+        "ID": "hg004_mom",
+        "SM": "hg004_mom",
+        "LB": "hg004_mom",
+        "PU": "HMMWMDSX2.4",
+        "PL": "Illumina"
+    }
+}
