@@ -4,4 +4,10 @@ repository for code associated with the SCC-aware alignment tutorial paper (Plai
 
 # Config file generation
 
-To check that the config is formatted properly, we suggest using a json validator tool, such as https://jsonlint.com/ 
+Add your working directory path to the JSON file, e.g. using sed
+
+```
+sed -i 's/\~/\/scratch\/working_dir/g' SCC-analysis_config.json
+```
+
+To check that the config is formatted properly, we suggest using a JSON validator tool, such as https://jsonlint.com/ 
