@@ -19,7 +19,7 @@ docker pull
 singularity pull
 ```
 
-# Config file generation
+# Snakemake config file generation
 
 Add your working directory path to the JSON file, e.g. using sed (note the use of "\\" prior to symbols is necessary for literal interpretation)
 
