@@ -41,7 +41,11 @@ To check that the config is formatted properly, we suggest using a JSON validato
 
 1. Sex chromosome complement check (SCC_check)
 
+In this module, we use whole genome resequencing (WGS) data mapped to a Y PARs-masked reference genome to identify evidence of a Y chromosome in the sequence reads. This information can be used to validate reported sex of the sample metadata or as an independent investigation into the individuals' genotype. We acknowledge that previous iterations of this read mapping depth approach were computationally intensive and were (somewhat justifiably) avoided. This pipeline attempt to bypass these limitations by subsampling the WGS data to 1X coverage prior to alignment to significantly reduce runtime. However, this subsampling restricts the inferential power of the analysis to simply ask, "Are Y chromosome reads present in the sequence data?". If additional information is needed to be inferred from the data (e.g. investigating X chromosome copy number (CN)), you should not use this workflow as it is not suited for this purpose.
+
 2. Sex chromosome complement-aware variant calling (SCC-aware_Variant Calling)
+
+In this module, we use whole genome resequencing (WGS) data to impute variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from modeule 1, or sex reported in sample metadata, to assign the appropriate reference genome and downstream gentyping criteria for each sample. In short, we map WGS reads using bwa/minimap2 and calculate variants considering the biologically relevant ploidy levels across the genome using GATK.
 
 3. SCC-aware gene expression analyses (gene_quantification_RNAseq) 
 
