@@ -4,7 +4,7 @@ repository for code associated with the SCC-aware alignment tutorial paper (Plai
 
 # Config file generation
 
-Add your working directory path to the JSON file, e.g. using sed (note the use of "\\" prior to symbols are necessary)
+Add your working directory path to the JSON file, e.g. using sed (note the use of "\\" prior to symbols is necessary for literal interpretation)
 
 ```
 sed -i 's/\~/\/scratch\/working_dir/g' SCC-analysis_config.json
