@@ -36,3 +36,12 @@ cat SCC-analysis_info.json SCC-analysis_samples.json > SCC-analysis_config.json
 ```
 
 To check that the config is formatted properly, we suggest using a JSON validator tool, such as https://jsonlint.com/ 
+
+# Overview of the three SCC-informed analysis modules
+
+1. Sex chromosome complement check (SCC_check)
+
+2. Sex chromosome complement-aware variant calling (SCC-aware_Variant Calling)
+
+3. SCC-aware gene expression analyses (gene_quantification_RNAseq) 
+
