@@ -4,7 +4,10 @@ This repository hosts a walkthrough, or tutorial, of pipelines and code from Pla
 
 # Installing the conda evironment for analysis
 
-We suggest using ```mamba``` (https://github.com/mamba-org/mamba) is install, but can also be done by replacing ```mamba``` with ```conda```
+Start by cloning the repository to your working directory,
+``` git clone ```
+
+We suggest using ```mamba``` (https://github.com/mamba-org/mamba) to install the environment quickly, but can also be done by replacing ```mamba``` with ```conda``` in the folowing line:
 ```
 mamba env create --name SCCalign_v3 --file=SCCalign/SCCalign_v3.yml 
 ```
