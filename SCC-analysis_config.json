@@ -48,7 +48,7 @@
 	"haploid_AN": "2.0",
 	"haploid_MQ": "10.0",
 	"haploid_QD": "4.0",
-	"haploid_DP1": "5.0.0",
+	"haploid_DP1": "5.0",
 	"haploid_DP2": "500.0",
 
 	"COMMENT_SAMPLE_INFO_MAIN": "All samples to be analyzed as listed in their fastq prefixes.",
