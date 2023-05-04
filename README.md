@@ -2,6 +2,11 @@
 repository for code associated with the SCC-aware alignment tutorial paper (Plaisier et al. 202x)
 
 
+This repository hosts a walkthrough or tutorial of pipelines and code associated with Plaisier et al. 202x, where we show how to efficiently account for sex chromosomes in common human genomic analyses (sample sex chromosome complement checking (SCC_check), read alignment and variant calling (SCC-aware_VariantCalling), differential expression analyses (gene_quantification_RNAseq). This tutorial uses ```snakemake``` as a workflow manager to streamline and parallelize these processes. At a minimum, we recommend using the provided conda environment ```SCCalign_v3.yml``` to run these analyses. We also provide this working environment and associated data files in a docker computing enviroment (https://www.docker.com) and provide information to adapt this for singularity (https://sylabs.io/docs) for individuals that don't possess root priviledges on their respective computing ecosystem.
+
+
+
+
 # Config file generation
 
 Add your working directory path to the JSON file, e.g. using sed (note the use of "\\" prior to symbols is necessary for literal interpretation)
