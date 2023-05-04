@@ -2,11 +2,21 @@
 
 This repository hosts a walkthrough, or tutorial, of pipelines and code from Plaisier et al. 202x, where we show how to effectively account for sex chromosomes in common human genomic analyses (sample sex chromosome complement checking (SCC_check), read alignment and variant calling (SCC-aware_VariantCalling), differential expression analyses (gene_quantification_RNAseq). This tutorial uses ```snakemake``` as a workflow manager to streamline and parallelize these processes. At a minimum, we recommend using the provided conda environment ```SCCalign_v3.yml``` to run these analyses. We also provide this working environment and associated data files in a docker computing enviroment (https://www.docker.com) and provide information to adapt this for singularity (https://sylabs.io/docs) for individuals that don't possess root priviledges on their respective computing ecosystem.
 
-# Installing conda evironment
+# Installing the conda evironment for analysis
 
 We suggest using ```mamba``` (https://github.com/mamba-org/mamba) is install, but can also be done by replacing ```mamba``` with ```conda```
 ```
 mamba env create --name SCCalign_v3 --file=SCCalign/SCCalign_v3.yml 
+```
+
+# Installing the docker or singularity images
+
+```
+docker pull
+```
+
+```
+singularity pull
 ```
 
 # Config file generation
