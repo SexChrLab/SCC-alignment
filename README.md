@@ -18,34 +18,26 @@ mamba env create --name SCCalign_v3 --file=SCCalign/SCCalign_v3.yml
 # Installing the docker or singularity images
 
 ```
-docker pull
+docker pull sbplaisier/omics:1.3
 ```
 
 ```
-singularity pull
+singularity pull -F SCC_analysis.sif  docker://sbplaisier/omics:1.3
 ```
 
 # Snakemake config file generation
 
-Add your working directory path to the JSON file, e.g. using sed (note the use of "\\" prior to symbols is necessary for literal interpretation)
-
-```
-sed -i 's/\~/\/scratch\/working_dir/g' SCC-analysis_info.json
-python [updated] generate_json_config_addreadgroups.py 
-cat SCC-analysis_info.json SCC-analysis_samples.json > SCC-analysis_config.json
-```
-
-To check that the config is formatted properly, we suggest using a JSON validator tool, such as https://jsonlint.com/ 
+We have provided scripts to create a custom configuration file in JSON format (see `custom_config`).
 
 # Overview of the three SCC-informed analysis modules
 
-1. Sex chromosome complement check (SCC_check)
+1. Sex chromosome complement check (`SCC_check`)
 
 In this module, we use whole genome resequencing (WGS) data mapped to a Y PARs-masked reference genome to identify evidence of a Y chromosome in the sequence reads. This information can be used to validate reported sex of the sample metadata or as an independent investigation into the individuals' genotype. We acknowledge that previous iterations of this read mapping depth approach were computationally intensive and were (somewhat justifiably) avoided. This pipeline attempt to bypass these limitations by subsampling the WGS data to 1X coverage prior to alignment to significantly reduce runtime. However, this subsampling restricts the inferential power of the analysis to simply ask, "Are Y chromosome reads present in the sequence data?". If additional information is needed to be inferred from the data (e.g. investigating X chromosome copy number (CN)), you should not use this workflow as it is not suited for this purpose.
 
-2. Sex chromosome complement-aware variant calling (SCC-aware_Variant Calling)
+2. Sex chromosome complement-aware variant calling (`SCC-aware_Variant Calling`)
 
-In this module, we use whole genome resequencing (WGS) data to impute variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from modeule 1, or sex reported in sample metadata, to assign the appropriate reference genome and downstream gentyping criteria for each sample. In short, we map WGS reads using bwa/minimap2 and calculate variants considering the biologically relevant ploidy levels across the genome using GATK.
+In this module, we use whole genome resequencing (`WGS`) data to impute variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from modeule 1, or sex reported in sample metadata, to assign the appropriate reference genome and downstream gentyping criteria for each sample. In short, we map WGS reads using bwa/minimap2 and calculate variants considering the biologically relevant ploidy levels across the genome using GATK.
 
 3. SCC-aware gene expression analyses (gene_quantification_RNAseq) 
 
