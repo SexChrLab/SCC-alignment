@@ -17,6 +17,7 @@ Steps for running the pipeline:
 4) Samples with Y chromosome: (in `Y_samples` entry in DNA config JSON)
 a) Test Snakemake pipeline: `snakemake -np -s Snakefile_XY_SNPs.snakefile`
 b) Run Snakemake pipeline: `snakemake -s Snakefile_XY_SNPs.snakefile`
+
 5) Samples without Y chromosome: (in `X_samples` entry in DNA config JSON)
 a) Test Snakemake pipeline: `snakemake -np -s Snakefile_XX_SNPs.snakefile`
 b) Run Snakemake pipeline: `snakemake -s Snakefile_XX_SNPs.snakefile`
