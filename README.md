@@ -17,6 +17,8 @@ mamba env create --name SCCalign_v3 --file=SCCalign/SCCalign_v3.yml
 
 # Installing the docker or singularity images
 
+We have provided sex chromosome complement references from CHM13 version 2 (telomere-to-telomere) and HG38 (GRCh38) in the /references directory in a docker container: 
+
 ```
 docker pull sbplaisier/omics:1.3
 ```
@@ -25,9 +27,11 @@ docker pull sbplaisier/omics:1.3
 singularity pull -F SCC_analysis.sif  docker://sbplaisier/omics:1.3
 ```
 
+Once you attach a volume/bound directory, you can set the paths in your config to /reference.  Because the reference genomes are included inside the Docker, it is quite large to download (~25 GB).
+
 # Snakemake config file generation
 
-We have provided scripts to create a custom configuration file in JSON format (see `custom_config`).
+We have provided scripts to create a custom configuration file in JSON format (see `custom_config`).  You will need specific configs for DNA analysis and RNA analysis.
 
 # Overview of the three SCC-informed analysis modules
 
@@ -37,7 +41,8 @@ In this module, we use whole genome resequencing (WGS) data mapped to a Y PARs-m
 
 2. Sex chromosome complement-aware variant calling (`SCC-aware_Variant Calling`)
 
-In this module, we use whole genome resequencing (`WGS`) data to impute variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from modeule 1, or sex reported in sample metadata, to assign the appropriate reference genome and downstream gentyping criteria for each sample. In short, we map WGS reads using bwa/minimap2 and calculate variants considering the biologically relevant ploidy levels across the genome using GATK.
+In this module, we use whole genome sequencing (`WGS`) data to impute variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from module 1, or sex reported in sample metadata, to assign the appropriate reference genome and downstream gentyping criteria for each sample. In short, we map WGS reads using bwa/minimap2 and calculate variants considering the biologically relevant ploidy levels across the genome using GATK.
 
 3. SCC-aware gene expression analyses (gene_quantification_RNAseq) 
 
+In this module, we use HISAT2 aligner with a gene quantification algorithm (featureCounts) or Salmon pseudoaligner to quantify the expression of genes in samples assayed with RNA sequencing.  
