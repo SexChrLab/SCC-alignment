@@ -8,7 +8,38 @@ Minimum: 4 available threads; Recommended: >12 threads.
 
 Minimum: ~16Gb RAM; Recommended: >24Gb RAM.
 
-# Walkthrough
+# Running the workflow
+
+Steps for running the pipeline: 
+1) Created a config JSON for your DNA samples (see `custom_config`) 
+2) Activate the conda environment (see main `SCC-alignment` page)
+3) Open `.snakefile` files in a text editor and make sure that the name of your config JSON is set correctly
+4) Samples with Y chromosome: (in `Y_samples` entry in DNA config JSON)
+a) Test Snakemake pipeline: `snakemake -np -s Snakefile_XY_SNPs.snakefile`
+b) Run Snakemake pipeline: `snakemake -s Snakefile_XY_SNPs.snakefile`
+5) Samples without Y chromosome: (in `X_samples` entry in DNA config JSON)
+a) Test Snakemake pipeline: `snakemake -np -s Snakefile_XX_SNPs.snakefile`
+b) Run Snakemake pipeline: `snakemake -s Snakefile_XX_SNPs.snakefile`
+
+Example of how to run on a high performance cluster using slurm workflow manager: 
+```
+#!/bin/bash
+#SBATCH --job-name=testSC  # Job name
+#SBATCH -o slurm.%j.out                # STDOUT (%j = JobId)
+#SBATCH -e slurm.%j.err                # STDERR (%j = JobId)
+#SBATCH --mail-type=ALL           # notifications for job done & fail
+#SBATCH --mail-user=splaisie@asu.edu # send-to address
+#SBATCH -t 4-00:00
+#SBATCH -p serial
+#SBATCH -n 2
+
+source activate SCCalign_v3
+snakemake -s Snakefile_XX_SNPs.snakefile -j 100 --rerun-incomplete --latency-wait=60 --cluster "sbatch -n 2 -p serial --mem=50G --mail-type=FAIL --mail-user=splaisie@asu.edu"
+snakemake -s Snakefile_XY_SNPs.snakefile -j 100 --rerun-incomplete --latency-wait=60 --cluster "sbatch -n 2 -p serial --mem=50G --mail-type=FAIL --mail-user=splaisie@asu.edu"
+
+```
+
+6) Output vcfs will be populated in subdirectories
 
 
 
