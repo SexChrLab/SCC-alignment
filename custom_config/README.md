@@ -10,7 +10,7 @@ For DNA sequencing samples or RNA sequencing samples, separately:
 
 # Sample info table file
 
-As shown in the examples RNA_samples.csv and DNA_samples.csv, to run the custom config scripts, you must generate a comma separated file with no headers wherein each row contains: 
+As in the provide example files `RNA_samples.csv` and `DNA_samples.csv`, to run the custom config scripts, you must generate a comma separated file with no headers wherein each row contains: 
 
 1) Sample ID:  a string used to identify a specific sample
 2) Forward read fastq file: name of the file containing the forward reads for the sample
@@ -38,7 +38,16 @@ To run `generate_custom_json_DNA.py`:
 
 Once these have been indicated, run `python generate_custom_json_DNA.py` on a terminal where python is installed (such as when the provided conda environment SCCalign_v3 is activated).
 
-After this script is executed, open your output JSON in a text editor.  You should see something like the provided file `DNA_samples.config.json`.  Double check that the elements that have been filled in are correct and edit the paths to point to your own paths.
+After this script is executed, open your output JSON in a text editor.  The output is in JSON format, which is essentially a text representation of a dictionary in Python, that will be used to indicate important information needed for SCC aware DNA analyses.  You should see something like the provided example file `DNA_samples.config.json`.  Some fields will be filled in using by the script reading information from the sequencing files, others will have to be filled in by hand to reflect the specifics of your own system.
+
+To complete your DNA config JSON: 
+1) Double check that the elements that have been filled in are correct
+2) Edit the paths to references point to your own paths for reference files
+3) The field `Y_samples` should have samples that contain a Y chromosomes and `X_samples` should have samples that do not have a Y chromosome
+a) It's best to copy from the `ALL_samples` field to avoid typos
+b) These fields will be read when doing variant calling analysis so that alignment can be done with the appropriate SCC reference
+c) If you are using this script to generate a config json before doing an SCC check, you can leave these blank and fill them in after the SCC check is complete
+4) Fill in the path to your sequencing files
 
 # RNA
 
@@ -55,4 +64,12 @@ To run `generate_custom_json_RNA.py`:
 
 Once these have been indicated, run `python generate_custom_json_RNA.py` on a terminal where python is installed (such as when the provided conda environment SCCalign_v3 is activated).
 
-After this script is executed, open your output JSON in a text editor.  You should see something like the provided file `RNA_samples.config.json`.  Double check that the elements that have been filled in are correct and edit the paths to point to your own paths.
+After this script is executed, open your output JSON in a text editor.  You should see something like the provided file `RNA_samples.config.json`.  Some fields will be filled in using by the script reading information from the sequencing files, others will have to be filled in by hand to reflect the specifics of your own system.
+
+To complete your RNA config JSON: 
+1) Double check that the elements that have been filled in are correct
+2) Edit the paths to HISAT2 or Salmon indexed references to point to your own paths for reference files
+3) The field `Y_samples` should have samples that contain a Y chromosomes and `X_samples` should have samples that do not have a Y chromosome
+a) It's best to copy from the `ALL_samples` field to avoid typos
+4) Fill in the path to your sequencing files
+5) Fill in the options for HISAT2 or Salmon analysis (check the manuals for these programs for descriptions of these options)
