@@ -1,11 +1,58 @@
 # Custom Config JSON
 
-These scripts can be used to help you to generate custom config JSONs to hold the required information to run sex chromosome complement (SCC) methods on your sequencing data.
+These scripts can be used to help you to generate custom config JSONs to hold the required information to run sex chromosome complement (SCC) methods on your sequencing data.  These scripts take a table of sample IDs with the sequencing files associated with those samples as input and produces a config json containing sample information and place holders for other variables used in the sex chromosome complement aware alignment protocols.  It is intended to have a separate config for DNA based analyses (sex chromosome complement (SCC) check and variant calling) and RNA based analysis (gene quantification).
+
+# Steps
+
+For DNA sequencing samples or RNA sequencing samples, separately:
+1) Create sample info table csv
+2) Run generate config script
+
+# Sample info table file
+
+As shown in the examples RNA_samples.csv and DNA_samples.csv, to run the custom config scripts, you must generate a comma separated file with no headers wherein each row contains: 
+
+1) Sample ID:  a string used to identify a specific sample
+2) Forward read fastq file: name of the file containing the forward reads for the sample
+3) Reverse read fastq file: name of the file containing the reverse reads for the sample
+
+You will specify the directory these fastq files are found in when you run the script to generate the custom config JSON (below).  When entering fields 2 and 3 in the lines, you can specify any subdirectory structure.  That is, for example, if all files are in `/data/rnaseq/files/` but the sequencing files are in subdirectories inside that main directory, you can enter `/subdir1/sample1_R1.fastq.gz` and `/subdir1/sample1_R2.fastq.gz`, you can enter the following row into your input table csv: 
+
+`sample1,/subdir1/sample1_R1.fastq.gz,/subdir1/sample1_R1.fastq.gz`
+ 
+And indicate `/data/rnaseq/files/` as the directory of the sequencing files in the next step (below).
 
 # DNA
 
-The generate_custom_json_DNA.py script contains information needed to make a config JSON for SCC check with DNA sequencing data and for variant calling.
+For DNA analyses (SCC check and variant calling), create sample info table (comma separate values CSV) for your DNA sequencing samples.
+
+The `generate_custom_json_DNA.py` Python script contains information needed to make a config JSON for SCC check with DNA sequencing data and for variant calling.
+
+To run `generate_custom_json_DNA.py`:
+1) open the script with a text editor
+2) change the `all_sample_ids` variable on line 9 to include the name of your sample input table file csv
+3) change the `inferred_SCC` variable on line 10 to the path to the output of SCC_check if you have already run it so that inferred SCC can be used to populate the samples with and without a Y chromosome for appropriate reference genome selection. Indicate an empty string if you have not done this step.
+4) change the `out_config_json` variable on line 11 to the path to which your output JSON will be written.
+5) change the `input_directory` variable to the directory containing your sequencing files (see above)
+6) save changes to your script
+
+Once these have been indicated, run `python generate_custom_json_DNA.py` on a terminal where python is installed (such as when the provided conda environment SCCalign_v3 is activated).
+
+After this script is executed, open your output JSON in a text editor.  You should see something like the provided file `DNA_samples.config.json`.  Double check that the elements that have been filled in are correct and edit the paths to point to your own paths.
 
 # RNA
 
-The generate_custom_json_RNA.py script contains information needed to make a config JSON for RNA sequencing data for gene quantitation.
+For RNA sequencing analyses (alignment and gene quantification), create sample info table (comma separate values CSV) for your RNA sequencing samples.
+
+The `generate_custom_json_RNA.py` script contains information needed to make a config JSON for RNA sequencing data for gene quantitation, including referneces for hisat2 or salmon.  
+
+To run `generate_custom_json_RNA.py`:
+1) open the script with a text editor
+2) change the `all_sample_ids` variable on line 9 to include the name of your sample input table file csv
+3) change the `out_config_json` variable on line 11 to the path to which your output JSON will be written.
+4) change the `input_directory` variable to the directory containing your sequencing files (see above)
+5) save changes to your script
+
+Once these have been indicated, run `python generate_custom_json_RNA.py` on a terminal where python is installed (such as when the provided conda environment SCCalign_v3 is activated).
+
+After this script is executed, open your output JSON in a text editor.  You should see something like the provided file `RNA_samples.config.json`.  Double check that the elements that have been filled in are correct and edit the paths to point to your own paths.
