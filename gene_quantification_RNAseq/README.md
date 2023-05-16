@@ -17,6 +17,18 @@ a) full alignment with gene counts (reads mapping to each genes coordinates as a
 b) pseudoalignment and quantification with sex chromosome complement reference transcriptome [short run time]
 3) Use Snakemake in conda environment `SCCalign_v3` to run the provided Snakemake workflow for your desired method (examples provided in `run_*.sbatch`)
 
+# Test data
+
+In the development of this tutorial we used RNA sequencing files collected by the Genome in a Bottle project with NIST. You can download these files for testing and development purposes. 
+
+Male sample: 
+https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg004_gm24143.mrna.R1.fastq.gz
+https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg004_gm24143.mrna.R2.fastq.gz
+
+Female sample: 
+https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg002_gm24385.mrna.R1.fastq.gz
+https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg002_gm24385.mrna.R2.fastq.gz
+
 # Generating a configuration JSON
 
 The Python script `generate_json_config_addreadgroups.py` can be used to generate the sample information elements of a configuration JSON (see example RNAseq_samples.json).  To use this script, open it in an editor and change the variables under the comment `"Specifying inputs:"`.  The `all_sample_ids` variable should be set to a comma separated file that contains the sample ID, forward read fastq file, and reverse read fastq file (example provided in `samples.csv`).  If the files are in subfolders, include that in the path to the file.  The `out_config_json` variable should be set to the desired name of the output JSON to be generated.  The `input_directory` should be set to the directory containing the read sequence files (fastq/fastq.gz).  Thus, later in the workflow, the full path to the sequence files will be the `input_directory` variable contents concatenated to the path to the read_file.  Once these variables have been set, run the python script and check the output.  You should see a list of all the samples IDs in an entry called `ALL_samples` and then each sample will have a entry that contains the path information for the sequence files, ID, and read groups.  
