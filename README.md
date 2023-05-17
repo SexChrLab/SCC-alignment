@@ -46,3 +46,14 @@ In this module, we use whole genome sequencing (`WGS`) data to impute variants a
 3. SCC-aware gene expression analyses (gene_quantification_RNAseq) 
 
 In this module, we use HISAT2 aligner with a gene quantification algorithm (featureCounts) or Salmon pseudoaligner to quantify the expression of genes in samples assayed with RNA sequencing.  
+
+# Additional resources
+
+Our workflows are implemented in Snakemake, a workflow management tool for Python.  
+
+For more information on programming in Python: 
+https://www.python.org/
+
+For more information on Snakemake workflows: 
+https://snakemake.readthedocs.io/en/stable/
+
