@@ -10,7 +10,8 @@ Minimum: ~16Gb RAM; Recommended: >24Gb RAM.
 
 # Test data
 
-For testing and development, we used whole genome sequencing data from the Genome in a Bottle project from NIST.  
+For testing and development, we used whole genome sequencing data from the Precision V2 project from Genome in a Bottle project from NIST.
+https://data.nist.gov/od/id/mds2-2336
 
 Male (with Y chromosome) samples: 
 
