@@ -37,11 +37,19 @@ https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG004.novaseq.pcr-
 
 ## Whole exome sequencing data
 
-Whole exome sequencing data for the Genome in a Bottle samples are availble on SRA. 
+Whole exome sequencing data for the Genome in a Bottle samples are availble on SRA (NCBI Sequence Read Archive). 
 
 SRA IDs: 
+```
+SRR2962669 (Ashkenazim son, male (has Y chromosome))
+SRR2962692 (Ashkenazim father, male (has Y chromosome))
+SRR2962694 (Ashkenazim mother, female (has no Y chromosome)
+SRR2962693 (Chinese son, male (has Y chromosome)) 
+SRR14724507 (Chinese father, male (has Y chromosome))
+SRR14724506 (Chinese mother, female (has no Y chromosome))
+```
+To download the data from these entries, you will need to use the SRA Toolkit: 
 
-To download the data from these entries, you will need to use the SRA tool kit: 
 https://github.com/ncbi/sra-tools/wiki/
 
 1) download the appropriate build for your system (see '01. Downloading SRA Toolkit' menu)
@@ -49,13 +57,15 @@ https://github.com/ncbi/sra-tools/wiki/
 ```
 vdb-config -i
 ```
+
 3) use Download on Demand feature to get the data from SRA and convert to fastq (see 'Download on Demand' menu)
 
 ```
 prefetch <SRA_ID>
 cache-mgr --clear
-fastq-dump SRR000001
+fastq-dump <SRA_ID>
 ```
+
 # Running the workflow
 
 Steps for running the pipeline: 
