@@ -10,6 +10,7 @@ Minimum: ~16Gb RAM; Recommended: >24Gb RAM.
 
 # Test data
 
+## Whole Genome Sequencing data
 For testing and development, we used whole genome sequencing data from the Precision V2 project from Genome in a Bottle project from NIST.
 https://data.nist.gov/od/id/mds2-2336
 
@@ -34,7 +35,27 @@ https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG004.novaseq.pcr-
 
 <TO-DO: need to add one more female>
 
+## Whole exome sequencing data
 
+Whole exome sequencing data for the Genome in a Bottle samples are availble on SRA. 
+
+SRA IDs: 
+
+To download the data from these entries, you will need to use the SRA tool kit: 
+https://github.com/ncbi/sra-tools/wiki/
+
+1) download the appropriate build for your system (see '01. Downloading SRA Toolkit' menu)
+2) configure your download directories (see 'Quick Toolkit Configuration' menu)
+```
+vdb-config -i
+```
+3) use Download on Demand feature to get the data from SRA and convert to fastq (see 'Download on Demand' menu)
+
+```
+prefetch <SRA_ID>
+cache-mgr --clear
+fastq-dump SRR000001
+```
 # Running the workflow
 
 Steps for running the pipeline: 
