@@ -57,3 +57,13 @@ https://www.python.org/
 For more information on Snakemake workflows: 
 https://snakemake.readthedocs.io/en/stable/
 
+We have created a workspace with all the required software and the references in Docker.
+
+For more information about Docker containers: 
+https://docs.docker.com/
+
+If you are working in a high performance computing cluster that does not allow use of Docker but instead allows the use of Singularity containers, you can create a Singularity container from a Docker image. 
+
+For more information about Singularity (see 'Singularity and Docker' section): 
+https://docs.sylabs.io/guides/3.5/user-guide/introduction.html
+
