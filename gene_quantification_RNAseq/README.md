@@ -41,3 +41,15 @@ b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_salmon.snakefile
 c) Example of how to run on a high performance cluster using slurm workflow manager given in `run_preprocessing_salmon.sbatch`
 d) Quantification results for each sample given in 'quantified_rna` directory
 
+# Citations
+
+Hisat2 RNA sequencing alignment algorithm: 
+Kim D, Paggi JM, Park C, Bennett C, Salzberg SL. Graph-based genome alignment and genotyping with HISAT2 and HISAT-genotype. Nat Biotechnol. 2019 Aug;37(8):907-915. doi: 10.1038/s41587-019-0201-4. Epub 2019 Aug 2. PMID: 31375807; PMCID: PMC7605509.
+
+featureCounts gene quantification algorithm from the subread package:
+Liao Y, Smyth GK, Shi W. featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. Bioinformatics. 2014 Apr 1;30(7):923-30. doi: 10.1093/bioinformatics/btt656. Epub 2013 Nov 13. PMID: 24227677.
+
+Salmon RNA sequencing pseudoaligner and gene quantification algorithm:
+Patro R, Duggal G, Love MI, Irizarry RA, Kingsford C. Salmon provides fast and bias-aware quantification of transcript expression. Nat Methods. 2017 Apr;14(4):417-419. doi: 10.1038/nmeth.4197. Epub 2017 Mar 6. PMID: 28263959; PMCID: PMC5600148.
+
+Olney KC, Plaisier SB, Phung TN, Silasi M, Perley L, O'Bryan J, Ramirez L, Kliman HJ, Wilson MA. Sex differences in early and term placenta are conserved in adult tissues. Biol Sex Differ. 2022 Dec 22;13(1):74. doi: 10.1186/s13293-022-00470-y. PMID: 36550527; PMCID: PMC9773522.
