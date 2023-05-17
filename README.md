@@ -124,7 +124,7 @@ If you are working in a high performance computing cluster that does not allow u
 
 ```
 singularity pull -F SCC_analysis.sif  docker://sbplaisier/omics:1.3
-singularity singularity shell -B /path/to/local/directory/:/data SCC_analysis.sif
+singularity shell -B /path/to/local/directory/:/data SCC_analysis.sif
 ```
 
 For more information about Singularity (see 'Singularity and Docker' section): 
