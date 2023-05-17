@@ -118,6 +118,7 @@ Once you attach a volume/bound directory, you can set the reference paths in you
 The environment that is activated when you first start the Docker container is the `gatk` environment.  To add the other packages, update this with the environment yml provided in the repository
 ```
 conda env update -f /data/SCCalign_v3.yml --prune
+conda activate SCCalign_v3
 ```
 
 If you are working in a high performance computing cluster that does not allow use of Docker but instead allows the use of Singularity containers, you can create a Singularity container from a Docker image and run the above steps within the Singularity container 
