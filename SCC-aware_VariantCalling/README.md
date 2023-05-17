@@ -8,6 +8,32 @@ Minimum: 4 available threads; Recommended: >12 threads.
 
 Minimum: ~16Gb RAM; Recommended: >24Gb RAM.
 
+# Test data
+
+For testing and development, we used whole genome sequencing data from the Genome in a Bottle project from NIST.  
+
+Male (with Y chromosome) samples: 
+
+HG002 (Ashkenazim son):
+https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG002.novaseq.pcr-free.35x.R1.fastq.gz
+
+https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG002.novaseq.pcr-free.35x.R2.fastq.gz
+
+HG003 (Ashkenazim father): 
+https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG003.novaseq.pcr-free.35x.R1.fastq.gz
+
+https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG003.novaseq.pcr-free.35x.R2.fastq.gz
+
+Female (without Y chromosome) samples: 
+
+HG004 (Ashkenazim mother):
+https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG004.novaseq.pcr-free.35x.R1.fastq.gz
+
+https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG004.novaseq.pcr-free.35x.R2.fastq.gz
+
+<TO-DO: need to add one more female>
+
+
 # Running the workflow
 
 Steps for running the pipeline: 
