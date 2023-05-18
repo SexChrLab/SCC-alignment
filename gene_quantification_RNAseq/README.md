@@ -27,20 +27,31 @@ https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/r
 # Running the workflow
 
 Steps for running the pipeline: 
+
 1) Created a config JSON for your RNA samples (see `custom_config`) 
+
 2) Activate the conda environment (see main `SCC-alignment` page)
+
 3) Open `.snakefile` file in a text editor corresponding to which alignment procedure you would like to do and make sure that the name of your config JSON is set correctly
 
 4) To do full alignment with `hisat2` and quantify genes with `featureCounts`
+
 a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_hisat2_piped.snakefile`
+
 b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_hisat2_piped.snakefile`
+
 c) Example of how to run on a high performance cluster using slurm workflow manager given in `run_preprocessing_hisat.sbatch`
+
 d) Quantification results for each sample given in `feature_counts_rna` directory
 
 5) To do pseudoalignment and gene quantification with Salmon:
+
 a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_salmon.snakefile`
+
 b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_salmon.snakefile`
+
 c) Example of how to run on a high performance cluster using slurm workflow manager given in `run_preprocessing_salmon.sbatch`
+
 d) Quantification results for each sample given in 'quantified_rna` directory
 
 # Citations
