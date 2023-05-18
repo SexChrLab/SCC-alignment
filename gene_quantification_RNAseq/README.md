@@ -32,8 +32,8 @@ Steps for running the pipeline:
 3) Open `.snakefile` file in a text editor corresponding to which alignment procedure you would like to do and make sure that the name of your config JSON is set correctly
 
 4) To do full alignment with `hisat2` and quantify genes with `featureCounts`
-a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_hisat2.snakefile`
-b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_hisat2.snakefile`
+a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_hisat2_piped.snakefile`
+b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_hisat2_piped.snakefile`
 c) Example of how to run on a high performance cluster using slurm workflow manager given in `run_preprocessing_hisat.sbatch`
 d) Quantification results for each sample given in `feature_counts_rna` directory
 
