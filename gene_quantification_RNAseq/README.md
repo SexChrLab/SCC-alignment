@@ -52,7 +52,7 @@ b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_salmon.snakefile
 
 c) Example of how to run on a high performance cluster using slurm workflow manager given in `run_preprocessing_salmon.sbatch`
 
-d) Quantification results for each sample given in 'quantified_rna` directory
+d) Quantification results for each sample given in `quantified_rna` directory
 
 # Citations
 
