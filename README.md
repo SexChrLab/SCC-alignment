@@ -44,7 +44,7 @@ The samples we will link to are derived from 2 family trios (son, mother, and fa
 
 # Setting up your environment to run SCC aware genomics pipelines
 
-## Clone repository
+### Clone repository
 
 Start by getting a local copy of this Github repository by navigating to a directory you want to work in and issuing the clone command:
 
@@ -53,7 +53,7 @@ cd /path/to/local/directory/
 git clone https://github.com/SexChrLab/SCC-alignment.git 
 ```
 
-## Workflows
+### Workflows
 Our pipelines use Snakemake, a workflow management tool for Python, to streamline and parallelize processes. 
 
 For more information on programming in Python: 
@@ -64,26 +64,30 @@ https://snakemake.readthedocs.io/en/stable/
 
 If you use different workflow management systems or other scripting tools, the `shell` portion of the Snakemake rules can be used as a guide on how to issue commands with the appropriate parameters.
 
-## Required packages/software
-We have assembled all of the required software needed to run our methods into a conda environment (`SCCalign_v3.yml`) which we have activated in a Docker container along with sex chromosome complement versions of the two latest releases of the human reference genome (HG38 and CHM13).  Here we describe how to activate the conda environment on its own in a Linux environment as well as how to run from a Docker container which contains sex chromosome complement reference genomes.  
+### Required packages/software (conda environment)
+We have assembled all of the required software needed to run our methods into a conda environment (exported into `SCCalign_v3.yml`). Here we describe how to activate the conda environment on its own in a Linux environment as well as how to run from a Docker container which contains sex chromosome complement reference genomes.  
 
-For more information on conda package manager: 
+For more information on conda package manager including how to install it in the correct operating system: 
 https://conda.io/projects/conda/en/latest/index.html
 
-If you would like to install/load conda to your local environment and build a conda environment containing the necessary packages for SCC aware analysis: 
+Once you have installed conda to your local environment, you can build a conda environment containing the necessary packages for SCC aware analysis using the 'yml' file we have provided: 
 ```
 conda env create -f /path/to/local/directory/SCC-alignment/SCCalign_v3.yml
 ```
 
-## Docker container
+Once the environment has been created, you can activate it and use all the software used by our workflow: 
+```
+conda activate SCCalign_v3
+```
 
-Docker is a utility that allows you to use, store, and share a runtime environment with all the software installed properly.  
+### Docker container
+
+Docker is a utility that allows you to use, store, and share a runtime environment with all the software installed properly. We have created a Docker image that contains reference genomes used for the SCC analysis modules and import software that will allow you to run the modules. 
 
 For more information about Docker containers: 
 https://docs.docker.com/
 
-
-To obtain a copy of the Docker image to run our SCC aware analysis pipelines, install or load Docker and use the following command from your terminal:
+To obtain a copy of the Docker image to run our SCC aware analysis pipelines and have access SCC reference genomes we built, install Docker and use the following command from your terminal:
 ```
 docker pull sbplaisier/omics:1.3
 ```
@@ -122,7 +126,7 @@ conda env update -f /data/SCCalign_v3.yml --prune
 conda activate SCCalign_v3
 ```
 
-If you are working in a high performance computing cluster that does not allow use of Docker but instead allows the use of Singularity containers, you can create a Singularity container from a Docker image and run the above steps within the Singularity container 
+If you are working in a high performance computing cluster or other environment that does not allow use of Docker but instead allows the use of Singularity containers, you can create a Singularity container from a Docker image and run the above steps within the Singularity container: 
 
 ```
 singularity pull -F SCC_analysis.sif  docker://sbplaisier/omics:1.3
@@ -133,6 +137,7 @@ For more information about Singularity (see 'Singularity and Docker' section):
 https://docs.sylabs.io/guides/3.5/user-guide/introduction.html
 
 Now you should be ready to use `snakemake` to run the analysis workflows and have all the packages within the workflow ready to go!
+
 
 # Citations
 
