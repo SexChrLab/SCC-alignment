@@ -11,60 +11,36 @@ Minimum: ~16Gb RAM; Recommended: >24Gb RAM.
 # Test data
 
 ## Whole Genome Sequencing data
-For testing and development, we used whole genome sequencing data from the Precision V2 project from Genome in a Bottle project from NIST.
-https://data.nist.gov/od/id/mds2-2336
+For testing and development, you can use 40X Novaseq whole genome sequencing data from Genome in a Bottle project from NIST.
+
+https://console.cloud.google.com/storage/browser/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x
 
 Male (with Y chromosome) samples: 
 
-HG002 (Ashkenazim son):
-https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG002.novaseq.pcr-free.35x.R1.fastq.gz
+HG003 (Ashkenazim father):
 
-https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG002.novaseq.pcr-free.35x.R2.fastq.gz
+https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG003.novaseq.pcr-free.40x.R1.fastq.gz?_ga=2.237371716.-57486372.1684265308
 
-HG003 (Ashkenazim father): 
-https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG003.novaseq.pcr-free.35x.R1.fastq.gz
+https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG003.novaseq.pcr-free.40x.R2.fastq.gz?_ga=2.237371716.-57486372.1684265308
 
-https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG003.novaseq.pcr-free.35x.R2.fastq.gz
+HG006 (Chinese father):
+https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG005.novaseq.pcr-free.40x.R1.fastq.gz?_ga=2.203778004.-57486372.1684265308
+
+https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG005.novaseq.pcr-free.40x.R2.fastq.gz?_ga=2.266211275.-57486372.1684265308
 
 Female (without Y chromosome) samples: 
 
 HG004 (Ashkenazim mother):
-https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG004.novaseq.pcr-free.35x.R1.fastq.gz
+https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG004.novaseq.pcr-free.40x.R1.fastq.gz?_ga=2.266211275.-57486372.1684265308
 
-https://data.nist.gov/od/ds/ark:/88434/mds2-2336/input_fastqs/HG004.novaseq.pcr-free.35x.R2.fastq.gz
+https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG004.novaseq.pcr-free.40x.R2.fastq.gz?_ga=2.266211275.-57486372.1684265308
+HG007 (Chinese mother):
 
-<TO-DO: need to add one more female>
 
-## Whole exome sequencing data
+HG007 (Chinese mother):
+https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG007.novaseq.pcr-free.40x.R1.fastq.gz?_ga=2.266211275.-57486372.1684265308
 
-Whole exome sequencing data for the Genome in a Bottle samples are availble on SRA (NCBI Sequence Read Archive). 
-
-SRA IDs: 
-```
-SRR2962669 (Ashkenazim son, male (has Y chromosome))
-SRR2962692 (Ashkenazim father, male (has Y chromosome))
-SRR2962694 (Ashkenazim mother, female (has no Y chromosome)
-SRR2962693 (Chinese son, male (has Y chromosome)) 
-SRR14724507 (Chinese father, male (has Y chromosome))
-SRR14724506 (Chinese mother, female (has no Y chromosome))
-```
-To download the data from these entries, you will need to use the SRA Toolkit: 
-
-https://github.com/ncbi/sra-tools/wiki/
-
-1) download the appropriate build for your system (see '01. Downloading SRA Toolkit' menu)
-2) configure your download directories (see 'Quick Toolkit Configuration' menu)
-```
-vdb-config -i
-```
-
-3) use Download on Demand feature to get the data from SRA and convert to fastq (see 'Download on Demand' menu)
-
-```
-prefetch <SRA_ID>
-cache-mgr --clear
-fastq-dump <SRA_ID>
-```
+https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG007.novaseq.pcr-free.40x.R2.fastq.gz?_ga=2.229190616.-57486372.1684265308
 
 # Running the workflow
 
@@ -99,21 +75,6 @@ snakemake -s Snakefile_XY_SNPs.snakefile -j 100 --rerun-incomplete --latency-wai
 ```
 
 6) Output vcfs will be populated in subdirectories
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Citations 
 If you use this code in your work, please cite its source and tools:
