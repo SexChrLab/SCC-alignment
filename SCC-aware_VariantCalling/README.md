@@ -17,11 +17,13 @@ https://console.cloud.google.com/storage/browser/brain-genomics-public/research/
 
 Male (with Y chromosome) samples: 
 
+
 HG003 (Ashkenazim father):
 
 https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG003.novaseq.pcr-free.40x.R1.fastq.gz?_ga=2.237371716.-57486372.1684265308
 
 https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG003.novaseq.pcr-free.40x.R2.fastq.gz?_ga=2.237371716.-57486372.1684265308
+
 
 HG006 (Chinese father):
 https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG005.novaseq.pcr-free.40x.R1.fastq.gz?_ga=2.203778004.-57486372.1684265308
@@ -30,14 +32,16 @@ https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq
 
 Female (without Y chromosome) samples: 
 
+
 HG004 (Ashkenazim mother):
+
 https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG004.novaseq.pcr-free.40x.R1.fastq.gz?_ga=2.266211275.-57486372.1684265308
 
 https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG004.novaseq.pcr-free.40x.R2.fastq.gz?_ga=2.266211275.-57486372.1684265308
-HG007 (Chinese mother):
 
 
 HG007 (Chinese mother):
+
 https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG007.novaseq.pcr-free.40x.R1.fastq.gz?_ga=2.266211275.-57486372.1684265308
 
 https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG007.novaseq.pcr-free.40x.R2.fastq.gz?_ga=2.229190616.-57486372.1684265308
