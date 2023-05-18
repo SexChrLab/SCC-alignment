@@ -2,7 +2,7 @@ To do: Add threads and read orientation to config, softcode threads in snakefile
 
 # Overall Description
 
-These Snakemake workflows are for sex chromosome complement informed gene quantification for short read, paired end RNA sequencing data.  For each sample, the sex is used to determine which sex chromosome complement version of the reference genome is used for alignment/pseudoalignment.  For females (XX, no Y chromosome),  we use the reference genome with chromosome Y hard masked.  For males (XY, with a Y chromosome), we use the reference genome with the pseudoautosomal regions (PARs) hard masked on chromosome Y.  There are separate Snakemake pipelines for doing a alignment (hisat2) with gene quantification (featureCounts) or doing pseudoalignment and quantification (salmon) which is much faster.  A JSON file is used to hold all the file information; a script that can be used to generate the sample specific information is provided.  
+These Snakemake workflows are for sex chromosome complement informed gene quantification for short read, paired end RNA sequencing data.  For each sample, the sex is used to determine which sex chromosome complement version of the reference genome is used for alignment/pseudoalignment.  For females (XX, no Y chromosome),  we use the reference genome with chromosome Y hard masked.  For males (XY, with a Y chromosome), we use the reference genome with the pseudoautosomal regions (PARs) hard masked on chromosome Y.  There are separate Snakemake pipelines for doing a alignment (`hisat2`) with gene quantification (`featureCounts`) or doing pseudoalignment and quantification (`salmon`) which is much faster.  A JSON file is used to hold all the file information; a script that can be used to generate the sample specific information is provided (see `custom_config`).  
 
 # Alignment and gene quantification
 
@@ -29,12 +29,14 @@ https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/r
 Steps for running the pipeline: 
 1) Created a config JSON for your RNA samples (see `custom_config`) 
 2) Activate the conda environment (see main `SCC-alignment` page)
-3) Open `.snakefile` files in a text editor and make sure that the name of your config JSON is set correctly
+3) Open `.snakefile` file in a text editor corresponding to which alignment procedure you would like to do and make sure that the name of your config JSON is set correctly
+
 4) To do full alignment with `hisat2` and quantify genes with `featureCounts`
 a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_hisat2.snakefile`
 b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_hisat2.snakefile`
 c) Example of how to run on a high performance cluster using slurm workflow manager given in `run_preprocessing_hisat.sbatch`
 d) Quantification results for each sample given in `feature_counts_rna` directory
+
 5) To do pseudoalignment and gene quantification with Salmon:
 a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_salmon.snakefile`
 b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_salmon.snakefile`
@@ -43,14 +45,14 @@ d) Quantification results for each sample given in 'quantified_rna` directory
 
 # Citations
 
-Hisat2 RNA sequencing alignment algorithm: 
+`Hisat2` RNA sequencing alignment algorithm: 
 
 Kim D, Paggi JM, Park C, Bennett C, Salzberg SL. Graph-based genome alignment and genotyping with HISAT2 and HISAT-genotype. Nat Biotechnol. 2019 Aug;37(8):907-915. doi: 10.1038/s41587-019-0201-4. Epub 2019 Aug 2. PMID: 31375807; PMCID: PMC7605509.
 
-featureCounts gene quantification algorithm from the subread package:
+`featureCounts` gene quantification algorithm from the `subread` package:
 
 Liao Y, Smyth GK, Shi W. featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. Bioinformatics. 2014 Apr 1;30(7):923-30. doi: 10.1093/bioinformatics/btt656. Epub 2013 Nov 13. PMID: 24227677.
 
-Salmon RNA sequencing pseudoaligner and gene quantification algorithm:
+`Salmon` RNA sequencing pseudoaligner and gene quantification algorithm:
 
 Patro R, Duggal G, Love MI, Irizarry RA, Kingsford C. Salmon provides fast and bias-aware quantification of transcript expression. Nat Methods. 2017 Apr;14(4):417-419. doi: 10.1038/nmeth.4197. Epub 2017 Mar 6. PMID: 28263959; PMCID: PMC5600148.
