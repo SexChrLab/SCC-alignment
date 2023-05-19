@@ -85,10 +85,6 @@ snakemake -s Snakefile_XY_SNPs.snakefile -j 100 --rerun-incomplete --latency-wai
 If you use this code in your work, please cite its source and tools:
 
 Plasier et al. 202x. SCC-aware analysis tutorial.
-
-bwa: McKenna, A., Hanna, M., Banks, E., Sivachenko, A., Cibulskis, K., Kernytsky, A., Garimella, K., Altshuler, D., Gabriel, S., Daly, M., & DePristo, M. A. (2010). The Genome Analysis Toolkit: A MapReduce framework for analyzing next-generation DNA sequencing data. Genome Research, 20(9), 1297–1303. https://doi.org/10.1101/gr.107524.110
-
-or 
  
 Minimap2: Li, H. (2018). Minimap2: pairwise alignment for nucleotide sequences. Bioinformatics, 34(18), 3094–3100. https://doi.org/10.1093/bioinformatics/bty191,
 
