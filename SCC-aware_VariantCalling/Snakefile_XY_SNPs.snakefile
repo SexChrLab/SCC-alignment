@@ -159,7 +159,7 @@ rule index_readgroups_Y:
 		pl = lambda wildcards: config[wildcards.Y]["PL"],
 	shell:
 		"""
-		picard AddOrReplaceReadGroups -I {input} -O {output.bam} -SORT_ORDER coordinate -RGID {params.id} -RGLB {params.lb} -RGPL {params.pl} -RGPU {params.pu} -RGSM {params.sm} -CREATE_INDEX True
+		picard -Xmx12g AddOrReplaceReadGroups -I {input} -O {output.bam} -SORT_ORDER coordinate -RGID {params.id} -RGLB {params.lb} -RGPL {params.pl} -RGPU {params.pu} -RGSM {params.sm} -CREATE_INDEX True
 		"""
 
 # ------------------
