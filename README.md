@@ -2,7 +2,7 @@
 
 This repository of pipelines and code from Plaisier et al. 202x shows how to effectively account for sex chromosomes in common human genomic analyses: read alignment, variant calling (SCC-aware_VariantCalling), and gene expression analyses (gene_quantification_RNAseq). 
 
-The description below is geared towards running these pipelines in a Linux-style environment and written to run human samples.  We hope that the detailed explanation in the manuscript and here will help you to adapt these techniques to non-human samples; please feel free to email the Sex Chromosomes Lab at Arizona State University if you need help (http://www.sexchrlab.org/). 
+The description below is geared towards running these pipelines in a Linux environment and hard-coded to run human samples on CHM13v2.0 or GRCh38 reference genomes.  We hope that the detailed explanation in the manuscript and here will help you to adapt these techniques to non-human samples; please open a issues ticket or email the Sex Chromosomes Lab at Arizona State University if you need help (http://www.sexchrlab.org/).
 
 # Reasons to make the switch to sex-chromsome complement aware genomics methods
 
