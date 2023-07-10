@@ -1,0 +1,48 @@
+{
+    "Comment_Transcriptome_Index": "The following section specified the location of the index files",
+    "HG38_Transcriptome_Index_HISAT_Path_female": "/data/CEM/shared/public_data/references/GENCODE/GRCh38.p12.genome.XXonly/GRCh38.p12.genome.XXonly",
+    "HG38_Transcriptome_Index_HISAT_Path_male": "/data/CEM/shared/public_data/references/GENCODE/GRCh38.p12.genome.XY/GRCh38.p12.genome.XY",
+    "HG38_Transcriptome_Index_SALMON_Path_female": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/RNA/references/gencode.v29.transcripts_Ymasked_XX.salmon_index/",
+    "HG38_Transcriptome_Index_SALMON_Path_male": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/RNA/references/gencode.v29.transcripts_YPARs_masked_XY.salmon_index/",
+
+	"CHM13_Transcriptome_Index_HISAT_Path_female": "/data/CEM/shared/public_data/references/T2T_CHM13_v2/T2T_CHM13_v2_SCC/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YHardMasked_ChrNamesAdded_hisat",
+    "CHM13_Transcriptome_Index_HISAT_Path_male": "/data/CEM/shared/public_data/references/T2T_CHM13_v2/T2T_CHM13_v2_SCC/GCA_009914755.4_CHM13_T2T_v2.0_genomic_YPARsMasked_ChrNamesAdded_hisat",
+    "CHM13_Transcriptome_Index_SALMON_Path_female": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/RNA/references/GCF_009914755.1_T2T-CHM13v2.0_rna.YHardMasked.uniq.salmon_index/",
+    "CHM13_Transcriptome_Index_SALMON_Path_male": "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/RNA/references/GCF_009914755.1_T2T-CHM13v2.0_rna.YPARsMasked.uniq.salmon_index/",
+
+    "Comment_Annotation": "The following section is the specified location for the gene annotation files",
+    "HG38_annotation_path": " /data/CEM/shared/public_data/references/GENCODE/gencode.v29.annotation.gtf",
+	"CHM13_annotation_path": "/data/CEM/shared/public_data/references/T2T_CHM13_v2/CHM13.v2.0.gff3",
+	
+    "Comment_Sample_Info": "The following section lists the samples that are to be analyzed",
+    "ALL_samples": [
+        "hg002_son",
+        "hg004_mom"
+    ],
+    "X_samples": [
+        "hg004_mom"
+    ],
+    "Y_samples": [
+        "hg002_son"
+    ],
+    "hg002_son": {
+        "fq_path": "/data/CEM/wilsonlab/downloaded_data/GIAB/IlluminaRNAseq/",
+        "fq_1": "research_sequencing_fastq_rna_illumina_mrna_hg002_gm24385.mrna.R1.fastq.gz",
+        "fq_2": "research_sequencing_fastq_rna_illumina_mrna_hg002_gm24385.mrna.R2.fastq.gz",
+        "ID": "hg002_son",
+        "SM": "hg002_son",
+        "LB": "hg002_son",
+        "PU": "HMN2KDSX2.3",
+        "PL": "Illumina"
+    },
+    "hg004_mom": {
+        "fq_path": "/data/CEM/wilsonlab/downloaded_data/GIAB/IlluminaRNAseq/",
+        "fq_1": "research_sequencing_fastq_rna_illumina_mrna_hg004_gm26077.mrna.R1.fastq.gz",
+        "fq_2": "research_sequencing_fastq_rna_illumina_mrna_hg004_gm26077.mrna.R2.fastq.gz",
+        "ID": "hg004_mom",
+        "SM": "hg004_mom",
+        "LB": "hg004_mom",
+        "PU": "HMMWMDSX2.4",
+        "PL": "Illumina"
+    }
+}
