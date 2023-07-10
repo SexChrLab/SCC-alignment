@@ -2,13 +2,13 @@
 
 This repository of pipelines and code from Plaisier et al. 202x shows how to effectively account for sex chromosomes in common human genomic analyses: read alignment, variant calling (SCC-aware_VariantCalling), and gene expression analyses (gene_quantification_RNAseq). 
 
-The description below is geared towards running these pipelines in a Linux environment and hard-coded to run human samples on CHM13v2.0 or GRCh38 reference genomes.  We hope that the detailed explanation in the manuscript and here will help you to adapt these techniques to non-human samples; please open a issues ticket or email the Sex Chromosomes Lab at Arizona State University if you need help (http://www.sexchrlab.org/).
+The description below is geared towards running these pipelines in a Linux environment and shows how to analyze human samples with CHM13v2.0 or GRCh38 reference genomes.  For those studying non-human species with a known sex determination system that uses sex chromosomes, we hope that the detailed explanations here and in the manuscript will help you to adapt these techniques using the published reference genome sequences; please open an issue or email the Sex Chromosomes Lab at Arizona State University if you need help (http://www.sexchrlab.org/).
 
 # Reasons to make the switch to sex-chromsome complement aware genomics methods
 
-Due to the unique biology of the sex chromosomes, accurate measurement of genetic variation and gene expression from the sex chromosomes can be difficult.  As a result, sex chromosomes are often excluded from genomic analyses, even though they are an essential part of the genetic variation within individuals and can have a significant impact on cell biology as it pertains to health and disease.  Immune disorders and cancer are known to have a sex bias in incidence and outcome. Sex linked differences in gene expression have been observed across tissues and consistently over the course of life. Omitting or incorrectly handling sex chromosomes in genomic analysis can potentially lead to false positives or false negatives of sex-linked variation in genomic studies.
+Due to the unique biology of the sex chromosomes, accurate measurement of genetic variation and gene expression from the sex chromosomes can be difficult.  As a result, sex chromosomes are often excluded from genomic analyses, even though they are an essential part of the genetic variation within individuals and can have a significant impact on cell biology as it pertains to health and disease.  Immune disorders and cancer are known to have a sex bias in incidence and outcome. Sex linked differences in gene expression have been observed across tissues and consistently over the course of life. Omitting or incorrectly handling sex chromosomes in genomic analysis can potentially lead to false positives or false negatives from the sex chromosome genes in genomic studies.
 
-The pipelines and resources presented here aim to facilitate correct and accurate alignment of short read sequencing data to human reference genome adjusted to account for the sex chromosomes present in the sample.  For samples that do not contain a Y chromosome, the Y chromosome sequence will be masked so that no reads are incorrectly assigned to it.  For samples that contain a Y chromosome, the regions of the Y chromosome that have identical matching regions in the X chromosome (psuedoautosomal regions (PARs)) are masked so that reads in this ambiguous regions are not assigned randomly and variant calling on the sex chromosomes is adjusted to match the ploidy.
+The pipelines and resources presented here aim to facilitate correct and accurate alignment of short read sequencing data to human reference genome adjusted to account for the sex chromosomes present in the sample.  For samples that do not contain a Y chromosome, the Y chromosome sequence will be masked so that no reads are incorrectly assigned to it.  For samples that contain a Y chromosome, the regions of the Y chromosome that have perfectly matching regions in the X chromosome (psuedoautosomal regions (PARs)) are masked on the Y chromosome so that reads in this ambiguous regions are not assigned randomly and variant calling on the sex chromosomes is adjusted to match the ploidy.
 
 # Knowing the sex chromosome complement in your samples
 In order to do sex chromosome complement aware analysis, it is necessary to know the sex chromosome complement (SCC) present in each of the samples you are working with.  
@@ -23,11 +23,13 @@ In this module, we have provided scripts to create a custom configuration file i
 
 2. Sex chromosome complement check (`SCC_check`)
 
-In this module, we use whole genome resequencing (WGS) data mapped to a Y PARs-masked reference genome to identify evidence of a Y chromosome in the sequence reads. This information can be used to validate reported sex of the sample metadata or as an independent investigation into the individuals' genotype. We acknowledge that previous iterations of this read mapping depth approach were computationally intensive and were (somewhat justifiably) avoided. This pipeline attempt to bypass these limitations by subsampling the WGS data to 1X coverage prior to alignment to significantly reduce runtime. However, this subsampling restricts the inferential power of the analysis to simply ask, "Are Y chromosome reads present in the sequence data?". If additional information is needed to be inferred from the data (e.g. investigating X chromosome copy number (CN)), you should not use SCC check pipeline as it is not suited for this purpose.
+In this module, we provide code that uses DNA sequencing data mapped to a Y PARs-masked reference genome to identify evidence of a Y chromosome in the sequence reads. This information can be used to validate reported sex of the sample metadata or as an independent investigation into the individuals' genotype. We acknowledge that previous iterations of this read mapping depth approach were computationally intensive and were (somewhat justifiably) avoided. This pipeline attempt to bypass these limitations by subsampling the WGS data to 1X coverage prior to alignment to significantly reduce runtime. However, this subsampling restricts the inferential power of the analysis to simply ask, "Are Y chromosome reads present in the sequence data?". If additional information is needed to be inferred from the data (e.g. investigating X chromosome copy number (CN)), you should not use SCC check pipeline as it is not suited for this purpose.
+
+We also provide guidelines for sex chromosome complement estimation based on RNA sequencing if you do not have DNA sequencing data.
 
 3. Sex chromosome complement-aware variant calling (`SCC-aware_Variant Calling`)
 
-In this module, we use whole genome sequencing (WGS) data to impute variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from module 2, or sex reported in sample metadata, to assign the appropriate SCC aware reference genome and downstream gentyping criteria for each sample. In short, we map WGS reads using bwa/minimap2 and calculate variants considering the biologically relevant ploidy levels across the genome using GATK.
+In this module, we show how to use DNA sequencing data to determine variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from module 2, or sex reported in sample metadata, to assign the appropriate SCC aware reference genome and downstream gentyping criteria for each sample. In short, we map DNA reads using bwa/minimap2 and calculate variants considering the biologically relevant ploidy levels across the genome using GATK.
 
 4. SCC-aware gene expression analyses (`gene_quantification_RNAseq`) 
 
@@ -38,7 +40,7 @@ In this module, we use HISAT2 aligner with a gene quantification algorithm (`fea
 If you would like to use publicly available data to set up and test our pipeline for sex chromosome complement aware genomics analysis techniques, we provide links to data from the Genome in a Bottle project at the National Institute for Standards and Technology (NIST).  You can read more about it here: 
 https://www.nist.gov/programs-projects/genome-bottle
 
-In summary, the Genome in a Bottle project aims to provide benchmarking data for the development of standards for genomic analysis. They are rigorously analyzing a specific set of human samples using many sequencing technologies to characterize genomic variants and gene expression differences.  They are making both the data and the results publicly available for the scientific community.  
+In summary, the Genome in a Bottle project aims to provide benchmarking data for the development of standards for genomic analysis. They are rigorously analyzing a specific set of human samples using many sequencing technologies to characterize genomic variants and gene expression differences.  They are making both the data and the results publicly available for the scientific community.  We link to specific test files for the modules in the Readme inside the directories for each module.
 
 The samples we will link to are derived from 2 family trios (son, mother, and father).  Our methods do *not* at all require samples to be from related individuals, but we do mark this description to help label samples as having Y chromosomes (sons and fathers) versus not having a Y chromosome (mothers).  Knowing or having the data to find out the sex chromosome complement genotype is essential to running our pipelines.  
 
@@ -80,7 +82,7 @@ Once the environment has been created, you can activate it and use all the softw
 conda activate SCCalign_v3
 ```
 
-### Docker container
+### Docker/Singularity container
 
 Docker is a utility that allows you to use, store, and share a runtime environment with all the software installed properly. We have created a Docker image that contains reference genomes used for the SCC analysis modules and import software that will allow you to run the modules. 
 
