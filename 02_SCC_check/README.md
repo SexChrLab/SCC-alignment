@@ -6,20 +6,25 @@ This Snakemake workflow is for identifying the sex chromosome complement of a se
 
 It is important to know if a sample possesses a Y chromosome or not to understand potential biases this can introduce into traditional read mapping-based genomic analyses. Here we present various methods you can use to gather evidence that you can to know the sex chromosome complement of your samples or confirm reported sex of the sample.  
 
-### DNA sequencing
+## DNA sequencing
 If you have DNA sequencing data, we have provided code that uses the `indexcov` application to calculate relative read depth for chromosome Y in order to determine whether a Y chromosome is present in your sample.  We subsample the read files to ~1X coverage (assuming PE 150bp short reads) and quickly map these read to a Y PAR-masked reference. If the sample possesses a Y chromosome the chrY copy number (CN) will be greater than ~0. This pipeline is built for speed to encourage its use, but is not accurate for determining chrX copy number. If chrX copy number is important for your use case, simply align all the reads (20-30X) and run indexcov following the programs documentation (https://github.com/brentp/goleft/tree/master/indexcov).  
 
-### RNA sequencing 
+### Sex chromosome complement (SCC) check pipeline for DNA sequencing data
 
+The rules in the SCC check pipeline for DNA sequencing data `SCC-check.snakefile` are as follows, for each sample: 
+1) Subsample the reads using `seqtk` to create a representative set of reads that is faster to run
+2) Map reads to the Y-PARs masked reference genome using `minimap2`
+3) Index the resulting alignment (bam) files using `samtools index`
+4) Calculate the relative read depth of chromosome Y using `goleft indexcov`
 
-# Running the workflow
+Once the pipeline has been run, your results will be in the directory you specified in your DNA custom config, in the "indexcov_dir" variable.  These results will include html files where you can view your samples according to their read depth on chrY as well as a ped file called `indexcov-indexcov.ped` which contains this information in table form.  We have provided a simple Python script to ask if the calculated chrY copy number is greater than 0.25, and if so, predict that this sample has a Y chromosome.  These predictions are output in a simple table that can be used to fill in the `Y_samples` (have Y chromosomes) and `X_samples` (do not have Y chromosomes) lists in the custom configs before doing SCC-aware variant calling or SCC-aware gene quantification (for samples where you have matching gene expression).  
 
-Steps for running the pipeline: 
-1) Create a config JSON for your DNA samples (see `custom_config`) 
-2) Activate the conda environment (see main `SCC-alignment` page)
-3) Open `SCC-check.snakefile` in a text editor and make sure that the name of your config JSON is set correctly
-4) Test Snakemake pipeline: `snakemake -np -s Snakefile_SCC-check.snakefile`
-5) Run Snakemake pipeline: `snakemake -s Snakefile_SCC-check.snakefile`
+Steps to run the SCC check pipeline for DNA sequencing data: 
+1) Create a config JSON for your DNA samples (see `custom_config`)  
+3) Activate the conda environment (see main `SCC-alignment` page)
+4) Open `SCC-check.snakefile` in a text editor and make sure that the name and path of your config JSON is set correctly in the `configfile` variable
+5) Test Snakemake pipeline: `snakemake -np -s SCC-check.snakefile`
+6) Run Snakemake pipeline: `snakemake -s SCC-check.snakefile`
 
 Example of how to run as a job submission on a high performance cluster using slurm workflow manager with SCCalign_v3 conda environment installed: 
 ```
@@ -34,13 +39,17 @@ Example of how to run as a job submission on a high performance cluster using sl
 #SBATCH -n 2
 
 source activate SCCalign_v3
-snakemake -s Snakefile_SCC-check.snakefile -j 100 --rerun-incomplete --latency-wait=60 --cluster "sbatch -n 2 -p serial --mem=50G --mail-type=FAIL --mail-user=splaisie@asu.edu"
+snakemake -s SCC-check.snakefile -j 100 --rerun-incomplete --latency-wait=60 --cluster "sbatch -n 2 -p serial --mem=50G --mail-type=FAIL --mail-user=splaisie@asu.edu"
 ```
 
-6) Copy Python script `inferred_SCC.py` into the directory containing `indexcov` results (including file named `indexcov-indexcov.ped`) and run to get a simple output file that summarizes which samples have a Y chromosome
+7) Copy Python script `inferred_SCC.py` into the directory containing `indexcov` results (including file named `indexcov-indexcov.ped`) and run to get a simple output file that summarizes which samples have a Y chromosome
 ``` 
 python inferred_SCC.py
 ```
+
+
+## RNA sequencing 
+
 
 
 # Citations 
