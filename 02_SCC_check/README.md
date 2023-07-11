@@ -6,7 +6,7 @@ This Snakemake workflow is for identifying the sex chromosome complement of a se
 
 It is important to know if a sample possesses a Y chromosome or not to understand potential biases this can introduce into traditional read mapping-based genomic analyses. Here we present various methods you can use to gather evidence that you can to know the sex chromosome complement of your samples or confirm reported sex of the sample.  
 
-## DNA sequencing
+## Samples with DNA sequencing
 If you have DNA sequencing data, we have provided code that uses the `indexcov` application to calculate relative read depth for chromosome Y in order to determine whether a Y chromosome is present in your sample.  We subsample the read files to ~1X coverage (assuming PE 150bp short reads) and quickly map these read to a Y PAR-masked reference. If the sample possesses a Y chromosome the chrY copy number (CN) will be greater than ~0. This pipeline is built for speed to encourage its use, but is not accurate for determining chrX copy number. If chrX copy number is important for your use case, simply align all the reads (20-30X) and run indexcov following the programs documentation (https://github.com/brentp/goleft/tree/master/indexcov).  
 
 ### Sex chromosome complement (SCC) check pipeline for DNA sequencing data
@@ -48,8 +48,9 @@ python inferred_SCC.py
 ```
 
 
-## RNA sequencing 
+## Samples with RNA sequencing 
 
+If you only have RNA sequencing data, 
 
 
 # Citations 
