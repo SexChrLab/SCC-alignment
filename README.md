@@ -25,7 +25,6 @@ In this module, we have provided scripts to create custom configuration files in
 
 2. Sex chromosome complement check (`02_SCC_check`)
 
-In this module, we provide code that uses DNA sequencing data mapped to a Y PARs-masked reference genome to identify evidence of a Y chromosome in the sequence reads. This information can be used to validate reported sex of the sample metadata or as an independent investigation into the individuals' genotype. We acknowledge that previous iterations of this read mapping depth approach were computationally intensive and were (somewhat justifiably) avoided. This pipeline attempt to bypass these limitations by subsampling the WGS data to 1X coverage prior to alignment to significantly reduce runtime. However, this subsampling restricts the inferential power of the analysis to simply ask, "Are Y chromosome reads present in the sequence data?". If additional information is needed to be inferred from the data (e.g. investigating X chromosome copy number (CN)), you should not use SCC check pipeline as it is not suited for this purpose.
 
 We also provide guidelines for sex chromosome complement estimation based on RNA sequencing if you do not have DNA sequencing data.
 
