@@ -63,7 +63,7 @@ For testing and development, you can use 40X Novaseq whole genome sequencing dat
 
 https://console.cloud.google.com/storage/browser/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x
 
-Male (with Y chromosome) samples: 
+###Male (with Y chromosome) samples: 
 
 
 HG003 (Ashkenazim father):
@@ -79,7 +79,7 @@ https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq
 
 https://storage.cloud.google.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG005.novaseq.pcr-free.40x.R2.fastq.gz?_ga=2.266211275.-57486372.1684265308
 
-Female (without Y chromosome) samples: 
+###Female (without Y chromosome) samples: 
 
 
 HG004 (Ashkenazim mother):
