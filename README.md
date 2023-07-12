@@ -25,35 +25,30 @@ In this module, we have provided scripts to create custom configuration files in
 
 2. Sex chromosome complement check (`02_SCC_check`)
 
-
-We also provide guidelines for sex chromosome complement estimation based on RNA sequencing if you do not have DNA sequencing data.
+In this module, we provide code and guidelines to determine whether samples have a Y chromosome. For DNA samples, code is provided to use relative read depth on the Y chromosome. For RNA samples, we have `COMPLETE!!!`
 
 3a. Sex chromosome complement-aware variant calling (`03a_SCC-aware_Variant Calling`)
 
-In this module, we show how to use DNA sequencing data to determine variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from module 2, or sex reported in sample metadata, to assign the appropriate SCC aware reference genome and downstream gentyping criteria for each sample. In short, we map DNA reads using bwa/minimap2 and calculate variants considering the biologically relevant ploidy levels across the genome using GATK.
+In this module, we show how to use DNA sequencing data to determine variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from module 2, or sex reported in sample metadata, to assign the appropriate SCC aware reference genome and downstream gentyping criteria for each sample. In short, we perform sex chromosome complement specific sequence alignment and determine genomic variants considering the biologically relevant ploidy levels across the genome using GATK.
 
 3b. SCC-aware gene expression analyses (`03b_gene_quantification_RNAseq`) 
 
 In this module, we use HISAT2 aligner with a gene quantification algorithm (`featureCounts`) or Salmon pseudoaligner to quantify the expression of genes in samples assayed with RNA sequencing.  
 
-# Test Data (Genome in a Bottle)
+# Sex chromosome complement reference genome
 
-If you would like to use publicly available data to set up and test our pipeline for sex chromosome complement aware genomics analysis techniques, we provide links to data from the Genome in a Bottle project at the National Institute for Standards and Technology (NIST).  You can read more about it here: 
-https://www.nist.gov/programs-projects/genome-bottle
+The basis of the sex chromosome complement aware genomics analysis presented in this repository is the use of versions of the human reference genome sequence adjusted to allow more accurate alignment of reads based on the sex chromosomes present in the sample.  Manuscripts describing sex chromosome complement alignment in detail are given in the Citations section below, but in summary we have created two versions of the human reference genome sequence that is used to align sequencing data to. 
 
-In summary, the Genome in a Bottle project aims to provide benchmarking data for the development of standards for genomic analysis. They are rigorously analyzing a specific set of human samples using many sequencing technologies to characterize genomic variants and gene expression differences.  They are making both the data and the results publicly available for the scientific community. 
+1.  Chromosome Y masked reference genome sequence for samples that do not have a Y chromosome (such as XX female samples)
+2.  Chromosome Y PARs masked reference for samples that do have a Y chromosome (such as XY male samples)
 
-The samples we will link to are derived from 2 family trios (son, mother, and father).  Our methods do *not* at all require samples to be from related individuals, but we do mark this description to help label samples as having Y chromosomes (sons and fathers) versus not having a Y chromosome (mothers).  Knowing or having the data to find out the sex chromosome complement genotype is essential to running our pipelines.  
-
- We link to specific test files for each module in the Readme within the subdirectories.
+We have provided sex chromosome complement versions of the GRCh38 and CHM13v2 releases, but instructions on how these reference genome sequences were made are provided in the `references` directory.
 
 # Order of operations
 
 This section describes the order in which our modules can be run to give you an idea of how to proceed given the type of data you have.
 
-First, you will need to set up a custom config that describes the necessary information about your experiment and data files.  Code and examples for this are given in `01_custom_config`  There will be specific fields required for the SCC check, SCC-aware variant calling, and gene quantification modules; the code provided will help you to generate a template for that json which you can manually fill in with the paths to your data and specific experimental details.
-
-Second, you will need to label which samples have a Y chromosome and which do not.  `COMPLETE!!!!!!!!!`
+First, you will need to set up a custom config that describes the necessary information about your experiment and data files.  Code and examples for this are given in `01_custom_config`  There will be specific fields required for the SCC check, SCC-aware variant calling, and gene quantification modules; the code provided will help you to generate a template for that json which you can manually fill in with the paths to your data and specific experimental details.  Specifically, you will need to which samples have a Y chromosome and which do not. These lists are used for sex chromosome complement reference genomes.  
 
 # Setting up your environment to run SCC aware genomics pipelines
 
@@ -151,6 +146,16 @@ https://docs.sylabs.io/guides/3.5/user-guide/introduction.html
 
 Now you should be ready to use `snakemake` to run the analysis workflows and have all the packages within the workflow ready to go!
 
+# Test Data (Genome in a Bottle)
+
+If you would like to use publicly available data to set up and test our pipeline for sex chromosome complement aware genomics analysis techniques, we provide links to data from the Genome in a Bottle project at the National Institute for Standards and Technology (NIST).  You can read more about it here: 
+https://www.nist.gov/programs-projects/genome-bottle
+
+In summary, the Genome in a Bottle project aims to provide benchmarking data for the development of standards for genomic analysis. They are rigorously analyzing a specific set of human samples using many sequencing technologies to characterize genomic variants and gene expression differences.  They are making both the data and the results publicly available for the scientific community. 
+
+The samples we will link to are derived from 2 family trios (son, mother, and father).  Our methods do *not* at all require samples to be from related individuals, but we do mark this description to help label samples as having Y chromosomes (sons and fathers) versus not having a Y chromosome (mothers).  Knowing or having the data to find out the sex chromosome complement genotype is essential to running our pipelines.  
+
+We link to specific test files for each module in the Readme within the subdirectories.
 
 # Citations
 
