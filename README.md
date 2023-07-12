@@ -42,26 +42,37 @@ The basis of the sex chromosome complement aware genomics analysis presented in 
 1.  Chromosome Y masked reference genome sequence for samples that do not have a Y chromosome (such as XX female samples)
 2.  Chromosome Y PARs masked reference for samples that do have a Y chromosome (such as XY male samples)
 
-We have provided sex chromosome complement versions of the GRCh38 and CHM13v2 releases, but instructions on how these reference genome sequences were made are provided in the `references` directory.
+We have provided sex chromosome complement versions of the GRCh38 and CHM13v2 releases, but detailed instructions on how these reference genome sequences were made are provided in the `references` directory.  
+
+A summary of how these were generated is as follows: 
+1. Download the human genome reference sequence and transcriptome sequence
+2. Hard mask the entire sequence of chromosome Y (switch all nucleotides to N) to align to samples without a Y chromosome
+3. Determine the boundaries of the pseudoautosomal regions (PARs), regions of complete sequence identity (either annotated with the released genome sequence or determined by aligning the X and Y chromosome sequence to each other)
+4. Hard mask the original reference genome and transcriptome sequence in the PAR regions on chromosome Y
+5. Use index functions of alignment algorithms where needed with the Y-masked and Y PARs masked versions of the reference genome (such as `hisat2 build`)
 
 # Order of operations
 
 This section describes the order in which our modules can be run to give you an idea of how to proceed given the type of data you have.
 
-First, you will need to set up a custom config that describes the necessary information about your experiment and data files.  Code and examples for this are given in `01_custom_config`  There will be specific fields required for the SCC check, SCC-aware variant calling, and gene quantification modules; the code provided will help you to generate a template for that json which you can manually fill in with the paths to your data and specific experimental details.  Specifically, you will need to which samples have a Y chromosome and which do not. These lists are used for sex chromosome complement reference genomes.  
+First, you will need to set up a custom config that describes the necessary information about your experiment and data files.  Code and examples for this are given in `01_custom_config`  There will be specific fields required for the SCC check, SCC-aware variant calling, and gene quantification modules; the code provided will help you to generate a template for that json which you can manually fill in with the paths to your data and specific experimental details.  Most importantly, you will need to which samples have a Y chromosome and which do not. These lists are used to determine which sex chromosome complement reference genome to use and which ploidy to use for variant calling. You can use reported sex from sample metadata to make this list or assert the sex chromosome complement using the actual sequencing data using code in the `02_SCC_check` module.
+
+Once custom config files are created, you will need to set up an environment to access the software needed to do the analysis and the sex chromosome complement reference genomes.  We have provided a Docker container and a conda environment that contains both of these to analyze human samples.  
+
+From here, you can use DNA sequencing data to call variants using the `03a_SCC-aware_VariantCalling` module or use RNA sequencing data to quantify gene expression using the `03b_gene_quantification_RNAseq` module.  These modules are independent of each other, so they can be run in parallel if both DNA and RNA sequencing is available for your samples.
 
 # Setting up your environment to run SCC aware genomics pipelines
 
-### Clone repository
+## Clone repository
 
-Start by getting a local copy of this Github repository by navigating to a directory you want to work in and issuing the clone command:
+Start by getting a local copy of this Github repository which contains all the code for the modules by navigating to a directory you want to work in and issuing the clone command:
 
 ``` 
 cd /path/to/local/directory/
 git clone https://github.com/SexChrLab/SCC-alignment.git 
 ```
 
-### Workflows
+## Tools used to run workflow code
 Our pipelines use Snakemake, a workflow management tool for Python, to streamline and parallelize processes. 
 
 For more information on programming in Python: 
@@ -72,25 +83,15 @@ https://snakemake.readthedocs.io/en/stable/
 
 If you use different workflow management systems or other scripting tools, the `shell` portion of the Snakemake rules can be used as a guide on how to issue commands with the appropriate parameters.
 
-### Required packages/software (conda environment)
-We have assembled all of the required software needed to run our methods into a conda environment (exported into `SCCalign_v3.yml`). Here we describe how to activate the conda environment on its own in a Linux environment as well as how to run from a Docker container which contains sex chromosome complement reference genomes.  
+## Required packages/software and SCC reference genomes
+We have assembled all of the required software needed to run our methods that can be loaded with conda package manager (exported into `SCCalign_v3.yml`). Here we describe how to run from a Docker container which also contains sex chromosome complement reference genomes as well as how to activate the conda environment on its own in a Linux environment.  
 
 For more information on conda package manager including how to install it in the correct operating system: 
 https://conda.io/projects/conda/en/latest/index.html
 
-Once you have installed conda to your local environment, you can build a conda environment containing the necessary packages for SCC aware analysis using the 'yml' file we have provided: 
-```
-conda env create -f /path/to/local/directory/SCC-alignment/SCCalign_v3.yml
-```
+### Docker/Singularity container containing SCC reference genomes
 
-Once the environment has been created, you can activate it and use all the software used by our workflow: 
-```
-conda activate SCCalign_v3
-```
-
-### Docker/Singularity container
-
-Docker is a utility that allows you to use, store, and share a runtime environment with all the software installed properly. We have created a Docker image that contains reference genomes used for the SCC analysis modules and import software that will allow you to run the modules. 
+Docker is a utility that allows you to use, store, and share a runtime environment with all the software installed properly. We have created a Docker image that contains SCC reference genomes and transcriptomes used for the analysis modules and conda installed so that required software can be easily loaded and used.  
 
 For more information about Docker containers: 
 https://docs.docker.com/
@@ -99,6 +100,8 @@ To obtain a copy of the Docker image to run our SCC aware analysis pipelines and
 ```
 docker pull sbplaisier/omics:1.3
 ```
+
+This Docker image is about 24 GB because of the reference genomes, so make sure you have enough space available.  
 
 To make sure the image was pulled correctly, list the Docker images and make sure it is there and assigned an ID: 
 ```
@@ -115,7 +118,7 @@ We have installed the packages needed to run our pipelines in the base environme
 snakemake --help
 ```
 
-In the working environment, you can see that we are using a Linux environment and have included sex chromosome complement references from CHM13 version 2 (telomere-to-telomere) and HG38 (GRCh38) in the /references directory in a docker container: 
+In the working environment, you can see that we are using a Linux environment and have included sex chromosome complement references from CHM13 version 2 (telomere-to-telomere) and HG38 (GRCh38) in the `/references` directory in a docker container: 
 
 ```
 ls /references
@@ -126,9 +129,9 @@ To fully perform the analysis, you would attach a volume, meaning that you would
 docker run -it -v /path/to/local/directory/:/data -t sbplaisier/omics:1.3
 ```
 
-Once you attach a volume/bound directory, you can set the reference paths in your custom config to /reference.  Because the reference genomes are included inside the Docker, it is quite large to download (~25 GB).
+Once you attach a volume/bound directory, you can set the reference paths in your custom config to be inside `/reference` and the path to the reads to be inside `/data`.  
 
-The environment that is activated when you first start the Docker container is the `gatk` environment.  To add the other packages, update this with the environment yml provided in the repository
+The environment that is activated when you first start the Docker container is the `gatk` environment.  To add the other packages needed to run the workflows we have provided, update the `gatk` environment with the environment yml provided in the repository
 ```
 conda env update -f /data/SCCalign_v3.yml --prune
 conda activate SCCalign_v3
@@ -145,6 +148,17 @@ For more information about Singularity (see 'Singularity and Docker' section):
 https://docs.sylabs.io/guides/3.5/user-guide/introduction.html
 
 Now you should be ready to use `snakemake` to run the analysis workflows and have all the packages within the workflow ready to go!
+
+### Installing the conda environment alone
+If you would like to simply install the conda environment and generate your own SCC reference genomes, you can install conda to your local environment and then build a conda environment containing the necessary packages for SCC aware analysis using the environment yml file we have provided: 
+```
+conda env create -f SCC-alignment/SCCalign_v3.yml
+```
+
+Once the environment has been created, you can activate it and use all the software used by our workflow: 
+```
+conda activate SCCalign_v3
+```
 
 # Test Data (Genome in a Bottle)
 
