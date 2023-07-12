@@ -17,7 +17,7 @@ When available, the reported sex from the individual from whom the samples being
 
 To be more certain of the sex chromosome complement of your samples, you can use the provided sample sex chromosome complement checking module (`02_SCC_check`) to confirm presence or lack of a Y chromosome.  For DNA sequencing data, relative read depth on chromosome Y can be used to confirm the presence of a Y chromosome.  If you do not have DNA sequencing data and/or are instead working with RNA sequencing data and do not have or trust the reported sex,  `COMPLETE!!!!` 
 
-# Overview of the three SCC-informed analysis modules
+# Overview of the SCC genomics analysis modules
 
 1. Custom configuration files (`01_custom_config`)
 
