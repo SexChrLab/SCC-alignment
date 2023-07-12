@@ -35,7 +35,7 @@ In this module, we show how to use DNA sequencing data to determine variants acr
 
 In this module, we use HISAT2 aligner with a gene quantification algorithm (`featureCounts`) or Salmon pseudoaligner to quantify the expression of genes in samples assayed with RNA sequencing.  
 
-# Sex chromosome complement reference genome
+# Sex chromosome complement reference genomes
 
 The basis of the sex chromosome complement aware genomics analysis presented in this repository is the use of versions of the human reference genome sequence adjusted to allow more accurate alignment of reads based on the sex chromosomes present in the sample.  Manuscripts describing sex chromosome complement alignment in detail are given in the Citations section below, but in summary we have created two versions of the human reference genome sequence that is used to align sequencing data to. 
 
