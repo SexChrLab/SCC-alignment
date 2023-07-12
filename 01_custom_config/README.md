@@ -1,6 +1,6 @@
 # Custom Config JSON
 
-These scripts can be used to help you to generate custom config JSONs to hold the required information to run sex chromosome complement (SCC) methods on your sequencing data.  These scripts take a table of sample IDs with the sequencing files associated with those samples as input and produces a config json containing sample information and place holders for other variables used in the sex chromosome complement aware alignment protocols.  It is intended to have a separate config for DNA based analyses (`SCC_check` and `SCC-aware_VariantCalling`) and RNA based analysis (`gene_quantification_RNAseq`).
+These scripts can be used to help you to generate custom config JSONs to hold the required information to run sex chromosome complement (SCC) methods on your sequencing data.  These scripts take a table of sample IDs with the sequencing files associated with those samples as input and produces a config json containing sample information and place holders for other variables used in the sex chromosome complement aware alignment protocols.  It is intended to have a separate config for DNA based analyses (`SCC_check` for DNA samples and `SCC-aware_VariantCalling`) and RNA based analysis (`gene_quantification_RNAseq`).
 
 # Steps
 
@@ -62,7 +62,10 @@ To run `generate_custom_json_RNA.py`:
 4) change the `input_directory` variable to the directory containing your sequencing files (see above)
 5) save changes to your script
 
-Once these have been indicated, run `python generate_custom_json_RNA.py` on a terminal where python is installed (such as when the provided conda environment SCCalign_v3 is activated).
+Once these have been indicated, run the script on a terminal where python is installed (such as when the provided conda environment SCCalign_v3 is activated):
+```
+python generate_custom_json_RNA.py
+```
 
 After this script is executed, open your output JSON in a text editor.  You should see something like the provided file `RNA_samples.config.json`.  Some fields will be filled in using by the script reading information from the sequencing files, others will have to be filled in by hand to reflect the specifics of your own system.
 
