@@ -4,35 +4,34 @@ To do: Add threads and read orientation to config, softcode threads in snakefile
 
 These Snakemake workflows are for sex chromosome complement informed gene quantification for short read, paired end RNA sequencing data.  For each sample, the sex is used to determine which sex chromosome complement version of the reference genome is used for alignment/pseudoalignment.  For females (XX, no Y chromosome),  we use the reference genome with chromosome Y hard masked.  For males (XY, with a Y chromosome), we use the reference genome with the pseudoautosomal regions (PARs) hard masked on chromosome Y.  There are separate Snakemake pipelines for doing a alignment (`hisat2`) with gene quantification (`featureCounts`) or doing pseudoalignment and quantification (`salmon`) which is much faster.  A JSON file is used to hold all the file information; a script that can be used to generate the sample specific information is provided (see `custom_config`).  
 
-# Alignment and gene quantification
+# Gene quantification pipeline with full alignment and gene counts
 
-The Snakemake workflow `rnaseq_data_processing_hisat2.snakefile` does an alignment to sex chromsoome complement refernece genome using `hisat2` and quantifies gene expression using the genome annotation using `featureCounts`.  Interrim files produced during alignment and file processing are marked as temporary, so they will be generated and deleted when the step that needs them is completed so as not to fill up hard drive space unnecessarily.  The rules for running `featureCounts` are set up to output results quantifying gene expression on the exon regions and output with both the gene IDs and the transcript IDs.
+The Snakemake workflow `rnaseq_data_processing_hisat2.snakefile` does an alignment to sex chromsoome complement refernece genome using `hisat2` and quantifies gene expression using the genome annotation using `featureCounts`.  
+
+## Steps for full alignment gene quantification 
+1. `hisat2` is used to align the samples to the appropriate SCC reference genome (HISAT2 indexed files are available in the /references directory in the Docker)
+2. `bamtools` is used to index the alignment output files
+3. `featureCounts` is used to count reads that align to exon regions
+4. `featureCounts` results output with both gene IDs and transcript IDs for use in further analysis
 
 # Pseudoalignment and transcript quantification
 
-The Snakemake workflow `rna_data_processing_salmon.snakefile` uses the `salmon` algorithm to quantify expression.  Salmon indices are provided in `references/` for reference transcriptome with sequences from chromosome Y masked, so these are used according to the sex of the sample (as specified in the `X_samples` and `Y_samples` entries in the configuration JSON).  Quantified expression will be in the `quantified_rna_salmon` directory, with specific subdirectories for each sample.  The `quant.sf` file inside each result subdirectory will give the quantified expression for the transcripts in each sample.
+The Snakemake workflow `rna_data_processing_salmon.snakefile` uses the `salmon` algorithm to quantify expression.  
 
-# Test data
+## Steps for the pseudoalignment gene quantification 
+1. `salmon quant` is used to map reads to SCC reference transcriptome (SCC reference transcriptome are provided in the /references directory in the Docker)
+2. Quantified expression will be in the `quantified_rna_salmon` directory, with specific subdirectories for each sample
+3. `quant.sf` file inside each result subdirectory will give the quantified expression for the transcripts in each sample
 
-In the development of this tutorial we used RNA sequencing files collected by the Genome in a Bottle project with NIST. You can download these files for testing and development purposes. 
-
-Male sample: 
-https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg004_gm24143.mrna.R1.fastq.gz
-https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg004_gm24143.mrna.R2.fastq.gz
-
-Female sample: 
-https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg002_gm24385.mrna.R1.fastq.gz
-https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg002_gm24385.mrna.R2.fastq.gz
-
-# Running the workflow
+# Running the SCC-aware gene quantification workflows
 
 Steps for running the pipeline: 
 
-1) Created a config JSON for your RNA samples (see `custom_config`) 
+1) Create a config JSON for your RNA samples (see `custom_config`) 
 
-2) Activate the conda environment (see main `SCC-alignment` page)
+2) Activate the conda environment (see main `SCC-alignment` page) and Docker environment if using
 
-3) Open `.snakefile` file in a text editor corresponding to which alignment procedure you would like to do and make sure that the name of your config JSON is set correctly
+3) Open the `.snakefile` file in a text editor corresponding to which alignment procedure you would like to do and make sure that the name of your config JSON is set correctly in the `configfile` variable
 
 4) To do full alignment with `hisat2` and quantify genes with `featureCounts`
 
@@ -53,6 +52,23 @@ b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_salmon.snakefile
 c) Example of how to run on a high performance cluster using slurm workflow manager given in `run_preprocessing_salmon.sbatch`
 
 d) Quantification results for each sample given in `quantified_rna` directory
+
+# Test data
+
+For testing and development, you can use RNA sequencing data from the Genome in a Bottle project from NIST. These samples are from families but having related individuals is not at all required for our pipeline. We list these as test data because they are publicly available, high quality human samples with a known sex chromosome complement specifically intended for methods development.
+
+Male sample: 
+
+https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg004_gm24143.mrna.R1.fastq.gz
+
+https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg004_gm24143.mrna.R2.fastq.gz
+
+Female sample: 
+
+https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg002_gm24385.mrna.R1.fastq.gz
+
+https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg002_gm24385.mrna.R2.fastq.gz
+
 
 # Citations
 
