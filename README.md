@@ -169,7 +169,7 @@ In summary, the Genome in a Bottle project aims to provide benchmarking data for
 
 The samples we will link to are derived from 2 family trios (son, mother, and father).  Our methods do *not* at all require samples to be from related individuals, but we do mark this description to help label samples as having Y chromosomes (sons and fathers) versus not having a Y chromosome (mothers).  Knowing or having the data to find out the sex chromosome complement genotype is essential to running our pipelines.  
 
-We link to specific test files for each module in the Readme within the subdirectories.
+We link to specific test files in the readme for `02_SCC_check`, `03a_SCC-aware_VariantCalling`, and `03b_gene_quantification_RNAseq`.
 
 # Citations
 
