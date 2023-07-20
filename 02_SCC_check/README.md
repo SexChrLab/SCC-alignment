@@ -6,12 +6,12 @@ This Snakemake workflow is for identifying the sex chromosome complement of a se
 
 It is important to know if a sample possesses a Y chromosome or not to understand potential biases this can introduce into traditional read mapping-based genomic analyses. Here we present various methods you can use to gather evidence that you can to know the sex chromosome complement of your samples or confirm reported sex of the sample.  
 
-We acknowledge that previous iterations of this read mapping depth approach were computationally intensive and were (somewhat justifiably) avoided. This pipeline attempts to bypass these limitations by subsampling the DNA sequencing data to 1X coverage prior to alignment to significantly reduce runtime. However, this subsampling restricts the inferential power of the analysis to simply ask, "Are Y chromosome reads present in the sequence data?". If additional information is needed to be inferred from the data (e.g. investigating X chromosome copy number (CN)), you should not use SCC check pipeline as it is not suited for this purpose.
+We acknowledge that previous iterations of this read mapping depth approach were computationally intensive and were (somewhat justifiably) avoided. This pipeline attempts to bypass these limitations by subsampling the DNA sequencing data to 1X coverage prior to alignment to significantly reduce runtime. However, this subsampling restricts the inferential power of the analysis to simply ask, "Are Y chromosome reads present in the sequence data?". If additional information is needed to be inferred from the data (e.g. investigating X chromosome copy number (CN)), you should not subsample the data.
 
 ## Samples with DNA sequencing
 In this module, we provide code that uses DNA sequencing data mapped to a Y PARs-masked reference genome to identify evidence of a Y chromosome in the sequence reads. This information can be used to validate reported sex of the sample metadata or as an independent investigation into the individuals' genotype.
 
-If you have DNA sequencing data, we have provided code that uses the `indexcov` application to calculate relative read depth for chromosome Y in order to determine whether a Y chromosome is present in your sample.  We subsample the read files to ~1X coverage (assuming PE 150bp short reads) and quickly map these read to a Y PAR-masked reference.  If the sample possesses a Y chromosome the chrY copy number (CN) will be greater than ~0. This pipeline is built for speed to encourage its use, but is not accurate for determining chrX copy number. If chrX copy number is important for your use case, simply align all the reads (20-30X) and run indexcov following the programs documentation (https://github.com/brentp/goleft/tree/master/indexcov).  
+If you have DNA sequencing data, we have provided code that uses the `indexcov` application to calculate relative read depth for chromosome Y in order to determine whether a Y chromosome is present in your sample.  We subsample the read files to ~1X coverage (assuming PE 150bp short reads) and quickly map these read to a Y PAR-masked reference.  If the sample possesses a Y chromosome the chrY copy number (CN) will be greater than ~0. This pipeline is built for speed to encourage its use, but is not accurate for determining chrX copy number. If chrX copy number is important for your use case, simply align all the reads (20-30X) and run indexcov following the programs documentation (https://github.com/brentp/goleft/tree/master/indexcov).  The subsequencing step is in the `subsample_reads` rule in `SCC-check.snakefile`, so to align all the reads simply remove this rule and set the input of the `map_reads` rule to be the original reads in the `reads/` directory as originally the input for `subsample_reads`.    
 
 ### Sex chromosome complement (SCC) check pipeline for DNA sequencing data
 
@@ -54,8 +54,8 @@ python inferred_SCC.py
 
 ## Samples with RNA sequencing 
 
-If you only have RNA sequencing data, 
-
+`NEEDS TO BE COMPLETED: add scripts that predict sex counting the alignments these genes using the Y PARs masked reference genome`
+If you only have RNA sequencing data, we have used high expression of the XIST gene to indicate presence of at least 2 X chromosomes in the sample and high expression of Y chromosome genes whose expression is not limited to the testis to indicate the presence of a Y chromosome in the sample.  The genes we use include: DDX3Y, KDM5D, USP9Y, UTY, ZFY.   
 
 # Citations 
 
