@@ -2,6 +2,8 @@
 
 This section is a walk through how we generated sex chromosome complement (SCC) reference genomes.  This shows the steps for how we generated SCC versions of the latest human genome reference, CHM13v2 (telomere-to-telomere reference).  We used a similar process to generate SCC references from the HG38 (GRCh38) and transcriptome sequences and similar steps can be used to generate SCC versions of other reference genomes where the sex chromosomes have been chararacterized. 
 
+If you are using the Docker we have created, SCC versions of the reference genome and transcriptomes have been provided in the `/references` directory.  If you simply wish to use the reference sequences we generated with your own analysis pipelines, feel free to copy from the `/references` directory to your bound volumes (connected local drives) so that they are available to use when you have stopped the Docker container. Keep in mind that these reference genome sequences are many GB in size. 
+
 # Output
 The following are steps to making two versions of the human reference genome: 
 1. A reference genome with pseudoautosomal regions 1 and 2 (PAR1 and PAR2) on the Y chromosome hard masked (replace with Ns) for alignment of sequencing reads in samples with a Y chromosome (such as XY males)
