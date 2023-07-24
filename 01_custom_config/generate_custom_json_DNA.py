@@ -24,11 +24,8 @@ data = {}
 data["-----------------Comment_RUN_INFO-----------------"] =  "Run specifications"
 data["threads"] =  "6"
 
-data["-----------------Comment_RESULTS_DIRECTORY-----------------"] =  "Directories containing indexcov results."
+data["-----------------Comment_RESULTS_DIRECTORY-----------------"] =  "Output directory for relative chrY read depth (indexcov) results."
 data["indexcov_dir"] =  "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/sex_check/indexcov"
-
-data["-----------------Comment_SAMPLE_INFO_CONTROL-----------------"] =  "All control (known) samples to be analyzed."
-data["samples_CONTROL"] =  ["HG002", "HG004"]
 
 data["-----------------Comment_FASTQ_DIRECTORIES-----------------"] =  "Directory containing FASTQ files."
 data["reads"] =  "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/reads"
