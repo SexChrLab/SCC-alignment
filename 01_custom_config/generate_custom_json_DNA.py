@@ -30,7 +30,7 @@ data["indexcov_dir"] =  "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/sex_check
 data["-----------------Comment_FASTQ_DIRECTORIES-----------------"] =  "Directory containing FASTQ files."
 data["reads"] =  "/data/CEM/wilsonlab/projects/XYAlign_Tutorial/reads"
 
-data["-----------------Comment_VCF_DIRECTORIES-----------------"] =  "Directories containing called read vcf file(s)."
+data["-----------------Comment_VCF_DIRECTORIES-----------------"] =  "Output directories for called read vcf file(s)."
 data["haplotyped_samples"] =  "/scratch/splaisie/SCC-alignment-main_new/SCC-alignment-main/SCC_snakemake/haplotyped_vcfs/"
 data["genotyped_samples"] =   "/scratch/splaisie/SCC-alignment-main_new/SCC-alignment-main/SCC_snakemake/genotyped_vcfs/"
 	
