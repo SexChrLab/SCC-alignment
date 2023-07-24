@@ -22,12 +22,12 @@ Steps for running the pipeline:
 2) Activate the conda environment (see main `SCC-alignment` page)
 3) Open `.snakefile` files in a text editor and make sure that the name of your config JSON is set correctly
 4) Samples with Y chromosome: (in `Y_samples` entry in DNA config JSON)
-a) Test Snakemake pipeline: `snakemake -np -s Snakefile_XY_SNPs.snakefile`
-b) Run Snakemake pipeline: `snakemake -s Snakefile_XY_SNPs.snakefile`
+a) Test Snakemake pipeline: `snakemake -np -s SNPs_hasChrY.snakefile`
+b) Run Snakemake pipeline: `snakemake -s SNPs_hasChrY.snakefile`
 
 5) Samples without Y chromosome: (in `X_samples` entry in DNA config JSON)
-a) Test Snakemake pipeline: `snakemake -np -s Snakefile_XX_SNPs.snakefile`
-b) Run Snakemake pipeline: `snakemake -s Snakefile_XX_SNPs.snakefile`
+a) Test Snakemake pipeline: `snakemake -np -s SNPs_noChrY.snakefile`
+b) Run Snakemake pipeline: `snakemake -s SNPs_noChrY.snakefile`
 
 Example of how to run on a high performance cluster using slurm workflow manager: 
 ```
@@ -42,8 +42,8 @@ Example of how to run on a high performance cluster using slurm workflow manager
 #SBATCH -n 2
 
 source activate SCCalign_v3
-snakemake -s Snakefile_XX_SNPs.snakefile -j 100 --rerun-incomplete --latency-wait=60 --cluster "sbatch -n 2 -p serial --mem=50G --mail-type=FAIL --mail-user=splaisie@asu.edu"
-snakemake -s Snakefile_XY_SNPs.snakefile -j 100 --rerun-incomplete --latency-wait=60 --cluster "sbatch -n 2 -p serial --mem=50G --mail-type=FAIL --mail-user=splaisie@asu.edu"
+snakemake -s SNPs_noChrY.snakefile -j 100 --rerun-incomplete --latency-wait=60 --cluster "sbatch -n 2 -p serial --mem=50G --mail-type=FAIL --mail-user=splaisie@asu.edu"
+snakemake -s SNPs_hasChrY.snakefile -j 100 --rerun-incomplete --latency-wait=60 --cluster "sbatch -n 2 -p serial --mem=50G --mail-type=FAIL --mail-user=splaisie@asu.edu"
 
 ```
 
