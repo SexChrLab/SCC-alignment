@@ -137,7 +137,53 @@ The other variables you will need to verify or modify to proceed properly with t
 
 # Verify sex chromosome complement of samples
 
+Now that your custom config file for DNA samples is created, we can use the `02_SCC_check` module DNA workflow to confirm or identify whether or not each sample has a Y chromosome (see readme for this module for more information).
 
+First, navigate to the `02_SCC_check` directory, open `02_SCC_check/SCC-check.snakefile` in a text editor, and confirm that the name and path of your config JSON is set correctly in the `configfile` variable:
+```
+configfile: "DNA_samples.config.json"
+```
+The rest of the necessary information will be filled in from the config JSON.  
+
+All of our workflows are written in Snakemake.  For more information on Snakemake, see the main readme for this repository
+
+To make sure everything is setup correctly, do a dry run of the `SCC-check.snakefile` Snakemake workflow for subsampling the reads and determining the relative read depth of chrY using the `indexcov` application: 
+```
+snakemake -np -s 02_SCC_check/SCC-check.snakefile
+```
+
+Once any errors are fixed, go ahead and run the Snakemake workflow for subsampling the reads and determining the relative read depth of chrY using the `indexcov` application: 
+```
+snakemake -s 02_SCC_check/SCC-check.snakefile --rerun-incomplete
+```
+
+Or if you are running on an HPC cluster with Slurm job submission manager, you may use something to this effect: 
+```
+#!/bin/bash
+#SBATCH --job-name=sexcheck  # Job name
+#SBATCH -o slurm.%j.out                # STDOUT (%j = JobId)
+#SBATCH -e slurm.%j.err                # STDERR (%j = JobId)
+#SBATCH --mail-type=ALL           # notifications for job done & fail
+#SBATCH --mail-user=user@domain.edu # send-to address
+#SBATCH -t 1-00:00
+#SBATCH -p serial
+#SBATCH -q public
+#SBATCH -n 2
+
+source activate SCCalign_v3
+cd /data/SCC-alignment-main/02_SCC_check
+snakemake -s SCC-check.snakefile -j 20 --rerun-incomplete --latency-wait=60
+
+```
+
+Upon successful completion of this workflow, you will see results in the `indexcov_dir` you specified in your custom config file.  This will include HTML files you can use to browse your results to see if the chrY read depth indicates the presence of chrY.  There should also be an output file called `indexcov-indexcov.ped`.  This file has specific information plotted in the HTML files.  We provided a simple script to make an easy look up table for your samples if you would like to use it.  
+
+To do so, copy `02_SCC_check\inferred_SCC.py` into the directory containing your `indexcov` results (`indexcov-indexcov.ped`), and run with Python:
+```
+python inferred_SCC.py
+```
+
+```
 
 # Perform variant calling
 
