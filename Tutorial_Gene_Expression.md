@@ -4,7 +4,7 @@ This page describes how to use the code provided to do sex chromosome complement
 
 # Download RNA sequencing data for testing
 
-Listed in `03b_gene_quantification_RNAseq` module, download RNA sequencing data for testing.
+Listed in `03b_SCC_gene_quantification` module, download RNA sequencing data for testing.
 
 ```
 
@@ -42,7 +42,7 @@ conda activate SCCalign_v3
 
 # Consider sex of the samples
 
-From the information given by Genome In A Bottle, we see that samples HG002 is from a male and likely has a Y chromosome, while sample HG004 is from a female and likely has no Y chromosome.  We are going to use the `02_SCC_check` module for RNA sequencing data to verify whether the gene expression profile of these samples supports this description and then use the `03b_gene_quantification_RNAseq` module to measure gene expression aligning to the SCC-aware versions of the human reference genome. This tutorial will walk you through two methods of gene expression quantification.  
+From the information given by Genome In A Bottle, we see that samples HG002 is from a male and likely has a Y chromosome, while sample HG004 is from a female and likely has no Y chromosome.  We are going to use the `02_SCC_check` module for RNA sequencing data to verify whether the gene expression profile of these samples supports this description and then use the `03b_SCC_gene_quantification` module to measure gene expression aligning to the SCC-aware versions of the human reference genome. This tutorial will walk you through two methods of gene expression quantification.  
 
 # Create custom config for RNA data
 
@@ -86,7 +86,7 @@ This will create a JSON file in the working directory that you will need to modi
 
 ### Personalizing your custom configuration file
 
-If you open the JSON file in a text editor, you will see entries in JSON format.  Many of these elements are predefined to provide coordinates and options for RNA analysis in the `02_SCC_check` module RNA workflow and the `03b_gene_quantification_RNAseq` workflows.  
+If you open the JSON file in a text editor, you will see entries in JSON format.  Many of these elements are predefined to provide coordinates and options for RNA analysis in the `02_SCC_check` module RNA workflow and the `03b_SCC_gene_quantification` workflows.  
 
 Somewhere in the config JSON you will see entries for every sample listed in your sample table file.  This will contain the input directory you specified in the `fq_path` variable and the paired end read files you specified in the `fq1` and `fq2` variable and other information from the headers of the sequence files stored as read groups.  
 
@@ -146,10 +146,10 @@ The rest of the necessary information will be filled in from the config JSON.
 
 Once you have indicated the sex chromosome complement of your samples and completed your RNA custom config, you are ready to quantify gene expression!  
 
-Quantification using full alignment and feature counting is implemented in `03b_gene_quantification_RNAseq/rnaseq_data_processing_hisat2_piped.snakefile`
+Quantification using full alignment and feature counting is implemented in `03b_SCC_gene_quantification/rnaseq_data_processing_hisat2_piped.snakefile`
 
 Before running this workflow, perform the following checks:
-1) copy the custom RNA config file to the `03b_gene_quantification_RNAseq` directory: `cp 01_custom_config/RNA_samples.config.json 03b_gene_quantification_RNAseq/`
+1) copy the custom RNA config file to the `03b_SCC_gene_quantification` directory: `cp 01_custom_config/RNA_samples.config.json 03b_SCC_gene_quantification/`
 2) open `rnaseq_data_processing_hisat2_piped.snakefile` in a text editor
 3) make sure the `configfile` variable is set to the name of your custom config JSON
 4) make sure the `X_genome` and `Y_genome` variables are set to the SCC version of the reference genome according to your preference.  By default, these are set to the CHM13v2 (telomere-to-telomere) SCC genome reference sequences, but if you prefer to use SCC HG38 (GRCh38) references, uncomment the lines refering to the path to those set in the custom config and comment the lines indicating the CHM13v2 references like this:
@@ -191,19 +191,19 @@ Or if you are running on an HPC cluster with Slurm job submission manager, you m
 #SBATCH -n 2
 
 source activate SCCalign_v3
-cd /data/SCC-alignment-main/03b_gene_quantification_RNAseq
+cd /data/SCC-alignment-main/03b_SCC_gene_quantification
 snakemake -s rnaseq_data_processing_hisat2_piped.snakefile -j 20 --rerun-incomplete --latency-wait=60
 
 ```
 
-Once the workflow is completed, you will see quantified gene expression files in the `featureCounts/` directory.  See readme for `03b_gene_quantification_RNAseq` for more information.  
+Once the workflow is completed, you will see quantified gene expression files in the `featureCounts/` directory.  See readme for `03b_SCC_gene_quantification` for more information.  
 
 # Quantify gene expression using pseudoalignment (Salmon)
 
-Quantification using full alignment and feature counting is implemented in `03b_gene_quantification_RNAseq/rnaseq_data_processing_salmon.snakefile`
+Quantification using full alignment and feature counting is implemented in `03b_SCC_gene_quantification/rnaseq_data_processing_salmon.snakefile`
 
 Before running this workflow, perform the following checks:
-1) copy the custom RNA config file to the `03b_gene_quantification_RNAseq` directory: `cp 01_custom_config/RNA_samples.config.json 03b_gene_quantification_RNAseq/`
+1) copy the custom RNA config file to the `03b_SCC_gene_quantification` directory: `cp 01_custom_config/RNA_samples.config.json 03b_SCC_gene_quantification/`
 2) open `rnaseq_data_processing_hisat2_piped.snakefile` in a text editor
 3) make sure the `configfile` variable is set to the name of your custom config JSON
 4) make sure the `X_genome` and `Y_genome` variables are set to the SCC version of the reference genome according to your preference.  By default, these are set to the CHM13v2 (telomere-to-telomere) SCC genome reference sequences, but if you prefer to use SCC HG38 (GRCh38) references, uncomment the lines refering to the path to those set in the custom config and comment the lines indicating the CHM13v2 references like this:
@@ -243,12 +243,12 @@ Or if you are running on an HPC cluster with Slurm job submission manager, you m
 #SBATCH -n 2
 
 source activate SCCalign_v3
-cd /data/SCC-alignment-main/03b_gene_quantification_RNAseq
+cd /data/SCC-alignment-main/03b_SCC_gene_quantification
 snakemake -s rnaseq_data_processing_salmon.snakefile -j 20 --rerun-incomplete --latency-wait=60
 
 ```
 
-Once the workflow is completed, you will see quantified gene expression files in the `quantified_rna_salmon/` directory.  See readme for `03b_gene_quantification_RNAseq` for more information.  
+Once the workflow is completed, you will see quantified gene expression files in the `quantified_rna_salmon/` directory.  See readme for `03b_SCC_gene_quantification` for more information.  
 
 
 We hope that this tutorial helps you to see the various parts of the sex chromosome complement aware gene expression pipeline and allows you to make modifications for your own use.  If you have any issues, please contact the Sex Chromosome Lab for help (http://www.sexchrlab.org/).  
