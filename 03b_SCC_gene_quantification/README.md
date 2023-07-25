@@ -39,7 +39,7 @@ a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_hisat2_pipe
 
 b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_hisat2_piped.snakefile`
 
-c) Quantification results for each sample given in `quantified_rna_hisat` directory
+c) Quantification results for each sample given in `feature_counts_rna_hisat` directory
 
 5) To do pseudoalignment and gene quantification with Salmon:
 
@@ -67,6 +67,10 @@ https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/r
 
 https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/rna/illumina/mrna/hg002_gm24385.mrna.R2.fastq.gz
 
+# Manuals
+
+Hisat2: https://daehwankimlab.github.io/hisat2/manual/
+Salmon: https://salmon.readthedocs.io/en/latest/
 
 # Citations
 
