@@ -4,6 +4,8 @@
 
 These Snakemake workflows are for sex chromosome complement informed gene quantification for short read, paired end RNA sequencing data.  For each sample, the sex is used to determine which sex chromosome complement version of the reference genome is used for alignment/pseudoalignment.  For females (XX, no Y chromosome),  we use the reference genome with chromosome Y hard masked.  For males (XY, with a Y chromosome), we use the reference genome with the pseudoautosomal regions (PARs) hard masked on chromosome Y.  There are separate Snakemake pipelines for doing a full alignment (`hisat2`) with gene quantification (`featureCounts`) or instead doing pseudoalignment and quantification using SCC versions of the transcriptome (`salmon`) which is much faster.  
 
+This page summarizes the steps of the workflows and how to use the output, but a detailed tutorial on how to perform the workflows with test data from Genome in a Bottle is given in the `tutorials` directory.
+
 # Gene quantification pipeline with full alignment and gene counts
 
 The Snakemake workflow `rnaseq_data_processing_hisat2.snakefile` does an alignment to sex chromsoome complement refernece genome using `hisat2` and quantifies gene expression using the genome annotation using `featureCounts`.  
