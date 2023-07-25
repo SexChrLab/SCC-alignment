@@ -1,6 +1,6 @@
 # Tutorial for sex chromosome complement aware variant calling
 
-This page describes how to use the code provided to do sex-aware variant calling using the test data files from Genome in a Bottle using the telomere-to-telomere reference genome (CHM13v2). Here we describe general variant calling for indiviual samples against the sex chromosome complement versions of the human reference genome, not for identification of variants between two groups of samples such as tumor versus normal somatic mutation calling.  
+This page describes how to use the code provided to do sex chromosome complement aware variant calling using DNA sequencing data from Genome in a Bottle. Here we describe general variant calling for indiviual samples against the sex chromosome complement versions of the human reference genome, not for identification of variants between two groups of samples such as tumor versus normal somatic mutation calling.  
 
 # Download DNA sequencing data for testing
 
