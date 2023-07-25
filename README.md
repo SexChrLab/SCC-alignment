@@ -31,7 +31,7 @@ In this module, we provide code and guidelines to determine whether samples have
 
 In this module, we show how to use DNA sequencing data to determine variants across the genome. We use the inferred Sex Chromosome Complement (SCC) from module 2, or sex reported in sample metadata, to assign the appropriate SCC aware reference genome and downstream gentyping criteria for each sample. In short, we perform sex chromosome complement specific sequence alignment and determine genomic variants considering the biologically relevant ploidy levels across the genome using GATK.
 
-3b. SCC-aware gene expression analyses (`03b_gene_quantification_RNAseq`) 
+3b. SCC-aware gene expression analyses (`03b_SCC_gene_quantification`) 
 
 In this module, we use HISAT2 aligner with a gene quantification algorithm (`featureCounts`) or Salmon pseudoaligner to quantify the expression of genes in samples assayed with RNA sequencing.  
 
@@ -50,16 +50,19 @@ A summary of how these were generated is as follows:
 3. Determine the boundaries of the pseudoautosomal regions (PARs), regions of complete sequence identity (either annotated with the released genome sequence or determined by aligning the X and Y chromosome sequence to each other)
 4. Hard mask the original reference genome and transcriptome sequence in the PAR regions on chromosome Y
 5. Use index functions of alignment algorithms where needed with the Y-masked and Y PARs masked versions of the reference genome (such as `hisat2 build`)
+6. Detailed instructions are given in the `references` directory
 
 # Order of operations
 
 This section describes the order in which our modules can be run to give you an idea of how to proceed given the type of data you have.
 
-First, you will need to set up a custom config that describes the necessary information about your experiment and data files.  Code and examples for this are given in `01_custom_config`  There will be specific fields required for the SCC check, SCC-aware variant calling, and gene quantification modules; the code provided will help you to generate a template for that json which you can manually fill in with the paths to your data and specific experimental details.  Most importantly, you will need to which samples have a Y chromosome and which do not. These lists are used to determine which sex chromosome complement reference genome to use and which ploidy to use for variant calling. You can use reported sex from sample metadata to make this list or assert the sex chromosome complement using the actual sequencing data using code in the `02_SCC_check` module.
+Detailed tutorials are provided in the `tutorials` directory.
+
+In summary, first, you will need to set up a custom config that describes the necessary information about your experiment and data files.  Code and examples for this are given in `01_custom_config`  There will be specific fields required for the SCC check, SCC-aware variant calling, and gene quantification modules; the code provided will help you to generate a template for that json which you can manually fill in with the paths to your data and specific experimental details.  Most importantly, you will need to which samples have a Y chromosome and which do not. These lists are used to determine which sex chromosome complement reference genome to use and which ploidy to use for variant calling. You can use reported sex from sample metadata to make this list or assert the sex chromosome complement using the actual sequencing data using code in the `02_SCC_check` module.
 
 Once custom config files are created, you will need to set up an environment to access the software needed to do the analysis and the sex chromosome complement reference genomes.  We have provided a Docker container and a conda environment that contains both of these to analyze human samples.  
 
-From here, you can use DNA sequencing data to call variants using the `03a_SCC-aware_VariantCalling` module or use RNA sequencing data to quantify gene expression using the `03b_gene_quantification_RNAseq` module.  These modules are independent of each other, so they can be run in parallel if both DNA and RNA sequencing is available for your samples.
+From here, you can use DNA sequencing data to call variants using the `03a_SCC-aware_VariantCalling` module or use RNA sequencing data to quantify gene expression using the `03b_SCC_gene_quantification` module.  These modules are independent of each other, so they can be run in parallel if both DNA and RNA sequencing is available for your samples.
 
 # Setting up your environment to run SCC aware genomics pipelines
 
@@ -169,7 +172,7 @@ In summary, the Genome in a Bottle project aims to provide benchmarking data for
 
 The samples we will link to are derived from 2 family trios (son, mother, and father).  Our methods do *not* at all require samples to be from related individuals, but we do mark this description to help label samples as having Y chromosomes (sons and fathers) versus not having a Y chromosome (mothers).  Knowing or having the data to find out the sex chromosome complement genotype is essential to running our pipelines.  
 
-We link to specific test files in the readme for `02_SCC_check`, `03a_SCC-aware_VariantCalling`, and `03b_gene_quantification_RNAseq`.
+We link to specific test files in the readme for `02_SCC_check`, `03a_SCC-aware_VariantCalling`, and `03b_SCC_gene_quantification`.
 
 # Citations
 
