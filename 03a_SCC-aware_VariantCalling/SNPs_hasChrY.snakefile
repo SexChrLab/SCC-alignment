@@ -13,6 +13,9 @@ configfile: "SCC-analysis_config.json"
 #threads
 threads = config["threads"]
 
+#reads direcotory
+reads_dir = config["reads"]
+
 #sample sets
 X_samples = config["X_samples"]
 Y_samples = config["Y_samples"]
@@ -129,8 +132,8 @@ rule all:
 # ------------------
 rule minimap2_mapping_Y:
 	input:
-		fq1 = "reads/{Y}_R1.fastq.gz", 
-		fq2 = "reads/{Y}_R2.fastq.gz", 
+		fq1 = os.path.join(reads_dir,"{Y}_R1.fastq.gz"), 
+		fq2 = os.path.join(reads_dir,"{Y}_R2.fastq.gz"), 
 	output:
 		temp("temp/Y/{Y}.bam"),
 	params:
