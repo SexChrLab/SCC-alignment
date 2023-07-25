@@ -1,8 +1,8 @@
 # Overall Description
 
-These Snakemake workflows are for sex chromosome complement informed (SCC-aware) whole-genome short-read sequence alignment and germline variant calling. For each sample, the genotype, identified using SCC-check pipeline (or reported sex), is used to determine which sex chromosome complement version of the reference genome is used for alignment. For females (no Y chromosome), we use the reference genome with Y chromosome hard-masked. For males (samples with a Y chromosome), we use the reference genome with the pseudoautosomal regions (PARs) hard masked on chromosome Y. The workflow improves variant calling by using proper ploidy in different regions of the sex chromosome, allowing more sensitive detection of variants.  
+These Snakemake workflows are for sex chromosome complement informed (SCC-aware) whole-genome short-read sequence alignment and variant calling against sex chromosome complement versions of the human reference genome. For each sample, the genotype, identified using SCC-check pipeline (or reported sex), is used to determine which sex chromosome complement version of the reference genome should be used for alignment. For females (no Y chromosome), we use the reference genome with Y chromosome hard-masked. For males (samples with a Y chromosome), we use the reference genome with the pseudoautosomal regions (PARs) hard masked on chromosome Y. The workflow improves variant calling by using proper ploidy in different regions of the sex chromosome, allowing more sensitive detection of variants.  
 
-# Steps of the sex chromosome complement (SCC)-aware pipeline for germline variant calling
+# Steps of the sex chromosome complement (SCC)-aware pipeline for variant calling
 The rules in the SCC-aware variant calling pipeline SNPs_XX.snakefile and SNPs_XY.snakefile are as follows:
 1. Samples with a Y chromosome must be specified in the `Y_samples` variable in the custom config passed in through the `configfile` parameter
 2. Samples without a Y chromosome must be specified in the `X_samples` variable in the custom config passed in through the `configfile` parameter
@@ -15,7 +15,7 @@ The rules in the SCC-aware variant calling pipeline SNPs_XX.snakefile and SNPs_X
 9. `gatk GenotypeGVCFs` will be used to joint genotype all variants across all samples
 10. `gatk SelectVariants` will be used to filter for biallelic single nucleotide polymorphisms (SNPs)
 
-# Running the SCC-aware germline variant calling pipeline
+# Running the SCC-aware variant calling pipeline
 
 Steps for running the pipeline: 
 1) Created a config JSON for your DNA samples (see `custom_config`) 
