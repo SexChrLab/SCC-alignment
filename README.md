@@ -172,8 +172,8 @@ docker pull sbplaisier/omics:1.3
 docker run -it -v /path/to/local/directory/:/data -t sbplaisier/omics:1.3
 
 # once the docker container has been entered
-mkdir /data/local_SCC_references
-cp /references/*.* /data/local_SCC_references
+mkdir /data/references
+cp /references/*.* /data/references
 
 ```
 
@@ -183,8 +183,8 @@ singularity pull -F SCC_analysis.sif  docker://sbplaisier/omics:1.3
 singularity shell -B /path/to/local/directory/:/data SCC_analysis.sif
 
 # once the singularity container has been entered
-mkdir /data/local_SCC_references
-cp /references/*.* /data/local_SCC_references
+mkdir /data/references
+cp /references/*.* /data/references
 ```
 
 # Test Data (Genome in a Bottle)
