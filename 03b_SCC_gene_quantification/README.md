@@ -6,6 +6,8 @@ These Snakemake workflows are for sex chromosome complement informed gene quanti
 
 This page summarizes the steps of the workflows and how to use the output, but a detailed tutorial on how to perform the workflows with test data from Genome in a Bottle is given in the `tutorials` directory.
 
+Note, since these two workflows are in the same directory, Snakemake does not allow them to be run at the same time and affect the same directory.  If you would like to try both workflows and compare the results, make a copy of the `03b_SCC_gene_quantification` directory with a different name and run the second workflow from there.
+
 # Gene quantification pipeline with full alignment and gene counts
 
 The Snakemake workflow `rnaseq_data_processing_hisat2.snakefile` does an alignment to sex chromsoome complement refernece genome using `hisat2` and quantifies gene expression using the genome annotation using `featureCounts`.  
