@@ -1,10 +1,10 @@
 # Tutorial for sex chromosome complement aware gene expression quantification
 
-This page describes how to use the code provided to do sex chromosome complement aware variant calling using the test data files from Genome in a Bottle using the telomere-to-telomere reference genome (CHM13v2). Here we describe general variant calling for indiviual samples against the sex chromosome complement versions of the human reference genome, not for identification of variants between two groups of samples such as tumor versus normal somatic mutation calling.  
+This page describes how to use the code provided to do sex chromosome complement aware variant calling using the RNA sequencing data from Genome in a Bottle.  This tutorial will describe how to use two methods for gene expression quantification-- full alignment to sex chromosome complement reference genome and feature counts, and pseudoalignment to sex chromosome complement reference transcriptome.  The first is more comprehensive but takes more time and compute power, the second is faster and used quite frequently for gene expression analysis.
 
-# Download DNA sequencing data for testing
+# Download RNA sequencing data for testing
 
-Listed in `03a_SCC-aware_VariantCalling` module, download DNA sequencing data for testing.
+Listed in `03b_gene_quantification_RNAseq` module, download RNA sequencing data for testing.
 
 ```
 
@@ -15,14 +15,7 @@ cd /path/working_directory/
 mkdir reads
 
 # download the test data fastqs
-wget https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG003.novaseq.pcr-free.40x.R1.fastq.gz
-wget https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG003.novaseq.pcr-free.40x.R2.fastq.gz
-wget https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG005.novaseq.pcr-free.40x.R1.fastq.gz
-wget https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG005.novaseq.pcr-free.40x.R2.fastq.gz
-wget https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG004.novaseq.pcr-free.40x.R1.fastq.gz
-wget https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG004.novaseq.pcr-free.40x.R2.fastq.gz
-wget https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG007.novaseq.pcr-free.40x.R1.fastq.gz
-wget https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/novaseq/wgs_pcr_free/40x/HG007.novaseq.pcr-free.40x.R2.fastq.gz
+wget 
 ```
 
 # Clone Repository to get required code
@@ -48,7 +41,7 @@ conda activate SCCalign_v3
 
 From the information given by Genome In A Bottle, we see that samples HG003 and HG005 are from males and likely have a Y chromosome, while samples HG004 and HG007 are from females and likely have no Y chromosome.  We are going to use the `02_SCC_check` module to  verify that the sequencing data supports this description and then use the `03a_SCC-aware_VariantCalling` to call variants in these samples based on the SCC-aware versions of the human reference genome.
 
-# Create custom config for DNA data
+# Create custom config for RNA data
 
 ### Create sample file info table
 In order to create a custom configuration file for DNA analysis, we need to create a sample file info table, let's call it `DNA_samples.csv`.
