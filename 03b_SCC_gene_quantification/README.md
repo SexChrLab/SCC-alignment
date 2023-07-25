@@ -72,6 +72,7 @@ https://storage.googleapis.com/brain-genomics-public/research/sequencing/fastq/r
 # Manuals
 
 Hisat2: https://daehwankimlab.github.io/hisat2/manual/
+
 Salmon: https://salmon.readthedocs.io/en/latest/
 
 # Citations
