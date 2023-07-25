@@ -139,87 +139,42 @@ configfile: "RNA_samples.config.json"
 ```
 The rest of the necessary information will be filled in from the config JSON.  
 
-All of our workflows are written in Snakemake.  For more information on Snakemake, see the main readme for this repository
+`FINISH!!!!: gene expression of sex chr genes`
+`TO-DO!!!!: make the piped version the only one`
 
-To make sure everything is setup correctly, do a dry run of the `SCC-check.snakefile` Snakemake workflow for subsampling the reads and determining the relative read depth of chrY using the `indexcov` application: 
-```
-snakemake -np -s SCC-check.snakefile
-```
+# Quantify gene expression using alignment and feature counts (Hisat2 and featureCounts)
 
-Once any errors are fixed, go ahead and run the Snakemake workflow for subsampling the reads and determining the relative read depth of chrY using the `indexcov` application: 
-```
-snakemake -s SCC-check.snakefile --rerun-incomplete
-```
+Once you have indicated the sex chromosome complement of your samples and completed your RNA custom config, you are ready to quantify gene expression!  
 
-Or if you are running on an HPC cluster with Slurm job submission manager, you may use something to this effect: 
-```
-#!/bin/bash
-#SBATCH --job-name=sexcheck  # Job name
-#SBATCH -o slurm.%j.out                # STDOUT (%j = JobId)
-#SBATCH -e slurm.%j.err                # STDERR (%j = JobId)
-#SBATCH --mail-type=ALL           # notifications for job done & fail
-#SBATCH --mail-user=user@domain.edu # send-to address
-#SBATCH -t 1-00:00
-#SBATCH -p serial
-#SBATCH -q public
-#SBATCH -n 2
+Quantification using full alignment and feature counting is implemented in `03b_gene_quantification_RNAseq/rnaseq_data_processing_hisat2_piped.snakefile`
 
-source activate SCCalign_v3
-cd /data/SCC-alignment-main/02_SCC_check
-snakemake -s SCC-check.snakefile -j 20 --rerun-incomplete --latency-wait=60
-
-```
-
-Upon successful completion of this workflow, you will see results in the `indexcov_dir` you specified in your custom config file.  This will include HTML files you can use to browse your results to see if the chrY read depth indicates the presence of chrY.  There should also be an output file called `indexcov-indexcov.ped`.  This file has specific information plotted in the HTML files.  We provided a simple script to make an easy look up table for your samples if you would like to use it.  
-
-To do so, copy `02_SCC_check\inferred_SCC.py` into the directory containing your `indexcov` results (`indexcov-indexcov.ped`), and run with Python:
-```
-python inferred_SCC.py
-```
-
-This will give you an output file called `inferred_SCC.csv` that gives you a column called `has_chrY` that will mark all samples with has a chrY copy number of at least 0.25 as having a Y chromosome.  The samples given a "yes" in the `has_chrY` samples should be in the `Y_samples` entry in the custom config JSON and those marked "no" should be in the `X_samples` entry.  This is a suggested method; samples with a Y chromosome often have a chrY copy number of near 1 at least, so if your chrY copy number is close to the 0.25 threshold, you might want to at your samples more carefully. 
-
-# Perform variant calling
-
-Once you have indicated the sex chromosome complement of your samples and thus completed your RNA custom config, you are ready to call variants!  
-
-To avoid ambiguity problems in the Snakemake workflows, we have included two workflow files in the `03a_SCC-aware_VariantCalling` module, one for samples with a Y chromosome (`SNPs_hasChrY.snakefile` works on the samples listed in 'Y_samples' entry in the RNA custom config JSON) and one for samples without a Y chromosome (`SNPs_noChrY.snakefile` works on samples in `X_samples`).  See the readme in the `03a_SCC-aware_VariantCalling` module for more information.  
-
-Before running the workflows, perform the following checks:
-1) copy the custom RNA config file in the `03a_SCC-aware_VariantCalling` directory: `cp 01_custom_config/RNA_samples.config.json 03a_SCC-aware_VariantCalling/`
-2) open `SNPs_hasChrY.snakefile` in a text editor
+Before running this workflow, perform the following checks:
+1) copy the custom RNA config file to the `03b_gene_quantification_RNAseq` directory: `cp 01_custom_config/RNA_samples.config.json 03b_gene_quantification_RNAseq/`
+2) open `rnaseq_data_processing_hisat2_piped.snakefile` in a text editor
 3) make sure the `configfile` variable is set to the name of your custom config JSON
-4) make sure the `X_genome` and `Y_genome` variables are set to the SCC version of the reference genome according to your preference.  By default, these are set to the CHM13v2 (telomere-to-telomere) SCC genome reference sequences, but if you prefer to use SCC HG38 (GRCh38) references, uncomment the lines refering to the path to those set in the custom config and comment the lines indicating the CHM13v2 references:
+4) make sure the `X_genome` and `Y_genome` variables are set to the SCC version of the reference genome according to your preference.  By default, these are set to the CHM13v2 (telomere-to-telomere) SCC genome reference sequences, but if you prefer to use SCC HG38 (GRCh38) references, uncomment the lines refering to the path to those set in the custom config and comment the lines indicating the CHM13v2 references like this:
 ```
-#Reference genome choices, only ONE may be used at a time
-#GRCh38 reference genome (uncomment below if using)
-X_genome = config["GRCh38_X"]
-Y_genome = config["GRCh38_Y"]
-PAR1 = config["GRCh38_PAR1"]
-PAR2 = config["GRCh38_PAR2"]
-nonPAR = config["GRCh38_nonPAR"]
+# uncomment these if you want to run with the HG38 (GRCh38) human genome
+X_genome = config["HG38_Transcriptome_Index_HISAT_Path_female"]
+Y_genome = config["HG38_Transcriptome_Index_HISAT_Path_male"]
+genome_annotation = config["HG38_annotation_path"]
 
-#CHM13_T2T reference (comment out below if NOT using)
-#X_genome = config["CHM13_X"]
-#Y_genome = config["CHM13_Y"]
-#PAR1 = config["CHM13_PAR1"]
-#PAR2 = config["CHM13_PAR2"]
-#nonPAR = config["CHM13_nonPAR"]
+# uncomment these if you want to run with the CHM13 (telomere-to-telomere) human genome
+#X_genome = config["CHM13_Transcriptome_Index_HISAT_Path_female"]
+#Y_genome = config["CHM13_Transcriptome_Index_HISAT_Path_male"]
+#genome_annotation = config["CHM13_annotation_path"]
 ```
-5) Repeat these steps for `SNPs_noChrY.snakefile`
 
-Once these checks and preferences have been indicated, you are ready to run the variant calling workflows. 
+Once these checks and preferences have been indicated, you are ready to run the workflow. 
 
 To make sure everything is setup correctly, do a dry run for both workflows and resolve any warnings or errors that come up: 
 ```
-snakemake -np -s SNPs_hasChrY.snakefile
-snakemake -np -s SNPs_noChrY.snakefile
+snakemake -np -s rnaseq_data_processing_hisat2_piped.snakefile
 ```
 
 Once any errors are fixed, go ahead and run the Snakemake workflow for subsampling the reads and determining the relative read depth of chrY using the `indexcov` application: 
 ```
-snakemake -s SNPs_hasChrY.snakefile --rerun-incomplete
-snakemake -s SNPs_noChrY.snakefile --rerun-incomplete
+snakemake -s rnaseq_data_processing_hisat2_piped.snakefile --rerun-incomplete
 ```
 
 Or if you are running on an HPC cluster with Slurm job submission manager, you may use something to this effect: 
@@ -236,12 +191,64 @@ Or if you are running on an HPC cluster with Slurm job submission manager, you m
 #SBATCH -n 2
 
 source activate SCCalign_v3
-cd /data/SCC-alignment-main/03a_SCC-aware_VariantCalling
-snakemake -s SNPs_hasChrY.snakefile -j 20 --rerun-incomplete --latency-wait=60
-snakemake -s SNPs_noChrY.snakefile -j 20 --rerun-incomplete --latency-wait=60
+cd /data/SCC-alignment-main/03b_gene_quantification_RNAseq
+snakemake -s rnaseq_data_processing_hisat2_piped.snakefile -j 20 --rerun-incomplete --latency-wait=60
 
 ```
 
-Once the workflow is completed, you will see genotyped VCFs in the `genotypedVCFs/` directory.  See readme for `03a_SCC-aware_VariantCalling` for more information.  
+Once the workflow is completed, you will see quantified gene expression files in the `featureCounts/` directory.  See readme for `03b_gene_quantification_RNAseq` for more information.  
 
-We hope that this tutorial helps you to see the various parts of the sex chromosome complement aware variant calling pipeline and allows you to make modifications for your own use.  If you have any issues, please contact the Sex Chromosome Lab for help (http://www.sexchrlab.org/).  
+# Quantify gene expression using pseudoalignment (Salmon)
+
+Quantification using full alignment and feature counting is implemented in `03b_gene_quantification_RNAseq/rnaseq_data_processing_salmon.snakefile`
+
+Before running this workflow, perform the following checks:
+1) copy the custom RNA config file to the `03b_gene_quantification_RNAseq` directory: `cp 01_custom_config/RNA_samples.config.json 03b_gene_quantification_RNAseq/`
+2) open `rnaseq_data_processing_hisat2_piped.snakefile` in a text editor
+3) make sure the `configfile` variable is set to the name of your custom config JSON
+4) make sure the `X_genome` and `Y_genome` variables are set to the SCC version of the reference genome according to your preference.  By default, these are set to the CHM13v2 (telomere-to-telomere) SCC genome reference sequences, but if you prefer to use SCC HG38 (GRCh38) references, uncomment the lines refering to the path to those set in the custom config and comment the lines indicating the CHM13v2 references like this:
+```
+# uncomment these to use HG38 (GRCh38) SCC reference genomes
+X_genome = config["HG38_Transcriptome_Index_SALMON_Path_female"]
+Y_genome = config["HG38_Transcriptome_Index_SALMON_Path_male"]
+
+# uncomment these to use CHM13 (telomere-to-telomere) SCC reference genomes
+#X_genome = config["CHM13_Transcriptome_Index_SALMON_Path_female"]
+#Y_genome = config["CHM13_Transcriptome_Index_SALMON_Path_male"]
+```
+
+Once these checks and preferences have been indicated, you are ready to run the workflow. 
+
+To make sure everything is setup correctly, do a dry run for both workflows and resolve any warnings or errors that come up: 
+```
+snakemake -np -s rnaseq_data_processing_salmon.snakefile
+```
+
+Once any errors are fixed, go ahead and run the Snakemake workflow for subsampling the reads and determining the relative read depth of chrY using the `indexcov` application: 
+```
+snakemake -s rnaseq_data_processing_salmon.snakefile --rerun-incomplete
+```
+
+Or if you are running on an HPC cluster with Slurm job submission manager, you may use something to this effect: 
+```
+#!/bin/bash
+#SBATCH --job-name=SNPs  # Job name
+#SBATCH -o slurm.%j.out                # STDOUT (%j = JobId)
+#SBATCH -e slurm.%j.err                # STDERR (%j = JobId)
+#SBATCH --mail-type=ALL           # notifications for job done & fail
+#SBATCH --mail-user=user@domain.edu # send-to address
+#SBATCH -t 1-00:00
+#SBATCH -p serial
+#SBATCH -q public
+#SBATCH -n 2
+
+source activate SCCalign_v3
+cd /data/SCC-alignment-main/03b_gene_quantification_RNAseq
+snakemake -s rnaseq_data_processing_salmon.snakefile -j 20 --rerun-incomplete --latency-wait=60
+
+```
+
+Once the workflow is completed, you will see quantified gene expression files in the `quantified_rna_salmon/` directory.  See readme for `03b_gene_quantification_RNAseq` for more information.  
+
+
+We hope that this tutorial helps you to see the various parts of the sex chromosome complement aware gene expression pipeline and allows you to make modifications for your own use.  If you have any issues, please contact the Sex Chromosome Lab for help (http://www.sexchrlab.org/).  
