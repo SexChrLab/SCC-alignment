@@ -42,7 +42,7 @@ The basis of the sex chromosome complement aware genomics analysis presented in 
 1.  Chromosome Y masked reference genome sequence for samples that do not have a Y chromosome (such as XX female samples)
 2.  Chromosome Y PARs masked reference for samples that do have a Y chromosome (such as XY male samples)
 
-We have provided sex chromosome complement versions of the GRCh38 and CHM13v2 releases, but detailed instructions on how these reference genome sequences were made are provided in the `references` directory.  
+We have provided sex chromosome complement versions of the GRCh38 and CHM13v2 releases, but detailed instructions on how these reference genome sequences were made are provided in the `references` directory in this repository.  
 
 A summary of how these were generated is as follows: 
 1. Download the human genome reference sequence and transcriptome sequence
@@ -50,8 +50,7 @@ A summary of how these were generated is as follows:
 3. Determine the boundaries of the pseudoautosomal regions (PARs), regions of complete sequence identity (either annotated with the released genome sequence or determined by aligning the X and Y chromosome sequence to each other)
 4. Hard mask the original reference genome and transcriptome sequence in the PAR regions on chromosome Y
 5. Use index functions of alignment algorithms where needed with the Y-masked and Y PARs masked versions of the reference genome (such as `hisat2 build`)
-6. Detailed instructions are given in the `references` directory
-
+   
 # Order of operations
 
 This section describes the order in which our modules can be run to give you an idea of how to proceed given the type of data you have.
@@ -71,7 +70,7 @@ From here, you can use DNA sequencing data to call variants using the `03a_SCC-a
 Start by getting a local copy of this Github repository which contains all the code for the modules by navigating to a directory you want to work in and issuing the clone command:
 
 ``` 
-cd /path/to/local/directory/
+cd /path/to/working/directory/
 git clone https://github.com/SexChrLab/SCC-alignment.git 
 ```
 
@@ -94,7 +93,7 @@ https://conda.io/projects/conda/en/latest/index.html
 
 ### Docker/Singularity container containing SCC reference genomes
 
-Docker is a utility that allows you to use, store, and share a runtime environment with all the software installed properly. We have created a Docker image that contains SCC reference genomes and transcriptomes used for the analysis modules and conda installed so that required software can be easily loaded and used.  
+Docker is a utility that allows you to use, store, and share a runtime environment with all the software installed properly. We have created a Docker image that contains SCC reference genomes and transcriptomes that can be used to run the analysis modules with human sequencing data and conda installed so that required software can be easily loaded and used.  
 
 For more information about Docker containers: 
 https://docs.docker.com/
@@ -104,7 +103,7 @@ To obtain a copy of the Docker image to run our SCC aware analysis pipelines and
 docker pull sbplaisier/omics:1.3
 ```
 
-This Docker image is about 24 GB because of the reference genomes, so make sure you have enough space available.  
+This Docker image is about 24 GB because in includes the reference genomes/transcriptomes with annotation files, so make sure you have enough space available.  
 
 To make sure the image was pulled correctly, list the Docker images and make sure it is there and assigned an ID: 
 ```
@@ -127,7 +126,7 @@ In the working environment, you can see that we are using a Linux environment an
 ls /references
 ```
 
-To fully perform the analysis, you would attach a volume, meaning that you would make a local directory visible inside the Docker container: 
+To run the Docker container with your own data, you would run it with an attached volume, meaning that you would make a local directory visible inside the Docker container: 
 ```
 docker run -it -v /path/to/local/directory/:/data -t sbplaisier/omics:1.3
 ```
@@ -161,6 +160,31 @@ conda env create -f SCC-alignment/SCCalign_v3.yml
 Once the environment has been created, you can activate it and use all the software used by our workflow: 
 ```
 conda activate SCCalign_v3
+```
+
+### Extracting the references for use outside the Docker container
+
+If you would like to use the human SCC reference genomes we have generated outside of the Docker container, follow the instructions to pull the Docker image with a local directory bound as a volume, and copy the the files from `/references` to your bound local volume so that they will be stored after the Docker is closed.
+
+Using Docker:
+```
+docker pull sbplaisier/omics:1.3
+docker run -it -v /path/to/local/directory/:/data -t sbplaisier/omics:1.3
+
+# once the docker container has been entered
+mkdir /data/local_SCC_references
+cp /references/*.* /data/local_SCC_references
+
+```
+
+Using Singularity:
+```
+singularity pull -F SCC_analysis.sif  docker://sbplaisier/omics:1.3
+singularity shell -B /path/to/local/directory/:/data SCC_analysis.sif
+
+# once the singularity container has been entered
+mkdir /data/local_SCC_references
+cp /references/*.* /data/local_SCC_references
 ```
 
 # Test Data (Genome in a Bottle)
