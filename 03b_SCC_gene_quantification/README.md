@@ -39,9 +39,7 @@ a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_hisat2_pipe
 
 b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_hisat2_piped.snakefile`
 
-c) Example of how to run on a high performance cluster using slurm workflow manager given in `run_preprocessing_hisat.sbatch`
-
-d) Quantification results for each sample given in `feature_counts_rna` directory
+c) Quantification results for each sample given in `quantified_rna_hisat` directory
 
 5) To do pseudoalignment and gene quantification with Salmon:
 
@@ -49,9 +47,9 @@ a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_salmon.snak
 
 b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_salmon.snakefile`
 
-c) Example of how to run on a high performance cluster using slurm workflow manager given in `run_preprocessing_salmon.sbatch`
+c) Quantification results for each sample given in `quantified_rna_salmon` directory
 
-d) Quantification results for each sample given in `quantified_rna` directory
+Example of how to run on a high performance cluster using a conda environment, local copies of the SCC reference genomes, and slurm workflow manager are given in `.sbatch` files.
 
 # Test data
 
