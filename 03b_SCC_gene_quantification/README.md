@@ -8,7 +8,7 @@ This page summarizes the steps of the workflows and how to use the output, but a
 
 Note, since these two workflows are in the same directory, Snakemake does not allow them to be run at the same time and affect the same directory.  If you would like to try both workflows and compare the results, make a copy of the `03b_SCC_gene_quantification` directory with a different name and run the second workflow from there.
 
-# Gene quantification pipeline with full alignment and gene counts
+# Gene quantification pipeline with full alignment and gene counts (`hisat2` and `featureCounts`)
 
 The Snakemake workflow `rnaseq_data_processing_hisat2.snakefile` does an alignment to sex chromsoome complement refernece genome using `hisat2` and quantifies gene expression using the genome annotation using `featureCounts`.  
 
@@ -18,7 +18,21 @@ The Snakemake workflow `rnaseq_data_processing_hisat2.snakefile` does an alignme
 3. `featureCounts` is used to count reads that align to exon regions
 4. `featureCounts` results output with both gene IDs and transcript IDs for use in further analysis
 
-# Pseudoalignment and transcript quantification
+## Running the full alignment gene quantification workflow
+
+Steps for running the pipeline: 
+
+1) Create a config JSON for your RNA samples (see `custom_config`) 
+2) Activate the conda environment (see main `SCC-alignment` page) and Docker environment if using
+3) Open the `rnaseq_data_processing_hisat2_piped.snakefile` file in a text editor and make sure that the name of your config JSON is set correctly in the `configfile` variable
+4) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_hisat2_piped.snakefile`
+5) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_hisat2_piped.snakefile`
+6) Quantification results for each sample given in `feature_counts_rna_hisat` directory
+7) For more info on how to interpret the results: see page 36 of https://subread.sourceforge.net/SubreadUsersGuide.pdf 
+
+Example of how to run on a high performance cluster using a conda environment, local copies of the SCC reference genomes, and slurm workflow manager are given in `.sbatch` files.
+
+# Pseudoalignment and transcript quantification (`salmon`)
 
 The Snakemake workflow `rna_data_processing_salmon.snakefile` uses the `salmon` algorithm to quantify expression.  
 
@@ -27,33 +41,17 @@ The Snakemake workflow `rna_data_processing_salmon.snakefile` uses the `salmon` 
 2. Quantified expression will be in the `quantified_rna_salmon` directory, with specific subdirectories for each sample
 3. `quant.sf` file inside each result subdirectory will give the quantified expression for the transcripts in each sample
 
-# Running the SCC-aware gene quantification workflows
+## Running the pseudoalignment gene quantification workflow
 
 Steps for running the pipeline: 
 
 1) Create a config JSON for your RNA samples (see `custom_config`) 
-
 2) Activate the conda environment (see main `SCC-alignment` page) and Docker environment if using
-
-3) Open the `.snakefile` file in a text editor corresponding to which alignment procedure you would like to do and make sure that the name of your config JSON is set correctly in the `configfile` variable
-
-4) To do full alignment with `hisat2` and quantify genes with `featureCounts`
-
-a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_hisat2_piped.snakefile`
-
-b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_hisat2_piped.snakefile`
-
-c) Quantification results for each sample given in `feature_counts_rna_hisat` directory
-
-5) To do pseudoalignment and gene quantification with Salmon:
-
-a) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_salmon.snakefile`
-
-b) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_salmon.snakefile`
-
-c) Quantification results for each sample given in `quantified_rna_salmon` directory
-
-Example of how to run on a high performance cluster using a conda environment, local copies of the SCC reference genomes, and slurm workflow manager are given in `.sbatch` files.
+3) Open `rnaseq_data_processing_salmon.snakefile` file in a text editor and make sure that the name of your config JSON is set correctly in the `configfile` variable
+4) Test Snakemake pipeline: `snakemake -np -s rnaseq_data_processing_salmon.snakefile`
+5) Run Snakemake pipeline: `snakemake -s rnaseq_data_processing_salmon.snakefile`
+6) Quantification results for each sample will be put in `quantified_rna_salmon` subdirectory
+7) For more info on how to interpret the results: see https://salmon.readthedocs.io/en/latest/file_formats.html#fileformats 
 
 # Test data
 
