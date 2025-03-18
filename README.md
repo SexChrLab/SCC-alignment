@@ -1,6 +1,6 @@
 # Sex chromosome complement (SCC) informed alignment pipelines
 
-This repository of pipelines and code from Plaisier et al. 202x shows how to effectively account for sex chromosomes in common human genomic analyses: read alignment, variant calling, and gene expression quantification.
+This is the (pre-release) repository of the pipelines and code from Plaisier et al. 202x shows how to effectively account for sex chromosomes in common human genomic analyses: read alignment, variant calling, and gene expression quantification.
 
 The description below is geared towards running these pipelines in a Linux environment and shows how to analyze short-read sequencing data from human samples with the CHM13v2.0 (telomere-to-telomere) or GRCh38 reference genomes masked to account the sex chromosome complement in the samples being sequenced and analyzed.  For those studying non-human species with a known sex determination system that uses sex chromosomes, we hope that the detailed explanations here and in the manuscript will help you to adapt these techniques using the published reference genome sequences; please open an issue or email the Sex Chromosomes Lab at Arizona State University if you need help (http://www.sexchrlab.org/).
 
